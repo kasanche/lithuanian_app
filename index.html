@@ -796,14 +796,15 @@ function buildHome() {
     const done = appState.done.includes(t.id);
     const d = document.createElement('button');
     d.className = 'topic-card' + (done ? ' done' : '');
-    d.style.setProperty('--card-color', t.color);
-    d.innerHTML = `<div class="dot"></div><span class="icon">${t.icon}</span><div class="name">${t.name}</div><div class="sub">${t.questions.length} ejercicios</div>`;
+    d.setAttribute('style', 'min-height:90px;');
+    d.innerHTML = '<div class="dot"></div><span class="icon" style="font-size:22px;margin-bottom:6px;display:block;">' + t.icon + '</span><div class="name" style="font-size:13px;font-weight:500;color:#f0ede8;">' + t.name + '</div><div class="sub" style="font-size:11px;color:rgba(240,237,232,0.5);margin-top:3px;">' + t.questions.length + ' ejercicios</div>';
     d.onclick = () => startTopic(t);
     grid.appendChild(d);
   });
   const fb = document.createElement('button');
   fb.className = 'topic-card';
-  fb.innerHTML = `<span class="icon">📇</span><div class="name">Flashcards</div><div class="sub">${FLASHCARDS.length} palabras</div>`;
+  fb.setAttribute('style', 'min-height:90px;');
+  fb.innerHTML = '<span class="icon" style="font-size:22px;margin-bottom:6px;display:block;">📇</span><div class="name" style="font-size:13px;font-weight:500;color:#f0ede8;">Flashcards</div><div class="sub" style="font-size:11px;color:rgba(240,237,232,0.5);margin-top:3px;">' + FLASHCARDS.length + ' palabras</div>';
   fb.onclick = startFlash;
   grid.appendChild(fb);
 }
