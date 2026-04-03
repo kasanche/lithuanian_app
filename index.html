@@ -31,12 +31,8 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
   html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
-
-  /* ---- SCREENS ---- */
   .screen { position: absolute; inset: 0; display: flex; flex-direction: column; overflow: hidden; transition: opacity 0.3s, transform 0.3s; }
   .screen.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
-
-  /* ---- HOME ---- */
   #home { background: var(--bg); }
   .flag-stripe { height: 4px; background: linear-gradient(90deg, var(--flag-y) 33.3%, var(--flag-g) 33.3% 66.6%, var(--flag-r) 66.6%); }
   .home-header { padding: 3rem 1.5rem 1.5rem; }
@@ -49,7 +45,7 @@
   .stat-pill .l { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
   .topics-label { padding: 0 1.5rem 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
   .topics-grid { padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; overflow-y: auto; padding-bottom: 1rem; }
-  .topic-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 1rem; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+  .topic-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 1rem; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; text-align: left; width: 100%; }
   .topic-card::before { content: ''; position: absolute; inset: 0; background: var(--card-color, rgba(200,169,110,0.08)); opacity: 0; transition: opacity 0.2s; }
   .topic-card:active::before { opacity: 1; }
   .topic-card .icon { font-size: 24px; margin-bottom: 8px; display: block; }
@@ -57,18 +53,15 @@
   .topic-card .sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
   .topic-card .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); position: absolute; top: 12px; right: 12px; display: none; }
   .topic-card.done .dot { display: block; }
-  .ai-btn { margin: 1rem 1.5rem; background: linear-gradient(135deg, rgba(200,169,110,0.15), rgba(126,200,169,0.1)); border: 0.5px solid rgba(200,169,110,0.3); border-radius: 14px; padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.2s; }
+  .ai-btn { margin: 0.5rem 1.5rem 1rem; background: linear-gradient(135deg, rgba(200,169,110,0.15), rgba(126,200,169,0.1)); border: 0.5px solid rgba(200,169,110,0.3); border-radius: 14px; padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.2s; width: calc(100% - 3rem); }
   .ai-btn:active { transform: scale(0.98); }
   .ai-btn .ai-icon { font-size: 22px; }
   .ai-btn .ai-text { text-align: left; }
   .ai-btn .ai-title { font-size: 14px; font-weight: 500; color: var(--accent); }
   .ai-btn .ai-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-  /* ---- QUIZ SCREEN ---- */
   #quiz { background: var(--bg); }
   .quiz-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
   .back-btn { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; padding: 4px; }
-  .quiz-topic-name { font-size: 14px; color: var(--muted); font-weight: 300; }
   .prog-wrap { flex: 1; }
   .prog-bar { height: 4px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
   .prog-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
@@ -76,12 +69,11 @@
   .hearts { font-size: 16px; letter-spacing: 2px; }
   .quiz-body { flex: 1; overflow-y: auto; padding: 0 1.5rem 2rem; display: flex; flex-direction: column; }
   .q-type-badge { display: inline-flex; align-items: center; gap: 5px; background: var(--surface2); border: 0.5px solid var(--border); border-radius: 99px; padding: 4px 10px; font-size: 11px; color: var(--muted); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  .q-main { font-family: 'DM Serif Display', serif; font-size: clamp(1.3rem, 5vw, 1.8rem); color: var(--text); line-height: 1.3; margin-bottom: 0.5rem; }
+  .q-main { font-family: 'DM Serif Display', serif; font-size: clamp(1.2rem, 4.5vw, 1.7rem); color: var(--text); line-height: 1.3; margin-bottom: 0.5rem; }
   .q-hint { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; font-style: italic; }
   .options-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
   .opt { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; font-size: 15px; color: var(--text); cursor: pointer; text-align: left; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
   .opt:active:not(:disabled) { transform: scale(0.98); }
-  .opt.selected { border-color: var(--accent); background: rgba(200,169,110,0.1); }
   .opt.correct { border-color: var(--success); background: rgba(126,200,169,0.15); color: var(--success); }
   .opt.wrong { border-color: var(--danger); background: rgba(200,126,126,0.15); color: var(--danger); }
   .opt:disabled { cursor: default; }
@@ -90,7 +82,7 @@
   .type-input:focus { border-color: var(--accent); }
   .type-input.correct { border-color: var(--success); background: rgba(126,200,169,0.1); }
   .type-input.wrong { border-color: var(--danger); background: rgba(200,126,126,0.1); }
-  .feedback-box { border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-bottom: 1rem; display: none; }
+  .feedback-box { border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-bottom: 1rem; display: none; line-height: 1.5; }
   .feedback-box.show { display: block; }
   .feedback-box.ok { background: rgba(126,200,169,0.12); color: var(--success); border: 0.5px solid rgba(126,200,169,0.3); }
   .feedback-box.bad { background: rgba(200,126,126,0.12); color: var(--danger); border: 0.5px solid rgba(200,126,126,0.3); }
@@ -99,25 +91,21 @@
   .action-btn.primary:active { transform: scale(0.98); }
   .action-btn.secondary { background: var(--surface2); color: var(--text); }
   .action-btn:disabled { opacity: 0.35; cursor: default; }
-
-  /* ---- FLASH SCREEN ---- */
   #flash { background: var(--bg); }
   .flash-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
   .flash-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; }
   .flash-card { width: 100%; max-width: 400px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 24px; padding: 2.5rem 2rem; text-align: center; cursor: pointer; transition: transform 0.15s; min-height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .flash-card:active { transform: scale(0.97); }
-  .flash-lt { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 7vw, 2.5rem); color: var(--text); margin-bottom: 0.5rem; }
+  .flash-lt { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 6vw, 2.3rem); color: var(--text); margin-bottom: 0.5rem; }
   .flash-cat { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
   .flash-es { font-size: 20px; color: var(--accent); margin-top: 1.5rem; display: none; }
-  .flash-tap { font-size: 12px; color: var(--muted); margin-top: 0.5rem; display: none; }
+  .flash-extra { font-size: 13px; color: var(--muted); margin-top: 0.5rem; display: none; font-style: italic; }
   .flash-card.revealed .flash-es { display: block; }
-  .flash-card.revealed .flash-tap { display: block; }
+  .flash-card.revealed .flash-extra { display: block; }
   .flash-counter { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
   .flash-nav { display: flex; gap: 12px; width: 100%; max-width: 400px; margin-top: 1.5rem; }
   .flash-nav button { flex: 1; padding: 14px; border: 0.5px solid var(--border); background: var(--surface); border-radius: 14px; color: var(--text); font-size: 15px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
   .flash-nav button:active { background: var(--surface2); }
-
-  /* ---- AI SCREEN ---- */
   #ai-screen { background: var(--bg); }
   .ai-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
   .ai-body { flex: 1; overflow-y: auto; padding: 1rem 1.5rem 2rem; display: flex; flex-direction: column; }
@@ -138,19 +126,13 @@
   .ai-q-text { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--text); margin-bottom: 0.5rem; line-height: 1.3; }
   .ai-q-hint { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; font-style: italic; }
   .ai-opts { display: flex; flex-direction: column; gap: 8px; }
-
-  /* ---- COMPLETE ---- */
   #complete { background: var(--bg); justify-content: center; align-items: center; gap: 1rem; padding: 2rem; }
   .complete-emoji { font-size: 64px; }
   .complete-title { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--text); text-align: center; }
   .complete-score { font-size: 15px; color: var(--muted); text-align: center; }
   .complete-score span { color: var(--accent); font-weight: 500; }
-
-  /* ---- KEY HINT ---- */
   .key-row { background: var(--surface); border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
   .key-row strong { color: var(--accent); }
-
-  /* scrollbar */
   ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
@@ -158,7 +140,6 @@
 </head>
 <body>
 
-<!-- HOME -->
 <div class="screen" id="home">
   <div class="flag-stripe"></div>
   <div class="home-header">
@@ -181,14 +162,13 @@
   </button>
 </div>
 
-<!-- QUIZ -->
 <div class="screen hidden" id="quiz">
   <div class="quiz-top">
     <button class="back-btn" onclick="goHome()">‹</button>
     <div style="flex:1;">
       <div class="prog-wrap">
         <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-        <div class="prog-label"><span id="prog-txt">1/8</span></div>
+        <div class="prog-label"><span id="prog-txt">1/10</span></div>
       </div>
     </div>
     <div class="hearts" id="hearts-display">♥♥♥</div>
@@ -196,19 +176,19 @@
   <div class="quiz-body" id="quiz-body"></div>
 </div>
 
-<!-- FLASH -->
 <div class="screen hidden" id="flash">
   <div class="flash-top">
     <button class="back-btn" onclick="goHome()">‹</button>
     <span style="font-size:14px;color:var(--muted);">Flashcards</span>
+    <span style="margin-left:auto;font-size:12px;color:var(--muted);">toca la tarjeta para revelar</span>
   </div>
   <div class="flash-body">
-    <div class="flash-counter" id="flash-counter">1 / 40</div>
+    <div class="flash-counter" id="flash-counter">1 / 80</div>
     <div class="flash-card" id="flash-card" onclick="revealCard()">
       <div class="flash-cat" id="flash-cat"></div>
       <div class="flash-lt" id="flash-lt"></div>
       <div class="flash-es" id="flash-es"></div>
-      <div class="flash-tap">toca para continuar →</div>
+      <div class="flash-extra" id="flash-extra"></div>
     </div>
     <div class="flash-nav">
       <button onclick="flashMove(-1)">← Anterior</button>
@@ -217,7 +197,6 @@
   </div>
 </div>
 
-<!-- AI SCREEN -->
 <div class="screen hidden" id="ai-screen">
   <div class="ai-top">
     <button class="back-btn" onclick="goHome()">‹</button>
@@ -240,7 +219,6 @@
   </div>
 </div>
 
-<!-- COMPLETE -->
 <div class="screen hidden" id="complete">
   <div class="complete-emoji" id="complete-emoji">🎉</div>
   <div class="complete-title" id="complete-title">¡Excelente!</div>
@@ -250,23 +228,44 @@
 </div>
 
 <script>
-// ============ DATA ============
 const TOPICS = [
   { id:'greet', icon:'👋', name:'Saludos', color:'rgba(200,169,110,0.08)',
-    keys:['Labas! = Hola','Labas rytas! = Buenos días','Laba diena! = Buenas tardes','Labas vakaras! = Buenas noches','Labánaktis! = Buenas noches (despedida)','Iki! = Hasta luego (informal)','Viso gero! = Adiós','Sudie! = Adiós','Prašau = Por favor','Ačiū = Gracias','Atsiprašau = Perdona','Nieko tokio! = No pasa nada'],
     questions:[
-      {type:'mc',q:'¿Cómo se dice "Buenos días"?',hint:'Saludo matutino',ans:'Labas rytas!',opts:['Laba diena!','Labas rytas!','Labas vakaras!','Labánaktis!']},
+      {type:'mc',q:'¿Cómo se dice "Buenos días"?',hint:'',ans:'Labas rytas!',opts:['Laba diena!','Labas rytas!','Labas vakaras!','Labánaktis!']},
       {type:'mc',q:'¿Qué significa "Laba diena!"?',hint:'',ans:'Buenas tardes',opts:['Buenos días','Buenas noches','Buenas tardes','Hasta luego']},
-      {type:'mc',q:'"Sveikas" se usa para saludar a...',hint:'Género masculino singular',ans:'Un hombre',opts:['Una mujer','Un grupo mixto','Un hombre','Plural femenino']},
-      {type:'mc',q:'¿Cómo se dice "Adiós" (formal)?',hint:'',ans:'Viso gero!',opts:['Iki!','Sudie!','Viso gero!','Ate!']},
+      {type:'mc',q:'"Sveikas" se usa para saludar a...',hint:'Género',ans:'Un hombre',opts:['Una mujer','Un grupo mixto','Un hombre','Plural femenino']},
+      {type:'mc',q:'¿Cómo se dice "Adiós" formal?',hint:'',ans:'Viso gero!',opts:['Iki!','Sudie!','Viso gero!','Ate!']},
       {type:'type',q:'Escribe "Por favor" en lituano:',hint:'',ans:'Prašau',accept:['prašau','prasau']},
       {type:'mc',q:'"Ačiū" significa...',hint:'',ans:'Gracias',opts:['Por favor','Lo siento','Gracias','De nada']},
       {type:'mc',q:'¿Qué significa "Atsiprašau"?',hint:'',ans:'Perdona / Lo siento',opts:['De nada','Gracias','Perdona / Lo siento','Hola']},
-      {type:'type',q:'¿Cómo se dice "Hasta luego" informal?',hint:'Muy corto',ans:'Iki',accept:['iki','iki!']}
+      {type:'type',q:'¿Cómo se dice "Hasta luego" informal?',hint:'Muy corto',ans:'Iki',accept:['iki','iki!']},
+      {type:'mc',q:'¿Qué significa "Labánaktis!"?',hint:'',ans:'Buenas noches',opts:['Buenas tardes','Adiós','Buenas noches','Hola']},
+      {type:'mc',q:'"Sveika!" se usa para saludar a...',hint:'',ans:'Una mujer',opts:['Un hombre','Una mujer','Un grupo','Nadie']},
+      {type:'mc',q:'¿Cómo se dice "¡Hola!" informal?',hint:'Muy simple',ans:'Labas!',opts:['Sveikas!','Labas!','Laba!','Labu!']},
+      {type:'mc',q:'"Nieko tokio!" significa...',hint:'Respuesta a una disculpa',ans:'No pasa nada',opts:['Muchas gracias','No pasa nada','Lo siento','Adiós']},
+      {type:'type',q:'¿Cómo se dice "Gracias" en lituano?',hint:'',ans:'Ačiū',accept:['ačiū','aciu']},
+      {type:'mc',q:'¿Cómo se dice "Muchas gracias"?',hint:'',ans:'Labai ačiū',opts:['Labas ačiū','Labai ačiū','Dėkoju labai','Ačiū daug']},
+      {type:'mc',q:'"Sveiki!" se usa para saludar a...',hint:'',ans:'Grupo masculino o mixto',opts:['Solo mujeres','Un hombre','Grupo masculino o mixto','Nadie']},
+      {type:'mc',q:'¿Qué significa "Iki pasimatymo!"?',hint:'',ans:'¡Hasta la vista!',opts:['Buenos días','¡Hasta la vista!','Buenas noches','Perdona']},
+      {type:'mc',q:'"Viso labo!" significa...',hint:'',ans:'¡Hasta luego! / ¡Adiós!',opts:['Buenos días','Gracias','¡Hasta luego! / ¡Adiós!','De nada']},
+      {type:'type',q:'¿Cómo se dice "Lo siento / Perdona"?',hint:'',ans:'Atsiprašau',accept:['atsiprašau','atsiprasau']},
+      {type:'mc',q:'¿Cómo preguntas "¿Cómo estás?" informal?',hint:'',ans:'Kaip sekasi?',opts:['Kaip tu?','Kaip sekasi?','Kas naujo?','Ar gerai?']},
+      {type:'mc',q:'"Gerai" como respuesta a "¿Cómo estás?" significa...',hint:'',ans:'Bien',opts:['Mal','Bien','Regular','No sé']},
+      {type:'mc',q:'¿Cómo se dice "¡Bienvenido/a!"?',hint:'',ans:'Sveiki atvykę!',opts:['Labas!','Sveiki atvykę!','Ačiū!','Viso gero!']},
+      {type:'mc',q:'"Dėkoju" significa...',hint:'Forma más formal',ans:'Gracias / Te lo agradezco',opts:['Por favor','Perdona','Gracias / Te lo agradezco','De nada']},
+      {type:'mc',q:'¿Qué frase usas al entrar a una tienda?',hint:'',ans:'Laba diena!',opts:['Labánaktis!','Sudie!','Laba diena!','Viso gero!']},
+      {type:'type',q:'¿Cómo se dice "No pasa nada"?',hint:'',ans:'Nieko tokio',accept:['nieko tokio','nieko tokio!']},
+      {type:'mc',q:'"Nėra už ką" significa...',hint:'Respuesta a "gracias"',ans:'De nada',opts:['Gracias','De nada','Por favor','Lo siento']},
+      {type:'mc',q:'¿Cómo saludas a un grupo de mujeres?',hint:'',ans:'Sveikos!',opts:['Sveikas!','Sveika!','Sveiki!','Sveikos!']},
+      {type:'mc',q:'"Labas vakaras!" se usa...',hint:'Momento del día',ans:'Por la tarde/noche',opts:['Por la mañana','Por la tarde/noche','Al mediodía','Al despedirse']},
+      {type:'mc',q:'¿Cómo se dice "¿Qué hay de nuevo?"?',hint:'',ans:'Kas naujo?',opts:['Kaip sekasi?','Kas naujo?','Ar gerai?','Koks oras?']},
+      {type:'type',q:'¿Cómo se dice "Buenas tardes"?',hint:'',ans:'Laba diena',accept:['laba diena','laba diena!']},
+      {type:'mc',q:'"Sudie!" significa...',hint:'Despedida informal',ans:'Adiós',opts:['Hola','Hasta luego','Adiós','Gracias']},
+      {type:'mc',q:'¿Cuál es la respuesta correcta a "Kaip sekasi?"?',hint:'',ans:'Ačiū, gerai.',opts:['Taip, gerai.','Ačiū, gerai.','Ne, gerai.','Prašau, gerai.']},
+      {type:'mc',q:'¿Cómo se dice "buenos días" en respuesta?',hint:'El mismo saludo',ans:'Labas rytas!',opts:['Laba diena!','Labas rytas!','Ačiū!','Gerai!']}
     ]
   },
   { id:'nums', icon:'🔢', name:'Números', color:'rgba(126,200,169,0.06)',
-    keys:['0=nulis','1=vienas','2=du(m)/dvi(f)','3=trys','4=keturi','5=penki','6=šeši','7=septyni','8=aštuoni','9=devyni','10=dešimt','11=vienuolika','12=dvylika','20=dvidešimt','100=šimtas','1000=tūkstantis'],
     questions:[
       {type:'mc',q:'¿Cómo se dice "5"?',hint:'',ans:'penki',opts:['keturi','šeši','penki','trys']},
       {type:'mc',q:'"Septyni" es el número...',hint:'',ans:'7',opts:['6','8','7','9']},
@@ -275,76 +274,211 @@ const TOPICS = [
       {type:'mc',q:'"Dvylika" es el número...',hint:'',ans:'12',opts:['11','13','12','14']},
       {type:'type',q:'¿Cómo se dice "1"?',hint:'Masculino',ans:'vienas',accept:['vienas']},
       {type:'mc',q:'¿Cómo se dice "100"?',hint:'',ans:'šimtas',opts:['dešimt','šimtas','tūkstantis','dvidešimt']},
-      {type:'mc',q:'"Du" vs "dvi" — ¿cuándo se usa "dvi"?',hint:'Género',ans:'Femenino',opts:['Masculino','Femenino','Plural','Neutro']}
+      {type:'mc',q:'"Du" vs "dvi" — ¿cuándo se usa "dvi"?',hint:'',ans:'Femenino',opts:['Masculino','Femenino','Plural','Neutro']},
+      {type:'mc',q:'¿Cómo se dice "0"?',hint:'',ans:'nulis',opts:['nula','nulis','nuli','nulio']},
+      {type:'mc',q:'"Aštuoni" es el número...',hint:'',ans:'8',opts:['6','7','8','9']},
+      {type:'type',q:'¿Cómo se dice "10"?',hint:'',ans:'dešimt',accept:['dešimt','desmt']},
+      {type:'mc',q:'¿Cómo se dice "11"?',hint:'',ans:'vienuolika',opts:['dešimt','vienuolika','dvylika','trylika']},
+      {type:'mc',q:'"Penkiolika" es el número...',hint:'',ans:'15',opts:['13','14','15','16']},
+      {type:'mc',q:'¿Cómo se dice "40"?',hint:'Hay una E suave',ans:'keturiasdešimt',opts:['keturisdešimt','keturiasdešimt','keturdešimt','keturidešimt']},
+      {type:'mc',q:'"Devyni" es el número...',hint:'',ans:'9',opts:['7','8','9','10']},
+      {type:'type',q:'¿Cómo se dice "2" en femenino?',hint:'Para contar cosas femeninas',ans:'dvi',accept:['dvi']},
+      {type:'mc',q:'¿Cómo se dice "1000"?',hint:'',ans:'tūkstantis',opts:['šimtas','milijonas','tūkstantis','dešimt šimtų']},
+      {type:'mc',q:'"Šeši" es el número...',hint:'',ans:'6',opts:['5','6','7','8']},
+      {type:'mc',q:'¿Cómo se dice "30"?',hint:'',ans:'trisdešimt',opts:['tridešimt','trisdešimt','trysdešimt','trisdešimtas']},
+      {type:'mc',q:'¿Cómo se dice "50"?',hint:'',ans:'penkiasdešimt',opts:['penkisdešimt','penkiasdešimt','penkidešimt','penkdešimt']},
+      {type:'mc',q:'"Keturi" es el número...',hint:'',ans:'4',opts:['3','4','5','6']},
+      {type:'type',q:'¿Cómo se dice "2" en masculino?',hint:'',ans:'du',accept:['du']},
+      {type:'mc',q:'¿Cómo se dice "13"?',hint:'',ans:'trylika',opts:['trisdešimt','trylika','tridešimt','trysdešimt']},
+      {type:'mc',q:'¿Cómo se dice "19"?',hint:'Hay una Ñ',ans:'devyniolika',opts:['devynidešimt','devyniolika','devynilika','devyniilika']},
+      {type:'mc',q:'"Vienas" vs "viena" — ¿qué cambia?',hint:'',ans:'El género',opts:['El número','El caso','El género','Nada']},
+      {type:'mc',q:'¿Cómo se dice "14"?',hint:'La O es suave',ans:'keturiolika',opts:['keturdešimt','keturiolika','keturilika','keturylika']},
+      {type:'mc',q:'¿Cómo se dice "200"?',hint:'',ans:'du šimtai',opts:['du šimtas','du šimtai','dvi šimtai','dvi šimtas']},
+      {type:'mc',q:'Para decir la edad "Man 25 ___"',hint:'Años entre 11 y 19 usan METŲ',ans:'metų',opts:['metai','metų','metus','metai']},
+      {type:'type',q:'¿Cómo se dice "9"?',hint:'',ans:'devyni',accept:['devyni']},
+      {type:'mc',q:'¿Cómo se dice "70"?',hint:'',ans:'septyniasdešimt',opts:['septynidešimt','septyniasdešimt','septyniodešimt','septdešimt']},
+      {type:'mc',q:'"Šimtas" significa...',hint:'',ans:'100',opts:['10','1000','100','1000000']},
+      {type:'mc',q:'¿Cómo se dice "16"?',hint:'',ans:'šešiolika',opts:['šešidešimt','šešiolika','šešilika','šeši lika']}
     ]
   },
   { id:'pronouns', icon:'👤', name:'Pronombres', color:'rgba(169,126,200,0.06)',
-    keys:['Aš=Yo','Tu=Tú','Jis=Él','Ji=Ella','Mes=Nosotros','Jūs=Vosotros/Usted','Jie=Ellos','Jos=Ellas','MAN=a mí','TAU=a ti','JAM=a él','JAI=a ella'],
     questions:[
       {type:'mc',q:'"Jis" significa...',hint:'3ª persona singular',ans:'Él',opts:['Ella','Él','Nosotros','Ellos']},
       {type:'mc',q:'¿Cuál es el pronombre para "nosotros"?',hint:'',ans:'Mes',opts:['Jūs','Jie','Mes','Jos']},
       {type:'type',q:'¿Cómo se dice "yo" en lituano?',hint:'',ans:'Aš',accept:['aš','as']},
-      {type:'mc',q:'"Man patinka" — ¿qué caso es MAN?',hint:'Para la edad y gustos',ans:'Dativo (a mí)',opts:['Nominativo','Acusativo','Dativo (a mí)','Genitivo']},
+      {type:'mc',q:'"Man patinka" — ¿qué caso es MAN?',hint:'',ans:'Dativo (a mí)',opts:['Nominativo','Acusativo','Dativo (a mí)','Genitivo']},
       {type:'mc',q:'"Jos" significa...',hint:'Plural',ans:'Ellas',opts:['Ella','Ellos','Ellas','Vosotras']},
-      {type:'mc',q:'¿Qué pronombre se usa con "patinka" para "a él"?',hint:'',ans:'Jam',opts:['Jis','Jo','Jam','Jai']},
+      {type:'mc',q:'¿Qué pronombre usa "patinka" para "a él"?',hint:'',ans:'Jam',opts:['Jis','Jo','Jam','Jai']},
       {type:'mc',q:'"Jūs" puede significar...',hint:'Dos usos',ans:'Vosotros / Usted formal',opts:['Ellos','Vosotros / Usted formal','Nosotros','Ellas']},
-      {type:'type',q:'¿Cómo se dice "ella"?',hint:'',ans:'Ji',accept:['ji']}
+      {type:'type',q:'¿Cómo se dice "ella"?',hint:'',ans:'Ji',accept:['ji']},
+      {type:'mc',q:'"Mane" es la forma de "aš" en caso...',hint:'¿A quién?',ans:'Acusativo (KĄ?)',opts:['Nominativo','Acusativo (KĄ?)','Genitivo','Dativo']},
+      {type:'mc',q:'¿Cómo se dice "ellos" (masculino/mixto)?',hint:'',ans:'Jie',opts:['Jos','Jis','Jie','Mes']},
+      {type:'mc',q:'"TAU" es la forma dativa de...',hint:'',ans:'Tu (tú)',opts:['Aš','Tu (tú)','Jis','Mes']},
+      {type:'mc',q:'¿Qué pronombre usas para edad "a ella"?',hint:'',ans:'Jai',opts:['Ji','Jos','Jai','Joms']},
+      {type:'type',q:'¿Cómo se dice "vosotros/usted"?',hint:'',ans:'Jūs',accept:['jūs','jus']},
+      {type:'mc',q:'"Mums" es la forma dativa de...',hint:'',ans:'Mes (nosotros)',opts:['Jūs','Jie','Mes (nosotros)','Jos']},
+      {type:'mc',q:'¿Cómo se dice "a ella" en dativo?',hint:'Para "patinka" y edad',ans:'Jai',opts:['Ji','Jos','Jai','Jų']},
+      {type:'mc',q:'"Jų" es el genitivo de...',hint:'',ans:'Jie / Jos (ellos/ellas)',opts:['Jis','Mes','Jie / Jos (ellos/ellas)','Jūs']},
+      {type:'mc',q:'¿Cuál es el acusativo de "Jis"?',hint:'KĄ?',ans:'Jį',opts:['Jo','Jam','Jį','Jiems']},
+      {type:'mc',q:'"JIEMS patinka" significa...',hint:'',ans:'A ellos les gusta',opts:['A ella le gusta','A ellas les gusta','A ellos les gusta','A nosotros nos gusta']},
+      {type:'mc',q:'¿Cuál es el genitivo de "aš"?',hint:'KO?',ans:'Manęs',opts:['Man','Mane','Manęs','Mano']},
+      {type:'type',q:'¿Cómo se dice "él"?',hint:'',ans:'Jis',accept:['jis']},
+      {type:'mc',q:'"JOMS" es el dativo de...',hint:'',ans:'Jos (ellas)',opts:['Jie','Jos (ellas)','Jūs','Mes']},
+      {type:'mc',q:'¿Cuál es el posesivo "su" de Jis (él)?',hint:'',ans:'Jo',opts:['Jis','Jo','Jam','Jį']},
+      {type:'mc',q:'"Tave" es el acusativo de...',hint:'KĄ?',ans:'Tu (tú)',opts:['Aš','Tu (tú)','Jis','Mes']},
+      {type:'mc',q:'¿Cómo se dice "a nosotros" en dativo?',hint:'',ans:'Mums',opts:['Mes','Mus','Mums','Mūsų']},
+      {type:'mc',q:'"Mūsų" es el _____ de "mes"',hint:'',ans:'Genitivo / posesivo',opts:['Nominativo','Acusativo','Genitivo / posesivo','Dativo']},
+      {type:'mc',q:'¿Qué caso usa "Man reikia"?',hint:'Man = a mí',ans:'Dativo',opts:['Nominativo','Acusativo','Dativo','Genitivo']},
+      {type:'mc',q:'"JUMS" es la forma dativa de...',hint:'',ans:'Jūs (vosotros)',opts:['Jie','Jos','Jūs (vosotros)','Mes']},
+      {type:'mc',q:'¿Cuál es el acusativo de "mes"?',hint:'KĄ?',ans:'Mus',opts:['Mums','Mūsų','Mus','Mes']},
+      {type:'type',q:'¿Cómo se dice "ellas"?',hint:'Solo femenino plural',ans:'Jos',accept:['jos']},
+      {type:'mc',q:'"Tavo" significa...',hint:'Posesivo informal',ans:'Tu / Tuyo (informal)',opts:['Mi / Mío','Tu / Tuyo (informal)','Su / Suyo','Nuestro']},
+      {type:'mc',q:'¿Cuál pronombre se usa con "Man 30 metų"?',hint:'Edad en dativo',ans:'Man (a mí)',opts:['Aš','Man (a mí)','Mane','Manęs']}
     ]
   },
   { id:'verbs', icon:'🔤', name:'Verbos', color:'rgba(200,126,126,0.06)',
-    keys:['BŪTI(ser/estar): esu,esi,yra,esame,esate,yra','TURĖTI(tener): turiu,turi,turi,turime,turite,turi','NORĖTI(querer): noriu,nori,nori,norime,norite,nori','GYVENTI(vivir): gyvenu,gyveni,gyvena,gyvename,gyvenate,gyvena','KALBĖTI(hablar): kalbu,kalbi,kalba,kalbame,kalbate,kalba'],
     questions:[
       {type:'mc',q:'"Aš ESU" significa...',hint:'BŪTI',ans:'Yo soy/estoy',opts:['Yo tengo','Yo quiero','Yo soy/estoy','Yo vivo']},
-      {type:'mc',q:'¿Cómo se conjuga NORĖTI para "nosotros"?',hint:'Queremos',ans:'Norime',opts:['Noriu','Nori','Norime','Norite']},
-      {type:'type',q:'Conjuga VALGYTI (comer) para "yo": Aš ___',hint:'',ans:'valgau',accept:['valgau']},
-      {type:'mc',q:'"Jis / Ji NORI" — ¿qué verbo es?',hint:'',ans:'NORĖTI',opts:['TURĖTI','NORĖTI','GYVENTI','KALBĖTI']},
-      {type:'mc',q:'¿Cómo se dice "Yo no tengo"?',hint:'Negación',ans:'Aš neturiu',opts:['Aš nori','Aš neturiu','Aš nesu','Aš negaliu']},
-      {type:'mc',q:'"Mes KALBAME" significa...',hint:'KALBĖTI',ans:'Nosotros hablamos',opts:['Vosotros habláis','Ellos hablan','Nosotros hablamos','Yo hablo']},
+      {type:'mc',q:'¿Cómo se conjuga NORĖTI para "nosotros"?',hint:'',ans:'Norime',opts:['Noriu','Nori','Norime','Norite']},
+      {type:'type',q:'Conjuga VALGYTI para "yo": Aš ___',hint:'',ans:'valgau',accept:['valgau']},
+      {type:'mc',q:'"Mes KALBAME" significa...',hint:'',ans:'Nosotros hablamos',opts:['Vosotros habláis','Ellos hablan','Nosotros hablamos','Yo hablo']},
+      {type:'mc',q:'¿Cómo se dice "Yo no tengo"?',hint:'',ans:'Aš neturiu',opts:['Aš nori','Aš neturiu','Aš nesu','Aš negaliu']},
       {type:'type',q:'¿Cómo se dice "yo vivo"?',hint:'GYVENTI',ans:'gyvenu',accept:['gyvenu','aš gyvenu']},
-      {type:'mc',q:'¿Cuál es la negación de "yra" (es/está)?',hint:'3ª persona',ans:'Nėra',opts:['Nesi','Nesu','Nėra','Nesame']}
+      {type:'mc',q:'¿Cuál es la negación de "yra"?',hint:'3ª persona',ans:'Nėra',opts:['Nesi','Nesu','Nėra','Nesame']},
+      {type:'mc',q:'"Jis / Ji NORI" — ¿qué verbo es?',hint:'',ans:'NORĖTI',opts:['TURĖTI','NORĖTI','GYVENTI','KALBĖTI']},
+      {type:'mc',q:'¿Cómo se conjuga EITI para "tú"?',hint:'Ir caminando',ans:'eini',opts:['einu','eini','eina','einame']},
+      {type:'mc',q:'"Aš MIEGU" — ¿qué verbo es?',hint:'',ans:'MIEGOTI (dormir)',opts:['VALGYTI','MIEGOTI (dormir)','GERTI','EITI']},
+      {type:'type',q:'Conjuga KALBĖTI para "ellos": Jie ___',hint:'',ans:'kalba',accept:['kalba']},
+      {type:'mc',q:'¿Cómo se dice "Yo bebo"?',hint:'GERTI',ans:'Aš geriu',opts:['Aš geru','Aš geriu','Aš geria','Aš gerime']},
+      {type:'mc',q:'"Jūs DIRBATE" — DIRBTI significa...',hint:'',ans:'Trabajar',opts:['Vivir','Comer','Trabajar','Hablar']},
+      {type:'mc',q:'¿Cómo se dice "ella entiende"?',hint:'SUPRASTI',ans:'Ji supranta',opts:['Ji suprantu','Ji supranti','Ji supranta','Ji suprantame']},
+      {type:'type',q:'Conjuga ŠOKTI (bailar) para "nosotros": Mes ___',hint:'',ans:'šokame',accept:['šokame']},
+      {type:'mc',q:'"Aš SKAMBINU" significa...',hint:'SKAMBINTI',ans:'Yo llamo (por teléfono)',opts:['Yo bailo','Yo corro','Yo llamo (por teléfono)','Yo leo']},
+      {type:'mc',q:'¿Cómo se conjuga TURĖTI para "él/ella"?',hint:'',ans:'turi',opts:['turiu','turi','turime','turite']},
+      {type:'mc',q:'"Mes ESAME" — ¿cuál es la negación?',hint:'',ans:'Mes nesame',opts:['Mes nėra','Mes nesame','Mes nesu','Mes nesi']},
+      {type:'mc',q:'¿Cómo se dice "yo leo"?',hint:'SKAITYTI',ans:'Aš skaitau',opts:['Aš skaitu','Aš skaitau','Aš skaita','Aš skaitome']},
+      {type:'type',q:'Conjuga GERTI (beber) para "tú": Tu ___',hint:'',ans:'geri',accept:['geri']},
+      {type:'mc',q:'"Jie VAŽIUOJA" — VAŽIUOTI significa...',hint:'',ans:'Ir en transporte',opts:['Ir a pie','Correr','Ir en transporte','Volar']},
+      {type:'mc',q:'¿Cómo se dice "yo cocino"?',hint:'GAMINTI',ans:'Aš gaminu',opts:['Aš gamu','Aš gaminu','Aš gamina','Aš gaminame']},
+      {type:'mc',q:'"Tu LAUKI" — LAUKTI significa...',hint:'',ans:'Esperar',opts:['Caminar','Esperar','Buscar','Llegar']},
+      {type:'mc',q:'¿Cuál es el pasado de "gyvena" (él vive)?',hint:'Pasado',ans:'gyveno',opts:['gyveni','gyveno','gyvenau','gyvenome']},
+      {type:'type',q:'Conjuga MIEGOTI (dormir) para "ellos": Jie ___',hint:'',ans:'miega',accept:['miega']},
+      {type:'mc',q:'¿Cómo se dice "nosotros comemos"?',hint:'VALGYTI',ans:'Mes valgome',opts:['Mes valgo','Mes valgome','Mes valgau','Mes valgote']},
+      {type:'mc',q:'"Aš BUVAU" es el pasado de...',hint:'',ans:'Aš esu (ser/estar)',opts:['Aš turiu','Aš esu (ser/estar)','Aš gyvenu','Aš noriu']},
+      {type:'mc',q:'¿Cómo se dice "yo escribo"?',hint:'RAŠYTI',ans:'Aš rašau',opts:['Aš rašu','Aš rašau','Aš raša','Aš rašome']},
+      {type:'mc',q:'¿Cuál es el pasado de "kalba" (él habla)?',hint:'',ans:'kalbėjo',opts:['kalbejo','kalbėjo','kalbė','kalbėjau']},
+      {type:'mc',q:'¿Cómo se dice "vosotros entendéis"?',hint:'SUPRASTI',ans:'Jūs suprantate',opts:['Jūs supranta','Jūs suprantate','Jūs suprantame','Jūs suprantu']},
+      {type:'mc',q:'"Aš PIEŠIU" — PIEŠTI significa...',hint:'',ans:'Dibujar',opts:['Escribir','Leer','Dibujar','Pintar la pared']},
+      {type:'mc',q:'¿Cómo se dice "yo nado"?',hint:'PLAUKTI',ans:'Aš plaukiu',opts:['Aš plauku','Aš plaukiu','Aš plauka','Aš plaukiame']}
     ]
   },
   { id:'family', icon:'👨‍👩‍👧', name:'Familia', color:'rgba(200,169,110,0.06)',
-    keys:['Tėvas/Tėtis=Padre','Mama/Motina=Madre','Brolis=Hermano','Sesuo/Sesė=Hermana','Sūnus=Hijo','Duktė/Dukra=Hija','Močiutė=Abuela','Senelis=Abuelo','Dėdė=Tío','Teta=Tía','Vyras=Esposo/Hombre','Žmona=Esposa'],
     questions:[
       {type:'mc',q:'¿Cómo se dice "hermano"?',hint:'',ans:'Brolis',opts:['Sesuo','Brolis','Sūnus','Dėdė']},
       {type:'mc',q:'"Duktė" significa...',hint:'',ans:'Hija',opts:['Hijo','Hija','Hermana','Madre']},
       {type:'type',q:'¿Cómo se dice "abuela"?',hint:'Diminutivo cariñoso',ans:'Močiutė',accept:['močiutė','mociute']},
-      {type:'mc',q:'¿Cuándo usas "Brolį" en vez de "Brolis"?',hint:'Casos gramaticales',ans:'Acusativo (¿a quién?)',opts:['Nominativo','Acusativo (¿a quién?)','Genitivo','Dativo']},
       {type:'mc',q:'"Žmona" significa...',hint:'',ans:'Esposa',opts:['Esposo','Novia','Esposa','Amiga']},
       {type:'type',q:'¿Cómo se dice "tío"?',hint:'',ans:'Dėdė',accept:['dėdė','dede']},
       {type:'mc',q:'"Vyras" tiene dos significados:',hint:'',ans:'Hombre y esposo',opts:['Padre y tío','Hombre y esposo','Hijo y hermano','Amigo y novio']},
-      {type:'mc',q:'¿Cómo se dice "padres" (pl)?',hint:'',ans:'Tėvai',opts:['Tėvas','Tėvai','Tėvų','Tėvus']}
+      {type:'mc',q:'¿Cómo se dice "padres" (pl)?',hint:'',ans:'Tėvai',opts:['Tėvas','Tėvai','Tėvų','Tėvus']},
+      {type:'mc',q:'"Sesuo" es la forma _____ de hermana',hint:'Caso',ans:'Nominativo (KAS?)',opts:['Acusativo','Nominativo (KAS?)','Genitivo','Dativo']},
+      {type:'mc',q:'¿Cómo se dice "hijo"?',hint:'',ans:'Sūnus',opts:['Duktė','Sūnus','Anūkas','Vaikas']},
+      {type:'mc',q:'"Teta" significa...',hint:'',ans:'Tía',opts:['Tío','Abuela','Tía','Prima']},
+      {type:'mc',q:'¿Cómo se dice "nieto / nieta"?',hint:'',ans:'Anūkas / Anūkė',opts:['Sūnus / Duktė','Anūkas / Anūkė','Pusbrolis / Pusseserė','Vaikas / Mergaitė']},
+      {type:'type',q:'¿Cómo se dice "madre" (formal)?',hint:'',ans:'Motina',accept:['motina']},
+      {type:'mc',q:'"Brolis" en acusativo (KĄ?) es...',hint:'',ans:'Brolį',opts:['Brolio','Broliai','Brolį','Broliu']},
+      {type:'mc',q:'¿Cómo se dice "primo" (masculino)?',hint:'',ans:'Pusbrolis',opts:['Pusseserė','Pusbrolis','Brolis','Dėdė']},
+      {type:'mc',q:'"Vaikas" significa...',hint:'',ans:'Niño / Hijo',opts:['Hombre','Niño / Hijo','Padre','Amigo']},
+      {type:'mc',q:'¿Cómo se dice "suegro / suegra"?',hint:'',ans:'Uošvis / Uošvienė',opts:['Tėvas / Mama','Dėdė / Teta','Uošvis / Uošvienė','Senelis / Senelė']},
+      {type:'type',q:'¿Cómo se dice "abuelo" (formal)?',hint:'',ans:'Senelis',accept:['senelis']},
+      {type:'mc',q:'"Sesė" vs "Sesuo" — ¿cuál es la diferencia?',hint:'',ans:'Sesė es informal, Sesuo es formal',opts:['Son iguales','Sesė es informal, Sesuo es formal','Sesė es plural','Sesuo es diminutivo']},
+      {type:'mc',q:'¿Cómo se dice "amigo/a" (pareja)?',hint:'',ans:'Draugas / Draugė',opts:['Vyras / Žmona','Draugas / Draugė','Brolis / Sesuo','Vaikinas / Mergina']},
+      {type:'mc',q:'"Mergina" significa...',hint:'',ans:'Chica / Novia',opts:['Niña','Chica / Novia','Esposa','Hermana']},
+      {type:'mc',q:'¿Cómo se dice "familia"?',hint:'',ans:'Šeima',opts:['Šeimos','Šeimą','Šeima','Šeimoje']},
+      {type:'mc',q:'"Moteris" significa...',hint:'',ans:'Mujer',opts:['Niña','Mujer','Madre','Hermana']},
+      {type:'mc',q:'¿Cuál es el genitivo de "brolis" (hermano de...)?',hint:'KO? / KIENO?',ans:'Brolio',opts:['Brolį','Brolio','Broliu','Broliai']},
+      {type:'mc',q:'"Vaikinas" significa...',hint:'',ans:'Chico / Novio',opts:['Niño','Chico / Novio','Esposo','Hermano']},
+      {type:'type',q:'¿Cómo se dice "hija"?',hint:'Singular',ans:'Duktė',accept:['duktė','dukte','dukra']},
+      {type:'mc',q:'"Berniukas" significa...',hint:'',ans:'Niño (pequeño)',opts:['Chico','Niño (pequeño)','Hijo','Hombre']},
+      {type:'mc',q:'¿Cómo se dice "casado/a"?',hint:'',ans:'Vedęs (M) / Ištekėjusi (F)',opts:['Draugas','Vedęs (M) / Ištekėjusi (F)','Vienas','Laisvas']},
+      {type:'mc',q:'"Mergaitė" significa...',hint:'',ans:'Niña (pequeña)',opts:['Chica','Mujer','Niña (pequeña)','Hija']},
+      {type:'mc',q:'¿Cómo se dice "hermana" en acusativo (KĄ?)?',hint:'',ans:'Sesę',opts:['Sesuo','Seserį','Sesę','Sesės']},
+      {type:'mc',q:'"Šeima" en el caso "¿dónde?" (KUR?) es...',hint:'Locativo',ans:'Šeimoje',opts:['Šeima','Šeimos','Šeimoje','Šeimai']},
+      {type:'mc',q:'¿Cómo se dice "prima" (femenino)?',hint:'',ans:'Pusseserė',opts:['Pusbrolis','Sesuo','Pusseserė','Seserė']}
     ]
   },
   { id:'colors', icon:'🎨', name:'Colores', color:'rgba(126,200,169,0.06)',
-    keys:['Raudona/as=Rojo','Mėlyna/as=Azul','Geltona/as=Amarillo','Balta/as=Blanco','Juoda/as=Negro','Žalia/ias=Verde','Violetinė/inis=Morado','Oranžinė/inis=Naranja','Ruda/as=Marrón','Pilka/as=Gris','Rožinė/inis=Rosa'],
     questions:[
-      {type:'mc',q:'¿Cómo se dice "rojo" (femenino)?',hint:'Los colores concuerdan en género',ans:'Raudona',opts:['Mėlyna','Geltona','Raudona','Žalia']},
+      {type:'mc',q:'¿Cómo se dice "rojo" (femenino)?',hint:'',ans:'Raudona',opts:['Mėlyna','Geltona','Raudona','Žalia']},
       {type:'mc',q:'"Žalias" es...',hint:'Masculino',ans:'Verde',opts:['Azul','Verde','Amarillo','Rojo']},
       {type:'type',q:'¿Cómo se dice "blanco" (femenino)?',hint:'',ans:'Balta',accept:['balta']},
       {type:'mc',q:'¿Cuál es el masculino de "Raudona"?',hint:'',ans:'Raudonas',opts:['Raudonė','Raudonai','Raudonas','Raudonos']},
       {type:'mc',q:'"Pilka / Pilkas" es...',hint:'',ans:'Gris',opts:['Marrón','Gris','Naranja','Rosa']},
       {type:'type',q:'¿Cómo se dice "azul" (femenino)?',hint:'',ans:'Mėlyna',accept:['mėlyna','melyna']},
-      {type:'mc',q:'¿Por qué "Šita mašina yra Mėlyna"?',hint:'Género de mašina',ans:'Mašina es femenino',opts:['Mašina es masculino','Mašina es femenino','Es un error','Es neutro']},
-      {type:'mc',q:'¿Cómo se dice "negro" (masculino)?',hint:'',ans:'Juodas',opts:['Juoda','Juodė','Juodas','Juodai']}
+      {type:'mc',q:'¿Por qué "Šita mašina yra Mėlyna"?',hint:'Género',ans:'Mašina es femenino',opts:['Mašina es masculino','Mašina es femenino','Es neutro','Es error']},
+      {type:'mc',q:'¿Cómo se dice "negro" (masculino)?',hint:'',ans:'Juodas',opts:['Juoda','Juodė','Juodas','Juodai']},
+      {type:'mc',q:'"Geltona" es el color...',hint:'',ans:'Amarillo',opts:['Rojo','Azul','Amarillo','Verde']},
+      {type:'mc',q:'¿Cómo se dice "morado/violeta" (femenino)?',hint:'',ans:'Violetinė',opts:['Violetinis','Violetinė','Violeta','Violetinė']},
+      {type:'type',q:'¿Cómo se dice "verde" (femenino)?',hint:'',ans:'Žalia',accept:['žalia','zalia']},
+      {type:'mc',q:'"Oranžinis" es el color...',hint:'Masculino',ans:'Naranja',opts:['Rosa','Naranja','Morado','Rojo']},
+      {type:'mc',q:'¿Cómo se dice "marrón/café" (femenino)?',hint:'',ans:'Ruda',opts:['Rudas','Ruda','Rudi','Rudė']},
+      {type:'mc',q:'"Rožinė" es el color...',hint:'Femenino',ans:'Rosa',opts:['Rojo','Rosa','Naranja','Morado']},
+      {type:'mc',q:'¿Cómo se dice "blanco" (masculino)?',hint:'',ans:'Baltas',opts:['Balta','Baltė','Baltas','Baltai']},
+      {type:'type',q:'¿Cómo se dice "negro" (femenino)?',hint:'',ans:'Juoda',accept:['juoda']},
+      {type:'mc',q:'"Šviesiai mėlyna" significa...',hint:'Matiz',ans:'Azul claro',opts:['Azul oscuro','Azul claro','Azul marino','Celeste']},
+      {type:'mc',q:'¿Cómo se dice "amarillo" (masculino)?',hint:'',ans:'Geltonas',opts:['Geltona','Geltonė','Geltonas','Geltonai']},
+      {type:'mc',q:'"Tamsiai žalia" significa...',hint:'Matiz',ans:'Verde oscuro',opts:['Verde claro','Verde oscuro','Verde lima','Verde agua']},
+      {type:'mc',q:'¿Por qué "Šitas stalas yra Raudonas"?',hint:'Género de stalas',ans:'Stalas es masculino',opts:['Stalas es femenino','Stalas es masculino','Es neutro','Es plural']},
+      {type:'mc',q:'¿Cómo se dice "gris" (masculino)?',hint:'',ans:'Pilkas',opts:['Pilka','Pilkė','Pilkas','Pilkos']},
+      {type:'type',q:'¿Cómo se dice "amarillo" (femenino)?',hint:'',ans:'Geltona',accept:['geltona']},
+      {type:'mc',q:'"Ružava / Ružavas" es el color...',hint:'',ans:'Rosado / Salmón',opts:['Rosa fuerte','Rosado / Salmón','Naranja','Rojo claro']},
+      {type:'mc',q:'¿Cómo se dice "naranja" (masculino)?',hint:'',ans:'Oranžinis',opts:['Oranžinė','Oranžinis','Oranžinė','Oranžiniai']},
+      {type:'mc',q:'Para describir "kėdė" (silla, femenino) como roja:',hint:'',ans:'Kėdė yra raudona',opts:['Kėdė yra raudonas','Kėdė yra raudona','Kėdė yra raudoni','Kėdė yra raudonos']},
+      {type:'mc',q:'¿Cómo se dice "marrón" (masculino)?',hint:'',ans:'Rudas',opts:['Ruda','Rudė','Rudas','Rudai']},
+      {type:'mc',q:'"Dangaus spalva" (color del cielo) sería...',hint:'',ans:'Mėlyna',opts:['Žalia','Raudona','Mėlyna','Geltona']},
+      {type:'mc',q:'¿Cómo se dice "rosa" (masculino)?',hint:'',ans:'Rožinis',opts:['Rožinė','Rožinis','Rožiniai','Rožinės']},
+      {type:'mc',q:'"Žolė yra ___" — ¿qué color va?',hint:'El pasto es...',ans:'žalia',opts:['žalias','žalia','žalios','žaliai']},
+      {type:'mc',q:'¿Cómo se dice "morado" (masculino)?',hint:'',ans:'Violetinis',opts:['Violetinė','Violetinis','Violetiniai','Violetinės']},
+      {type:'type',q:'¿Cómo se dice "gris" (femenino)?',hint:'',ans:'Pilka',accept:['pilka']}
     ]
   },
   { id:'time', icon:'📅', name:'Tiempo', color:'rgba(169,126,200,0.06)',
-    keys:['Pirmadienis=Lunes','Antradienis=Martes','Trečiadienis=Miércoles','Ketvirtadienis=Jueves','Penktadienis=Viernes','Šeštadienis=Sábado','Sekmadienis=Domingo','Šiandien=Hoy','Vakar=Ayer','Rytoj=Mañana','Rytas=Mañana(n)','Vakaras=Tarde/Noche'],
     questions:[
       {type:'mc',q:'¿Cómo se dice "lunes"?',hint:'',ans:'Pirmadienis',opts:['Antradienis','Pirmadienis','Trečiadienis','Sekmadienis']},
       {type:'mc',q:'"Penktadienis" es...',hint:'Quinto día',ans:'Viernes',opts:['Jueves','Sábado','Viernes','Miércoles']},
       {type:'type',q:'¿Cómo se dice "domingo"?',hint:'',ans:'Sekmadienis',accept:['sekmadienis']},
       {type:'mc',q:'"Vakar" significa...',hint:'',ans:'Ayer',opts:['Mañana','Hoy','Ayer','Ahora']},
-      {type:'mc',q:'¿Cuándo usas "Vasarą" (acusativo)?',hint:'',ans:'Para decir "durante el verano"',opts:['Para nombrar el verano','Para decir "durante el verano"','Para el genitivo','Para el dativo']},
       {type:'mc',q:'"Sausis" es el mes de...',hint:'',ans:'Enero',opts:['Febrero','Enero','Marzo','Diciembre']},
-      {type:'mc',q:'¿Cómo preguntas la fecha?',hint:'',ans:'Kokia šiandien data?',opts:['Koks laikas?','Kokia šiandien data?','Kada?','Kur?']},
-      {type:'type',q:'¿Cómo se dice "hoy"?',hint:'',ans:'Šiandien',accept:['šiandien','siandien']}
+      {type:'type',q:'¿Cómo se dice "hoy"?',hint:'',ans:'Šiandien',accept:['šiandien','siandien']},
+      {type:'mc',q:'¿Cómo se dice "mañana" (día siguiente)?',hint:'',ans:'Rytoj',opts:['Rytas','Ryte','Rytoj','Rytai']},
+      {type:'mc',q:'"Birželis" es el mes de...',hint:'',ans:'Junio',opts:['Mayo','Junio','Julio','Agosto']},
+      {type:'mc',q:'¿Cómo se dice "martes"?',hint:'',ans:'Antradienis',opts:['Pirmadienis','Antradienis','Trečiadienis','Ketvirtadienis']},
+      {type:'mc',q:'"Ruduo" significa...',hint:'Estación',ans:'Otoño',opts:['Verano','Primavera','Otoño','Invierno']},
+      {type:'type',q:'¿Cómo se dice "viernes"?',hint:'',ans:'Penktadienis',accept:['penktadienis']},
+      {type:'mc',q:'"Žiema" significa...',hint:'Estación',ans:'Invierno',opts:['Verano','Primavera','Otoño','Invierno']},
+      {type:'mc',q:'¿Cómo se dice "agosto"?',hint:'',ans:'Rugpjūtis',opts:['Liepa','Rugpjūtis','Rugsėjis','Birželis']},
+      {type:'mc',q:'"Pavasaris" significa...',hint:'',ans:'Primavera',opts:['Verano','Primavera','Otoño','Invierno']},
+      {type:'mc',q:'¿Cómo se dice "miércoles"?',hint:'',ans:'Trečiadienis',opts:['Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis']},
+      {type:'mc',q:'"Vasarą" (acusativo) significa...',hint:'',ans:'Durante el verano',opts:['El verano','Durante el verano','Del verano','En el verano (locativo)']},
+      {type:'type',q:'¿Cómo se dice "sábado"?',hint:'',ans:'Šeštadienis',accept:['šeštadienis','sestadieniss','seštadienis']},
+      {type:'mc',q:'"Gruodis" es el mes de...',hint:'',ans:'Diciembre',opts:['Octubre','Noviembre','Diciembre','Enero']},
+      {type:'mc',q:'¿Cómo se dice "jueves"?',hint:'',ans:'Ketvirtadienis',opts:['Trečiadienis','Ketvirtadienis','Penktadienis','Šeštadienis']},
+      {type:'mc',q:'"Rytas" / "Ryte" — ¿cuál usas para "en la mañana"?',hint:'Locativo',ans:'Ryte',opts:['Rytas','Ryte','Rytą','Ryto']},
+      {type:'mc',q:'¿Cómo se dice "mayo"?',hint:'',ans:'Gegužė',opts:['Kovas','Balandis','Gegužė','Birželis']},
+      {type:'mc',q:'"Savaitgalis" significa...',hint:'',ans:'Fin de semana',opts:['Semana','Fin de semana','Día libre','Feriado']},
+      {type:'mc',q:'¿Cómo se dice "octubre"?',hint:'',ans:'Spalis',opts:['Rugsėjis','Spalis','Lapkritis','Gruodis']},
+      {type:'type',q:'¿Cómo se dice "ayer"?',hint:'',ans:'Vakar',accept:['vakar']},
+      {type:'mc',q:'"Kada?" significa...',hint:'',ans:'¿Cuándo?',opts:['¿Dónde?','¿Quién?','¿Cuándo?','¿Por qué?']},
+      {type:'mc',q:'¿Cómo se dice "diciembre"?',hint:'',ans:'Gruodis',opts:['Lapkritis','Spalis','Gruodis','Rugsėjis']},
+      {type:'mc',q:'"Žiemą" (acusativo) significa...',hint:'',ans:'Durante el invierno',opts:['El invierno','Durante el invierno','Del invierno','En el invierno']},
+      {type:'mc',q:'¿Cómo se dice "febrero"?',hint:'',ans:'Vasáris',opts:['Sausis','Vasáris','Kovas','Balandis']},
+      {type:'mc',q:'"Liepa" es el mes de...',hint:'',ans:'Julio',opts:['Junio','Julio','Agosto','Mayo']},
+      {type:'mc',q:'¿Cómo se dice "noviembre"?',hint:'',ans:'Lapkritis',opts:['Rugsėjis','Spalis','Lapkritis','Gruodis']},
+      {type:'mc',q:'Para preguntar "¿Qué tiempo hace?" usas...',hint:'',ans:'Koks oras?',opts:['Koks laikas?','Koks oras?','Kokia diena?','Kada?']},
+      {type:'mc',q:'"Naktį" significa...',hint:'Locativo',ans:'De noche / durante la noche',opts:['La noche','De noche / durante la noche','Por la tarde','Al amanecer']}
     ]
   },
   { id:'phrases', icon:'💬', name:'Frases', color:'rgba(200,169,110,0.06)',
-    keys:['Mano vardas=Mi nombre es','Aš esu iš=Soy de','Man patinka=Me gusta','Aš nesuprantu=No entiendo','Kiek tai kainuoja?=¿Cuánto cuesta?','Iš kur tu esi?=¿De dónde eres?','Kur tu gyveni?=¿Dónde vives?','Gerai=Bien/OK','Man reikia=Necesito'],
     questions:[
       {type:'mc',q:'¿Cómo se dice "No entiendo"?',hint:'',ans:'Aš nesuprantu',opts:['Aš suprantu','Aš nesuprantu','Aš nekalbu','Aš nežinau']},
       {type:'mc',q:'"Kiek tai kainuoja?" significa...',hint:'',ans:'¿Cuánto cuesta?',opts:['¿Dónde vives?','¿Cómo te llamas?','¿Cuánto cuesta?','¿Qué es esto?']},
@@ -353,43 +487,307 @@ const TOPICS = [
       {type:'mc',q:'"Man reikia" significa...',hint:'',ans:'Necesito',opts:['Me gusta','Tengo','Necesito','Quiero']},
       {type:'mc',q:'¿Cómo se dice "Mi nombre es..."?',hint:'',ans:'Mano vardas yra...',opts:['Aš esu...','Mano vardas yra...','Mano pavardė...','Mano adresas...']},
       {type:'type',q:'¿Cómo se dice "No"?',hint:'',ans:'Ne',accept:['ne']},
-      {type:'mc',q:'"Gerai" significa...',hint:'Respuesta positiva',ans:'Bien / OK',opts:['Mal','Bien / OK','No sé','Quizás']}
+      {type:'mc',q:'"Gerai" significa...',hint:'',ans:'Bien / OK',opts:['Mal','Bien / OK','No sé','Quizás']},
+      {type:'mc',q:'¿Cómo se dice "¿Dónde vives?"?',hint:'',ans:'Kur tu gyveni?',opts:['Kur dirbi?','Kur tu gyveni?','Kur esi?','Kur eini?']},
+      {type:'mc',q:'"Aš esu iš Costa Rica" significa...',hint:'',ans:'Soy de Costa Rica',opts:['Vivo en Costa Rica','Soy de Costa Rica','Trabajo en Costa Rica','Estudio en Costa Rica']},
+      {type:'mc',q:'¿Cómo se dice "¿Cuál es tu nombre?"?',hint:'Formal',ans:'Koks jūsų vardas?',opts:['Koks tavo vardas?','Koks jūsų vardas?','Kas tu esi?','Koks vardas?']},
+      {type:'type',q:'¿Cómo se dice "No entiendo"?',hint:'',ans:'Aš nesuprantu',accept:['aš nesuprantu','nesuprantu']},
+      {type:'mc',q:'"Kodėl?" significa...',hint:'',ans:'¿Por qué?',opts:['¿Cuándo?','¿Dónde?','¿Por qué?','¿Quién?']},
+      {type:'mc',q:'¿Cómo se dice "¿Dónde está...?"?',hint:'',ans:'Kur yra...?',opts:['Kas yra...?','Kur yra...?','Kiek yra...?','Kokia yra...?']},
+      {type:'mc',q:'"Todėl kad" significa...',hint:'Para responder "¿por qué?"',ans:'Porque (formal)',opts:['Por eso','Porque (formal)','Aunque','Si bien']},
+      {type:'mc',q:'¿Cómo se dice "Me llamo Karen"?',hint:'',ans:'Mano vardas yra Karen',opts:['Aš esu Karen','Mano vardas yra Karen','Aš vadinuosi Karen','Todas son correctas']},
+      {type:'mc',q:'"Kur tu dirbi?" significa...',hint:'',ans:'¿Dónde trabajas?',opts:['¿Dónde vives?','¿Dónde estudias?','¿Dónde trabajas?','¿Dónde comes?']},
+      {type:'type',q:'¿Cómo se dice "¿Cuándo?" en lituano?',hint:'',ans:'Kada',accept:['kada','kada?']},
+      {type:'mc',q:'"Nes" significa...',hint:'Conector informal',ans:'Porque (informal)',opts:['Y','Pero','Porque (informal)','Aunque']},
+      {type:'mc',q:'¿Cómo se dice "¿Cómo se llama usted?"?',hint:'Formal',ans:'Koks jūsų vardas?',opts:['Kas jūs esate?','Koks jūsų vardas?','Kur jūs gyvenate?','Ką jūs dirbate?']},
+      {type:'mc',q:'"Man patinka" + infinitivo = ...',hint:'Estructura',ans:'Me gusta + infinitivo',opts:['Tengo que + infinitivo','Me gusta + infinitivo','Puedo + infinitivo','Quiero + infinitivo']},
+      {type:'mc',q:'¿Cómo se dice "¿Qué es esto?"?',hint:'',ans:'Kas tai yra?',opts:['Kur tai?','Kas tai yra?','Kiek tai?','Kokia tai?']},
+      {type:'mc',q:'"Kaip tu jautiesi?" significa...',hint:'',ans:'¿Cómo te sientes?',opts:['¿Cómo te llamas?','¿Cómo te sientes?','¿Dónde estás?','¿Qué haces?']},
+      {type:'type',q:'¿Cómo se dice "¿Dónde?" en lituano?',hint:'',ans:'Kur',accept:['kur','kur?']},
+      {type:'mc',q:'"Aš nesuprantu lietuviškai" significa...',hint:'',ans:'No entiendo lituano',opts:['Hablo lituano','No hablo lituano','No entiendo lituano','Estudio lituano']},
+      {type:'mc',q:'¿Cómo se dice "¿Cuántos años tienes?"?',hint:'En lituano se usa el dativo',ans:'Kiek tau metų?',opts:['Kiek turi metų?','Kiek tau metų?','Kiek yra metų?','Kiek metų esi?']},
+      {type:'mc',q:'"Ar tu moki lietuviškai?" significa...',hint:'"Ar" es partícula de pregunta',ans:'¿Sabes lituano?',opts:['¿Hablas lituano?','¿Sabes lituano?','¿Estudias lituano?','¿Entiendes lituano?']},
+      {type:'mc',q:'¿Cómo se dice "un poco" en lituano?',hint:'',ans:'Truputį',opts:['Labai','Truputį','Gerai','Blogai']},
+      {type:'mc',q:'"Aš gyvenu Heredioje" significa...',hint:'',ans:'Vivo en Heredia',opts:['Soy de Heredia','Vivo en Heredia','Trabajo en Heredia','Estudio en Heredia']},
+      {type:'mc',q:'¿Cómo se dice "Tengo 30 años"?',hint:'Dativo',ans:'Man 30 metų',opts:['Aš turiu 30 metų','Man 30 metų','Aš esu 30 metai','Man yra 30 metų']},
+      {type:'mc',q:'"Kuo tu dirbi?" significa...',hint:'',ans:'¿A qué te dedicas?',opts:['¿Dónde trabajas?','¿Cuánto ganas?','¿A qué te dedicas?','¿Cuándo trabajas?']}
     ]
   },
   { id:'routine', icon:'⏰', name:'Rutina', color:'rgba(126,200,169,0.06)',
-    keys:['Atsikelti=Levantarse','Pusryčiauti=Desayunar','Pietauti=Almorzar','Vakarieniauti=Cenar','Grįžti namo=Volver a casa','Eiti miegoti=Ir a dormir','Valgyti=Comer','Gerti=Beber','Gaminti=Cocinar','Dažnai=A menudo','Visada=Siempre','Niekada=Nunca'],
     questions:[
-      {type:'mc',q:'"Atsikelti" significa...',hint:'Inicio del día',ans:'Levantarse',opts:['Acostarse','Levantarse','Desayunar','Trabajar']},
+      {type:'mc',q:'"Atsikelti" significa...',hint:'',ans:'Levantarse',opts:['Acostarse','Levantarse','Desayunar','Trabajar']},
       {type:'mc',q:'¿Cómo se dice "almorzar"?',hint:'',ans:'Pietauti',opts:['Pusryčiauti','Vakarieniauti','Pietauti','Valgyti']},
-      {type:'mc',q:'"Dažnai" significa...',hint:'Frecuencia',ans:'A menudo',opts:['Nunca','A veces','Siempre','A menudo']},
+      {type:'mc',q:'"Dažnai" significa...',hint:'',ans:'A menudo',opts:['Nunca','A veces','Siempre','A menudo']},
       {type:'type',q:'Conjuga VALGYTI para "yo": Aš ___',hint:'',ans:'valgau',accept:['valgau']},
       {type:'mc',q:'¿Cómo se dice "siempre"?',hint:'',ans:'Visada',opts:['Niekada','Kartais','Visada','Retai']},
-      {type:'mc',q:'"Rytas" / "Ryte" — ¿cuál es la diferencia?',hint:'Casos',ans:'Rytas es nominativo, Ryte es locativo (en la mañana)',opts:['Son iguales','Rytas es nominativo, Ryte es locativo (en la mañana)','Rytas es plural','Ryte es plural']},
+      {type:'mc',q:'"Rytas" / "Ryte" — ¿cuál usas para "en la mañana"?',hint:'',ans:'Ryte',opts:['Rytas','Ryte','Rytą','Ryto']},
       {type:'mc',q:'¿Cómo preguntas "¿Cuándo?"?',hint:'',ans:'Kada?',opts:['Kur?','Kas?','Kada?','Kiek?']},
-      {type:'type',q:'¿Cómo se dice "nunca"?',hint:'',ans:'Niekada',accept:['niekada']}
+      {type:'type',q:'¿Cómo se dice "nunca"?',hint:'',ans:'Niekada',accept:['niekada']},
+      {type:'mc',q:'"Grįžti namo" significa...',hint:'',ans:'Volver a casa',opts:['Ir al trabajo','Ir a la cama','Cocinar','Volver a casa']},
+      {type:'mc',q:'¿Cómo se dice "desayunar"?',hint:'',ans:'Pusryčiauti',opts:['Pietauti','Pusryčiauti','Vakarieniauti','Valgyti']},
+      {type:'mc',q:'"Niekada" significa...',hint:'',ans:'Nunca',opts:['Siempre','A veces','Nunca','A menudo']},
+      {type:'mc',q:'¿Cómo se dice "cenar"?',hint:'',ans:'Vakarieniauti',opts:['Pusryčiauti','Pietauti','Vakarieniauti','Valgyti']},
+      {type:'type',q:'¿Cómo se dice "a veces"?',hint:'',ans:'Kartais',accept:['kartais']},
+      {type:'mc',q:'"Dirbti" significa...',hint:'',ans:'Trabajar',opts:['Estudiar','Cocinar','Trabajar','Descansar']},
+      {type:'mc',q:'¿Cómo se dice "tarde" (frecuencia)?',hint:'',ans:'Vėlai',opts:['Anksti','Vėlai','Kartais','Retai']},
+      {type:'mc',q:'"Anksti" significa...',hint:'',ans:'Temprano',opts:['Tarde','Temprano','A veces','Nunca']},
+      {type:'mc',q:'¿Cómo se dice "después"?',hint:'',ans:'Po to / Paskui',opts:['Prieš','Po to / Paskui','Kartu','Dabar']},
+      {type:'mc',q:'"Pietūs" significa...',hint:'Sustantivo',ans:'El almuerzo',opts:['El desayuno','El almuerzo','La cena','La merienda']},
+      {type:'type',q:'¿Cómo se dice "raramente"?',hint:'',ans:'Retai',accept:['retai']},
+      {type:'mc',q:'¿Cómo se dice "ir a dormir"?',hint:'',ans:'Eiti miegoti',opts:['Eiti gultis','Eiti miegoti','Abi son correctas','Miegoti eiti']},
+      {type:'mc',q:'"Kasdien" significa...',hint:'',ans:'Todos los días',opts:['Cada semana','Todos los días','A menudo','A veces']},
+      {type:'mc',q:'¿Cómo se dice "empezar el trabajo"?',hint:'',ans:'Pradėti darbą',opts:['Baigti darbą','Dirbti','Pradėti darbą','Eiti į darbą']},
+      {type:'mc',q:'"Vakarienė" significa...',hint:'Sustantivo',ans:'La cena',opts:['El desayuno','El almuerzo','La cena','La merienda']},
+      {type:'type',q:'¿Cómo se dice "temprano"?',hint:'',ans:'Anksti',accept:['anksti']},
+      {type:'mc',q:'"Pusryčiai" significa...',hint:'Sustantivo',ans:'El desayuno',opts:['El desayuno','El almuerzo','La cena','El café']},
+      {type:'mc',q:'¿Cómo se dice "terminar el trabajo"?',hint:'',ans:'Baigti darbą',opts:['Pradėti darbą','Baigti darbą','Eiti į darbą','Grįžti namo']},
+      {type:'mc',q:'"Maudytis" significa...',hint:'',ans:'Bañarse / ducharse',opts:['Lavarse los dientes','Bañarse / ducharse','Peinarse','Vestirse']},
+      {type:'mc',q:'¿Cómo se dice "leer"?',hint:'SKAITYTI',ans:'Skaityti',opts:['Rašyti','Skaityti','Kalbėti','Žiūrėti']},
+      {type:'mc',q:'"Žiūrėti televizorių" significa...',hint:'',ans:'Ver televisión',opts:['Escuchar radio','Ver televisión','Usar el teléfono','Leer un libro']},
+      {type:'mc',q:'¿Cómo preguntas "¿A qué hora?"?',hint:'',ans:'Kiek valandų?',opts:['Kada?','Kiek valandų?','Koks laikas?','Abi son correctas']},
+      {type:'mc',q:'"Vėliau" significa...',hint:'',ans:'Más tarde',opts:['Antes','Más tarde','Ahora','Temprano']},
+      {type:'mc',q:'¿Cómo se dice "cocinar"?',hint:'',ans:'Gaminti / Virti',opts:['Valgyti','Gaminti / Virti','Gerti','Pirkti']}
+    ]
+  },
+  { id:'grammar', icon:'📚', name:'Gramática', color:'rgba(200,126,200,0.06)',
+    questions:[
+      {type:'mc',q:'¿Qué caso responde a "KAS?" (¿quién/qué?)',hint:'',ans:'Nominativo',opts:['Acusativo','Nominativo','Genitivo','Dativo']},
+      {type:'mc',q:'¿Qué caso responde a "KĄ?" (¿qué/a quién?)',hint:'',ans:'Acusativo',opts:['Nominativo','Acusativo','Genitivo','Dativo']},
+      {type:'mc',q:'¿Qué caso responde a "KO?" (¿de quién?/posesión)',hint:'',ans:'Genitivo',opts:['Nominativo','Acusativo','Genitivo','Dativo']},
+      {type:'mc',q:'"Kava" (café, fem) en acusativo es...',hint:'',ans:'Kavą',opts:['Kavos','Kavą','Kavai','Kava']},
+      {type:'mc',q:'Los sustantivos masculinos generalmente terminan en...',hint:'En nominativo singular',ans:'-as o -is',opts:['-a o -ė','-as o -is','-us','-ia']},
+      {type:'mc',q:'Los sustantivos femeninos generalmente terminan en...',hint:'En nominativo singular',ans:'-a o -ė',opts:['-as o -is','-a o -ė','-us','-io']},
+      {type:'mc',q:'"Gyvenu Lietuvoje" — ¿qué caso es "Lietuvoje"?',hint:'Responde KUR? ¿Dónde?',ans:'Locativo',opts:['Nominativo','Acusativo','Genitivo','Locativo']},
+      {type:'mc',q:'"Iš Lietuvos" — ¿qué caso es "Lietuvos"?',hint:'"Iš" + genitivo',ans:'Genitivo',opts:['Nominativo','Acusativo','Genitivo','Locativo']},
+      {type:'mc',q:'La negación en lituano se forma con...',hint:'Prefijo',ans:'NE- antes del verbo',opts:['NO- antes del verbo','NE- antes del verbo','-NOT al final','Se usa una palabra separada']},
+      {type:'mc',q:'"Aš NETURIU" es la negación de...',hint:'',ans:'Aš turiu',opts:['Aš esu','Aš noriu','Aš turiu','Aš gyvenu']},
+      {type:'mc',q:'El locativo responde a la pregunta...',hint:'',ans:'KUR? (¿dónde?)',opts:['KAS? (¿quién?)','KĄ? (¿qué?)','KUR? (¿dónde?)','KADA? (¿cuándo?)']},
+      {type:'mc',q:'"Į Lietuvą" — ¿qué indica "į"?',hint:'',ans:'Dirección / movimiento hacia',opts:['Localización estática','Dirección / movimiento hacia','Origen','Posesión']},
+      {type:'mc',q:'¿Qué terminación añade "-e" al locativo femenino en "-a"?',hint:'Ej: Lietuva → Lietuvoje',ans:'-oje',opts:['-oje','-uje','-yje','-ėje']},
+      {type:'mc',q:'"Man patinka" literalmente significa...',hint:'Estructura dativa',ans:'A mí agrada',opts:['Yo gusto','A mí agrada','Yo tengo gusto','Me quiero']},
+      {type:'mc',q:'Los adjetivos en lituano concuerdan en...',hint:'',ans:'Género y número',opts:['Solo género','Solo número','Género y número','Ni género ni número']},
+      {type:'mc',q:'"Su" como preposición significa...',hint:'Ej: kava su pienu',ans:'Con',opts:['Sin','Con','Para','De']},
+      {type:'mc',q:'¿Cuál es la terminación genitiva de sustantivos femeninos en "-a"?',hint:'Ej: Lietuva → Lietuvos',ans:'-os',opts:['-as','-os','-ės','-ų']},
+      {type:'mc',q:'"Ant stalo" significa...',hint:'',ans:'Encima de la mesa',opts:['Debajo de la mesa','Encima de la mesa','Al lado de la mesa','Dentro de la mesa']},
+      {type:'mc',q:'¿Qué es el "DATYVAS" en gramática lituana?',hint:'',ans:'El caso dativo',opts:['El caso nominativo','El caso acusativo','El caso dativo','El caso genitivo']},
+      {type:'mc',q:'"Nėra" es la negación de...',hint:'3ª persona',ans:'Yra (es/está/hay)',opts:['Esu','Esi','Yra (es/está/hay)','Esame']},
+      {type:'mc',q:'¿Qué terminación tienen los sustantivos masc en locativo?',hint:'Ej: Vilnius → Vilniuje',ans:'-uje o -yje',opts:['-oje','-uje o -yje','-ėje','-e']},
+      {type:'mc',q:'"Ir" en lituano como conector significa...',hint:'No confundir con verbo',ans:'Y / también',opts:['Pero','Y / también','O','Porque']},
+      {type:'mc',q:'¿Qué pregunta responde el acusativo?',hint:'',ans:'KĄ? (¿qué? / ¿a quién?)',opts:['KAS?','KĄ? (¿qué? / ¿a quién?)','KO?','KUR?']},
+      {type:'mc',q:'"Bet" en lituano significa...',hint:'Conector',ans:'Pero',opts:['Y','También','Pero','Porque']},
+      {type:'mc',q:'¿Cuál es la terminación del genitivo plural para sustantivos masculinos en -as?',hint:'Ej: draugas → draugų',ans:'-ų',opts:['-os','-ų','-ių','-ų']},
+      {type:'mc',q:'"Reikia" con dativo significa...',hint:'Ej: Man reikia',ans:'Necesitar (a alguien le hace falta)',opts:['Querer','Poder','Necesitar (a alguien le hace falta)','Gustar']},
+      {type:'mc',q:'¿Qué caso sigue a la preposición "iš" (de)?',hint:'',ans:'Genitivo',opts:['Nominativo','Acusativo','Genitivo','Dativo']},
+      {type:'mc',q:'En lituano, "Taip pat" significa...',hint:'',ans:'También',opts:['Por eso','Pero','También','Además']},
+      {type:'mc',q:'¿Cuál es el orden básico de palabras en lituano?',hint:'',ans:'Flexible, pero SOV/SVO son comunes',opts:['Siempre SVO','Siempre SOV','Flexible, pero SOV/SVO son comunes','Siempre VSO']},
+      {type:'mc',q:'"Prie" como preposición significa...',hint:'Ej: prie banko',ans:'Junto a / cerca de',opts:['Lejos de','Junto a / cerca de','Encima de','Dentro de']},
+      {type:'mc',q:'¿Qué caso usa "Man reikia kavos"?',hint:'"Kavos" está en...',ans:'Genitivo (KO?)',opts:['Nominativo','Acusativo','Genitivo (KO?)','Dativo']}
+    ]
+  }
+];
+
+
+  ,{ id:'days', icon:'📆', name:'Días semana', color:'rgba(100,180,255,0.07)',
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "lunes"?',hint:'Primer día',ans:'Pirmadienis',opts:['Antradienis','Pirmadienis','Trečiadienis','Sekmadienis']},
+      {type:'mc',q:'¿Cómo se dice "martes"?',hint:'Segundo día',ans:'Antradienis',opts:['Pirmadienis','Antradienis','Ketvirtadienis','Penktadienis']},
+      {type:'mc',q:'¿Cómo se dice "miércoles"?',hint:'Tercer día',ans:'Trečiadienis',opts:['Antradienis','Trečiadienis','Ketvirtadienis','Šeštadienis']},
+      {type:'mc',q:'¿Cómo se dice "jueves"?',hint:'Cuarto día',ans:'Ketvirtadienis',opts:['Trečiadienis','Ketvirtadienis','Penktadienis','Sekmadienis']},
+      {type:'mc',q:'¿Cómo se dice "viernes"?',hint:'Quinto día',ans:'Penktadienis',opts:['Ketvirtadienis','Penktadienis','Šeštadienis','Antradienis']},
+      {type:'mc',q:'¿Cómo se dice "sábado"?',hint:'Sexto día',ans:'Šeštadienis',opts:['Penktadienis','Šeštadienis','Sekmadienis','Pirmadienis']},
+      {type:'mc',q:'¿Cómo se dice "domingo"?',hint:'Séptimo día',ans:'Sekmadienis',opts:['Šeštadienis','Sekmadienis','Pirmadienis','Antradienis']},
+      {type:'type',q:'Escribe "lunes" en lituano:',hint:'',ans:'Pirmadienis',accept:['pirmadienis']},
+      {type:'type',q:'Escribe "martes" en lituano:',hint:'',ans:'Antradienis',accept:['antradienis']},
+      {type:'type',q:'Escribe "miércoles" en lituano:',hint:'',ans:'Trečiadienis',accept:['trečiadienis','treciadienis']},
+      {type:'type',q:'Escribe "jueves" en lituano:',hint:'',ans:'Ketvirtadienis',accept:['ketvirtadienis']},
+      {type:'type',q:'Escribe "viernes" en lituano:',hint:'',ans:'Penktadienis',accept:['penktadienis']},
+      {type:'type',q:'Escribe "sábado" en lituano:',hint:'',ans:'Šeštadienis',accept:['šeštadienis','seštadienis','sestadieniss']},
+      {type:'type',q:'Escribe "domingo" en lituano:',hint:'',ans:'Sekmadienis',accept:['sekmadienis']},
+      {type:'mc',q:'"Pirmadienis" significa...',hint:'',ans:'Lunes',opts:['Martes','Lunes','Miércoles','Jueves']},
+      {type:'mc',q:'"Antradienis" significa...',hint:'',ans:'Martes',opts:['Lunes','Martes','Miércoles','Viernes']},
+      {type:'mc',q:'"Trečiadienis" significa...',hint:'',ans:'Miércoles',opts:['Martes','Jueves','Miércoles','Viernes']},
+      {type:'mc',q:'"Ketvirtadienis" significa...',hint:'',ans:'Jueves',opts:['Miércoles','Jueves','Viernes','Sábado']},
+      {type:'mc',q:'"Penktadienis" significa...',hint:'',ans:'Viernes',opts:['Jueves','Viernes','Sábado','Domingo']},
+      {type:'mc',q:'"Šeštadienis" significa...',hint:'',ans:'Sábado',opts:['Viernes','Sábado','Domingo','Lunes']},
+      {type:'mc',q:'"Sekmadienis" significa...',hint:'',ans:'Domingo',opts:['Sábado','Domingo','Lunes','Martes']},
+      {type:'mc',q:'¿Cuándo usas "Pirmadienį" (acusativo)?',hint:'KADA?',ans:'Para decir "el lunes" (rutina)',opts:['Para nombrar el día','Para decir "el lunes" (rutina)','Para el genitivo','Nunca']},
+      {type:'mc',q:'"Savaitgalis" significa...',hint:'',ans:'Fin de semana',opts:['Semana','Fin de semana','Día libre','Feriado']},
+      {type:'mc',q:'¿Cómo se dice "entre semana"?',hint:'',ans:'Darbo dienos',opts:['Savaitgalis','Darbo dienos','Savaitė','Dienos']},
+      {type:'mc',q:'¿Qué día va después del "Trečiadienis"?',hint:'',ans:'Ketvirtadienis',opts:['Antradienis','Penktadienis','Ketvirtadienis','Šeštadienis']},
+      {type:'mc',q:'¿Qué día va antes del "Sekmadienis"?',hint:'',ans:'Šeštadienis',opts:['Penktadienis','Sekmadienis','Šeštadienis','Pirmadienis']},
+      {type:'mc',q:'¿Qué día va después del "Penktadienis"?',hint:'',ans:'Šeštadienis',opts:['Sekmadienis','Šeštadienis','Pirmadienis','Ketvirtadienis']},
+      {type:'mc',q:'Para decir "los lunes" (rutina habitual) se usa...',hint:'KADA? plural',ans:'Pirmadieniais',opts:['Pirmadienis','Pirmadienį','Pirmadieniais','Pirmadienio']},
+      {type:'mc',q:'"Šiandien yra ___" — hoy es miércoles:',hint:'',ans:'Trečiadienis',opts:['Antradienis','Trečiadienis','Ketvirtadienis','Penktadienis']},
+      {type:'mc',q:'El sufijo "-dienis" en los días significa...',hint:'Pista: "diena" = día',ans:'Día de la semana',opts:['Noche','Semana','Día de la semana','Mes']},
+      {type:'mc',q:'¿Qué día va después del "Antradienis"?',hint:'',ans:'Trečiadienis',opts:['Pirmadienis','Trečiadienis','Ketvirtadienis','Šeštadienis']},
+      {type:'mc',q:'"Rytoj bus ___" — mañana es jueves:',hint:'',ans:'Ketvirtadienis',opts:['Trečiadienis','Ketvirtadienis','Penktadienis','Antradienis']}
+    ]
+  }
+
+  ,{ id:'months', icon:'🗓️', name:'Meses', color:'rgba(255,180,100,0.07)',
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "enero"?',hint:'Primer mes',ans:'Sausis',opts:['Vasáris','Sausis','Kovas','Balandis']},
+      {type:'mc',q:'¿Cómo se dice "febrero"?',hint:'Segundo mes',ans:'Vasáris',opts:['Sausis','Vasáris','Kovas','Gegužė']},
+      {type:'mc',q:'¿Cómo se dice "marzo"?',hint:'Tercer mes',ans:'Kovas',opts:['Vasáris','Kovas','Balandis','Sausis']},
+      {type:'mc',q:'¿Cómo se dice "abril"?',hint:'Cuarto mes',ans:'Balandis',opts:['Kovas','Balandis','Gegužė','Birželis']},
+      {type:'mc',q:'¿Cómo se dice "mayo"?',hint:'Quinto mes',ans:'Gegužė',opts:['Balandis','Gegužė','Birželis','Kovas']},
+      {type:'mc',q:'¿Cómo se dice "junio"?',hint:'Sexto mes',ans:'Birželis',opts:['Gegužė','Birželis','Liepa','Balandis']},
+      {type:'mc',q:'¿Cómo se dice "julio"?',hint:'Séptimo mes',ans:'Liepa',opts:['Birželis','Liepa','Rugpjūtis','Gegužė']},
+      {type:'mc',q:'¿Cómo se dice "agosto"?',hint:'Octavo mes',ans:'Rugpjūtis',opts:['Liepa','Rugpjūtis','Rugsėjis','Birželis']},
+      {type:'mc',q:'¿Cómo se dice "septiembre"?',hint:'Noveno mes',ans:'Rugsėjis',opts:['Rugpjūtis','Rugsėjis','Spalis','Liepa']},
+      {type:'mc',q:'¿Cómo se dice "octubre"?',hint:'Décimo mes',ans:'Spalis',opts:['Rugsėjis','Spalis','Lapkritis','Rugpjūtis']},
+      {type:'mc',q:'¿Cómo se dice "noviembre"?',hint:'Undécimo mes',ans:'Lapkritis',opts:['Spalis','Lapkritis','Gruodis','Rugsėjis']},
+      {type:'mc',q:'¿Cómo se dice "diciembre"?',hint:'Último mes',ans:'Gruodis',opts:['Lapkritis','Gruodis','Sausis','Spalis']},
+      {type:'type',q:'Escribe "enero" en lituano:',hint:'',ans:'Sausis',accept:['sausis']},
+      {type:'type',q:'Escribe "febrero" en lituano:',hint:'',ans:'Vasáris',accept:['vasáris','vasaris']},
+      {type:'type',q:'Escribe "marzo" en lituano:',hint:'',ans:'Kovas',accept:['kovas']},
+      {type:'type',q:'Escribe "abril" en lituano:',hint:'',ans:'Balandis',accept:['balandis']},
+      {type:'type',q:'Escribe "mayo" en lituano:',hint:'',ans:'Gegužė',accept:['gegužė','geguze']},
+      {type:'type',q:'Escribe "junio" en lituano:',hint:'',ans:'Birželis',accept:['birželis','birzeliss']},
+      {type:'type',q:'Escribe "julio" en lituano:',hint:'',ans:'Liepa',accept:['liepa']},
+      {type:'type',q:'Escribe "agosto" en lituano:',hint:'',ans:'Rugpjūtis',accept:['rugpjūtis','rugpjutis']},
+      {type:'type',q:'Escribe "septiembre" en lituano:',hint:'',ans:'Rugsėjis',accept:['rugsėjis','rugsejis']},
+      {type:'type',q:'Escribe "octubre" en lituano:',hint:'',ans:'Spalis',accept:['spalis']},
+      {type:'type',q:'Escribe "noviembre" en lituano:',hint:'',ans:'Lapkritis',accept:['lapkritis']},
+      {type:'type',q:'Escribe "diciembre" en lituano:',hint:'',ans:'Gruodis',accept:['gruodis']},
+      {type:'mc',q:'"Sausis" significa...',hint:'',ans:'Enero',opts:['Febrero','Enero','Marzo','Diciembre']},
+      {type:'mc',q:'"Vasáris" significa...',hint:'',ans:'Febrero',opts:['Enero','Febrero','Marzo','Abril']},
+      {type:'mc',q:'"Kovas" significa...',hint:'',ans:'Marzo',opts:['Febrero','Marzo','Abril','Mayo']},
+      {type:'mc',q:'"Balandis" significa...',hint:'',ans:'Abril',opts:['Marzo','Abril','Mayo','Junio']},
+      {type:'mc',q:'"Gegužė" significa...',hint:'',ans:'Mayo',opts:['Abril','Mayo','Junio','Julio']},
+      {type:'mc',q:'"Birželis" significa...',hint:'',ans:'Junio',opts:['Mayo','Junio','Julio','Agosto']},
+      {type:'mc',q:'"Liepa" significa...',hint:'',ans:'Julio',opts:['Junio','Julio','Agosto','Septiembre']},
+      {type:'mc',q:'"Rugpjūtis" significa...',hint:'',ans:'Agosto',opts:['Julio','Agosto','Septiembre','Octubre']},
+      {type:'mc',q:'"Rugsėjis" significa...',hint:'',ans:'Septiembre',opts:['Agosto','Septiembre','Octubre','Noviembre']},
+      {type:'mc',q:'"Spalis" significa...',hint:'',ans:'Octubre',opts:['Septiembre','Octubre','Noviembre','Diciembre']},
+      {type:'mc',q:'"Lapkritis" significa...',hint:'',ans:'Noviembre',opts:['Octubre','Noviembre','Diciembre','Enero']},
+      {type:'mc',q:'"Gruodis" significa...',hint:'',ans:'Diciembre',opts:['Noviembre','Diciembre','Enero','Febrero']},
+      {type:'mc',q:'¿Qué mes va después de "Birželis"?',hint:'',ans:'Liepa',opts:['Gegužė','Liepa','Rugpjūtis','Spalis']},
+      {type:'mc',q:'¿Qué mes va antes de "Gruodis"?',hint:'',ans:'Lapkritis',opts:['Spalis','Lapkritis','Rugsėjis','Rugpjūtis']},
+      {type:'mc',q:'Para decir "Nací en mayo" usas el genitivo: "_____ mėnesį"',hint:'',ans:'Gegužės',opts:['Gegužė','Gegužės','Gegužei','Gegužę']},
+      {type:'mc',q:'¿Cuáles son los meses de verano (Vasara)?',hint:'En Lituania',ans:'Birželis, Liepa, Rugpjūtis',opts:['Kovas, Balandis, Gegužė','Birželis, Liepa, Rugpjūtis','Rugsėjis, Spalis, Lapkritis','Gruodis, Sausis, Vasáris']},
+      {type:'mc',q:'¿Cuáles son los meses de invierno (Žiema)?',hint:'En Lituania',ans:'Gruodis, Sausis, Vasáris',opts:['Birželis, Liepa, Rugpjūtis','Kovas, Balandis, Gegužė','Gruodis, Sausis, Vasáris','Rugsėjis, Spalis, Lapkritis']},
+      {type:'mc',q:'Para decir la fecha "el 5 de marzo" se dice:',hint:'Genitivo del mes',ans:'Kovo penkta',opts:['Kovas penki','Kovo penkta','Kovą penkta','Kovui penki']},
+      {type:'mc',q:'"Kada tu gimei?" — "Aš gimiau _____ mėnesį"',hint:'En el mes de...',ans:'Gegužės (mayo, ej.)',opts:['Gegužė','Gegužės (mayo, ej.)','Gegužei','Gegužę']}
     ]
   }
 ];
 
 const FLASHCARDS = [
-  {lt:'Labas!',es:'¡Hola!',cat:'saludos'},{lt:'Labas rytas!',es:'Buenos días',cat:'saludos'},{lt:'Laba diena!',es:'Buenas tardes',cat:'saludos'},{lt:'Labas vakaras!',es:'Buenas noches',cat:'saludos'},{lt:'Labánaktis!',es:'Buenas noches (despedida)',cat:'saludos'},{lt:'Ačiū',es:'Gracias',cat:'básico'},{lt:'Prašau',es:'Por favor',cat:'básico'},{lt:'Atsiprašau',es:'Perdona',cat:'básico'},{lt:'Taip',es:'Sí',cat:'básico'},{lt:'Ne',es:'No',cat:'básico'},
-  {lt:'Aš esu',es:'Yo soy/estoy',cat:'verbos'},{lt:'Aš turiu',es:'Yo tengo',cat:'verbos'},{lt:'Aš gyvenu',es:'Yo vivo',cat:'verbos'},{lt:'Man patinka',es:'Me gusta',cat:'verbos'},{lt:'Aš noriu',es:'Yo quiero',cat:'verbos'},{lt:'Aš kalbu',es:'Yo hablo',cat:'verbos'},{lt:'Aš suprantu',es:'Yo entiendo',cat:'verbos'},{lt:'Aš einu',es:'Yo voy',cat:'verbos'},{lt:'Aš valgau',es:'Yo como',cat:'verbos'},{lt:'Aš miegu',es:'Yo duermo',cat:'verbos'},
-  {lt:'Tėvas / Tėtis',es:'Padre / Papá',cat:'familia'},{lt:'Mama / Motina',es:'Madre / Mamá',cat:'familia'},{lt:'Brolis',es:'Hermano',cat:'familia'},{lt:'Sesuo / Sesė',es:'Hermana',cat:'familia'},{lt:'Sūnus',es:'Hijo',cat:'familia'},{lt:'Duktė',es:'Hija',cat:'familia'},{lt:'Močiutė',es:'Abuela',cat:'familia'},{lt:'Senelis',es:'Abuelo',cat:'familia'},{lt:'Vyras',es:'Esposo / Hombre',cat:'familia'},{lt:'Žmona',es:'Esposa',cat:'familia'},
-  {lt:'Raudona/as',es:'Rojo/a',cat:'colores'},{lt:'Mėlyna/as',es:'Azul',cat:'colores'},{lt:'Žalia/ias',es:'Verde',cat:'colores'},{lt:'Geltona/as',es:'Amarillo/a',cat:'colores'},{lt:'Juoda/as',es:'Negro/a',cat:'colores'},{lt:'Balta/as',es:'Blanco/a',cat:'colores'},{lt:'Pilka/as',es:'Gris',cat:'colores'},
-  {lt:'Pirmadienis',es:'Lunes',cat:'tiempo'},{lt:'Penktadienis',es:'Viernes',cat:'tiempo'},{lt:'Sekmadienis',es:'Domingo',cat:'tiempo'},{lt:'Šiandien',es:'Hoy',cat:'tiempo'},{lt:'Vakar',es:'Ayer',cat:'tiempo'},{lt:'Rytoj',es:'Mañana',cat:'tiempo'},{lt:'Sausis',es:'Enero',cat:'tiempo'},{lt:'Gruodis',es:'Diciembre',cat:'tiempo'},
-  {lt:'Mano vardas yra...',es:'Mi nombre es...',cat:'frases'},{lt:'Aš esu iš...',es:'Soy de...',cat:'frases'},{lt:'Iš kur tu esi?',es:'¿De dónde eres?',cat:'frases'},{lt:'Kur tu gyveni?',es:'¿Dónde vives?',cat:'frases'},{lt:'Man reikia',es:'Necesito',cat:'frases'},{lt:'Aš nesuprantu',es:'No entiendo',cat:'frases'}
+  {lt:'Labas!',es:'¡Hola!',extra:'',cat:'saludos'},
+  {lt:'Labas rytas!',es:'Buenos días',extra:'Mañana',cat:'saludos'},
+  {lt:'Laba diena!',es:'Buenas tardes',extra:'Mediodía/tarde',cat:'saludos'},
+  {lt:'Labas vakaras!',es:'Buenas noches',extra:'Al llegar de noche',cat:'saludos'},
+  {lt:'Labánaktis!',es:'Buenas noches',extra:'Al despedirse de noche',cat:'saludos'},
+  {lt:'Ačiū',es:'Gracias',extra:'',cat:'básico'},
+  {lt:'Labai ačiū',es:'Muchas gracias',extra:'',cat:'básico'},
+  {lt:'Prašau',es:'Por favor',extra:'También: De nada',cat:'básico'},
+  {lt:'Atsiprašau',es:'Perdona / Lo siento',extra:'',cat:'básico'},
+  {lt:'Nieko tokio!',es:'No pasa nada',extra:'',cat:'básico'},
+  {lt:'Nėra už ką',es:'De nada',extra:'Respuesta a Ačiū',cat:'básico'},
+  {lt:'Taip',es:'Sí',extra:'',cat:'básico'},
+  {lt:'Ne',es:'No',extra:'',cat:'básico'},
+  {lt:'Gerai',es:'Bien / OK',extra:'',cat:'básico'},
+  {lt:'Sudie! / Iki!',es:'Adiós / Hasta luego',extra:'Informal',cat:'saludos'},
+  {lt:'Viso gero!',es:'Adiós',extra:'Formal',cat:'saludos'},
+  {lt:'Kaip sekasi?',es:'¿Cómo estás?',extra:'',cat:'saludos'},
+  {lt:'Aš esu',es:'Yo soy / estoy',extra:'BŪTI — ser/estar',cat:'verbos'},
+  {lt:'Aš turiu',es:'Yo tengo',extra:'TURĖTI',cat:'verbos'},
+  {lt:'Aš gyvenu',es:'Yo vivo',extra:'GYVENTI',cat:'verbos'},
+  {lt:'Man patinka',es:'Me gusta',extra:'PATIKTI — dativo',cat:'verbos'},
+  {lt:'Aš noriu',es:'Yo quiero',extra:'NORĖTI',cat:'verbos'},
+  {lt:'Aš kalbu',es:'Yo hablo',extra:'KALBĖTI',cat:'verbos'},
+  {lt:'Aš suprantu',es:'Yo entiendo',extra:'SUPRASTI',cat:'verbos'},
+  {lt:'Aš nesuprantu',es:'No entiendo',extra:'',cat:'verbos'},
+  {lt:'Aš einu',es:'Yo voy',extra:'EITI — ir a pie',cat:'verbos'},
+  {lt:'Aš važiuoju',es:'Voy (en transporte)',extra:'VAŽIUOTI',cat:'verbos'},
+  {lt:'Aš valgau',es:'Yo como',extra:'VALGYTI',cat:'verbos'},
+  {lt:'Aš geriu',es:'Yo bebo',extra:'GERTI',cat:'verbos'},
+  {lt:'Aš miegu',es:'Yo duermo',extra:'MIEGOTI',cat:'verbos'},
+  {lt:'Aš dirbu',es:'Yo trabajo',extra:'DIRBTI',cat:'verbos'},
+  {lt:'Aš skaitau',es:'Yo leo',extra:'SKAITYTI',cat:'verbos'},
+  {lt:'Aš rašau',es:'Yo escribo',extra:'RAŠYTI',cat:'verbos'},
+  {lt:'Aš šoku',es:'Yo bailo',extra:'ŠOKTI',cat:'verbos'},
+  {lt:'Man reikia',es:'Necesito',extra:'REIKĖTI — dativo',cat:'verbos'},
+  {lt:'Tėvas / Tėtis',es:'Padre / Papá',extra:'',cat:'familia'},
+  {lt:'Mama / Motina',es:'Madre / Mamá',extra:'',cat:'familia'},
+  {lt:'Brolis',es:'Hermano',extra:'Broliai (pl)',cat:'familia'},
+  {lt:'Sesuo / Sesė',es:'Hermana',extra:'Seserys (pl)',cat:'familia'},
+  {lt:'Sūnus',es:'Hijo',extra:'',cat:'familia'},
+  {lt:'Duktė / Dukra',es:'Hija',extra:'Dukterys (pl)',cat:'familia'},
+  {lt:'Močiutė',es:'Abuela',extra:'Senelė (formal)',cat:'familia'},
+  {lt:'Senelis',es:'Abuelo',extra:'',cat:'familia'},
+  {lt:'Dėdė',es:'Tío',extra:'',cat:'familia'},
+  {lt:'Teta',es:'Tía',extra:'',cat:'familia'},
+  {lt:'Vyras',es:'Esposo / Hombre',extra:'',cat:'familia'},
+  {lt:'Žmona',es:'Esposa',extra:'',cat:'familia'},
+  {lt:'Draugas / Draugė',es:'Amigo / Amiga (pareja)',extra:'',cat:'familia'},
+  {lt:'Šeima',es:'Familia',extra:'',cat:'familia'},
+  {lt:'Raudona / Raudonas',es:'Rojo/a',extra:'F / M',cat:'colores'},
+  {lt:'Mėlyna / Mėlynas',es:'Azul',extra:'F / M',cat:'colores'},
+  {lt:'Žalia / Žalias',es:'Verde',extra:'F / M',cat:'colores'},
+  {lt:'Geltona / Geltonas',es:'Amarillo/a',extra:'F / M',cat:'colores'},
+  {lt:'Juoda / Juodas',es:'Negro/a',extra:'F / M',cat:'colores'},
+  {lt:'Balta / Baltas',es:'Blanco/a',extra:'F / M',cat:'colores'},
+  {lt:'Pilka / Pilkas',es:'Gris',extra:'F / M',cat:'colores'},
+  {lt:'Ruda / Rudas',es:'Marrón',extra:'F / M',cat:'colores'},
+  {lt:'Violetinė / Violetinis',es:'Morado/a',extra:'F / M',cat:'colores'},
+  {lt:'Oranžinė / Oranžinis',es:'Naranja',extra:'F / M',cat:'colores'},
+  {lt:'Rožinė / Rožinis',es:'Rosa',extra:'F / M',cat:'colores'},
+  {lt:'Pirmadienis',es:'Lunes',extra:'',cat:'tiempo'},
+  {lt:'Antradienis',es:'Martes',extra:'',cat:'tiempo'},
+  {lt:'Trečiadienis',es:'Miércoles',extra:'',cat:'tiempo'},
+  {lt:'Ketvirtadienis',es:'Jueves',extra:'',cat:'tiempo'},
+  {lt:'Penktadienis',es:'Viernes',extra:'',cat:'tiempo'},
+  {lt:'Šeštadienis',es:'Sábado',extra:'',cat:'tiempo'},
+  {lt:'Sekmadienis',es:'Domingo',extra:'',cat:'tiempo'},
+  {lt:'Šiandien',es:'Hoy',extra:'',cat:'tiempo'},
+  {lt:'Vakar',es:'Ayer',extra:'',cat:'tiempo'},
+  {lt:'Rytoj',es:'Mañana',extra:'Día siguiente',cat:'tiempo'},
+  {lt:'Rytas / Ryte',es:'Mañana / En la mañana',extra:'Nominativo / Locativo',cat:'tiempo'},
+  {lt:'Vasara / Vasarą',es:'Verano / En verano',extra:'',cat:'tiempo'},
+  {lt:'Žiema / Žiemą',es:'Invierno / En invierno',extra:'',cat:'tiempo'},
+  {lt:'Pavasaris / Pavasarį',es:'Primavera / En primavera',extra:'',cat:'tiempo'},
+  {lt:'Ruduo / Rudenį',es:'Otoño / En otoño',extra:'',cat:'tiempo'},
+  {lt:'Sausis',es:'Enero',extra:'',cat:'tiempo'},
+  {lt:'Vasáris',es:'Febrero',extra:'',cat:'tiempo'},
+  {lt:'Kovas',es:'Marzo',extra:'',cat:'tiempo'},
+  {lt:'Balandis',es:'Abril',extra:'',cat:'tiempo'},
+  {lt:'Gegužė',es:'Mayo',extra:'',cat:'tiempo'},
+  {lt:'Birželis',es:'Junio',extra:'',cat:'tiempo'},
+  {lt:'Liepa',es:'Julio',extra:'',cat:'tiempo'},
+  {lt:'Rugpjūtis',es:'Agosto',extra:'',cat:'tiempo'},
+  {lt:'Rugsėjis',es:'Septiembre',extra:'',cat:'tiempo'},
+  {lt:'Spalis',es:'Octubre',extra:'',cat:'tiempo'},
+  {lt:'Lapkritis',es:'Noviembre',extra:'',cat:'tiempo'},
+  {lt:'Gruodis',es:'Diciembre',extra:'',cat:'tiempo'},
+  {lt:'Mano vardas yra...',es:'Mi nombre es...',extra:'',cat:'frases'},
+  {lt:'Aš esu iš...',es:'Soy de...',extra:'',cat:'frases'},
+  {lt:'Iš kur tu esi?',es:'¿De dónde eres?',extra:'',cat:'frases'},
+  {lt:'Kur tu gyveni?',es:'¿Dónde vives?',extra:'',cat:'frases'},
+  {lt:'Kiek tau metų?',es:'¿Cuántos años tienes?',extra:'Dativo',cat:'frases'},
+  {lt:'Man ... metų',es:'Tengo ... años',extra:'Dativo',cat:'frases'},
+  {lt:'Koks jūsų vardas?',es:'¿Cuál es su nombre?',extra:'Formal',cat:'frases'},
+  {lt:'Aš dirbu...',es:'Trabajo en...',extra:'',cat:'frases'},
+  {lt:'Kaip tu jautiesi?',es:'¿Cómo te sientes?',extra:'',cat:'frases'},
+  {lt:'Kiek tai kainuoja?',es:'¿Cuánto cuesta?',extra:'',cat:'frases'},
+  {lt:'KAS? → Nominativo',es:'¿Quién? / ¿Qué?',extra:'Sujeto',cat:'gramática'},
+  {lt:'KĄ? → Acusativo',es:'¿Qué? / ¿A quién?',extra:'Objeto directo',cat:'gramática'},
+  {lt:'KO? → Genitivo',es:'¿De quién? / Posesión',extra:'También tras negación',cat:'gramática'},
+  {lt:'KUR? → Locativo',es:'¿Dónde?',extra:'Ej: Lietuvoje',cat:'gramática'},
+  {lt:'NE- + verbo',es:'Negación',extra:'Ej: neturiu, nesu',cat:'gramática'},
+  {lt:'Iš + Genitivo',es:'De (origen)',extra:'Ej: iš Lietuvos',cat:'gramática'},
+  {lt:'Į + Acusativo',es:'Hacia / A (destino)',extra:'Ej: į Lietuvą',cat:'gramática'}
 ];
 
-// ============ STATE ============
-let appState = JSON.parse(localStorage.getItem('lt_state') || '{"pts":0,"total":0,"correct":0,"racha":0,"done":[]}');
+let appState = JSON.parse(localStorage.getItem('lt_state2') || '{"pts":0,"total":0,"correct":0,"racha":0,"done":[]}');
 let quiz = { topic:null, qs:[], idx:0, score:0, hearts:3, answered:false };
 let flashIdx = 0, flashRevealed = false;
 let aiLevel = 'A1', aiTopic = '';
-let aiAnswered = false, aiCorrect = null;
+let aiAnswered = false;
 
-function saveState() { localStorage.setItem('lt_state', JSON.stringify(appState)); }
+function saveState() { localStorage.setItem('lt_state2', JSON.stringify(appState)); }
 
-// ============ HOME ============
 function buildHome() {
   document.getElementById('s-pts').textContent = appState.pts;
   const pct = appState.total > 0 ? Math.round((appState.correct/appState.total)*100) + '%' : '—';
@@ -406,7 +804,6 @@ function buildHome() {
     d.onclick = () => startTopic(t);
     grid.appendChild(d);
   });
-  // flashcard button
   const fb = document.createElement('button');
   fb.className = 'topic-card';
   fb.innerHTML = `<span class="icon">📇</span><div class="name">Flashcards</div><div class="sub">${FLASHCARDS.length} palabras</div>`;
@@ -414,10 +811,9 @@ function buildHome() {
   grid.appendChild(fb);
 }
 
-// ============ QUIZ ============
 function startTopic(t) {
   quiz.topic = t;
-  quiz.qs = shuffle([...t.questions]);
+  quiz.qs = shuffle([...t.questions]).slice(0, Math.min(t.questions.length, 15));
   quiz.idx = 0; quiz.score = 0; quiz.hearts = 3; quiz.answered = false;
   document.getElementById('retry-btn').onclick = () => startTopic(t);
   showScreen('quiz');
@@ -431,7 +827,7 @@ function renderQ() {
   document.getElementById('prog-txt').textContent = (quiz.idx+1) + '/' + total;
   document.getElementById('hearts-display').textContent = '♥'.repeat(quiz.hearts) + '♡'.repeat(3-quiz.hearts);
   quiz.answered = false;
-  let html = `<div class="q-type-badge">${q.type === 'mc' ? '◉ opción múltiple' : '✎ escribe'}</div>`;
+  let html = `<div class="q-type-badge">${q.type==='mc'?'◉ opción múltiple':'✎ escribe'}</div>`;
   html += `<div class="q-main">${q.q}</div>`;
   if (q.hint) html += `<div class="q-hint">${q.hint}</div>`;
   if (q.type === 'mc') {
@@ -441,7 +837,7 @@ function renderQ() {
     });
     html += '</div>';
   } else {
-    html += `<div class="type-wrap"><input class="type-input" id="ti" placeholder="Escribe..." onkeydown="if(event.key==='Enter')checkType()"><br><br><button class="action-btn primary" id="chk-btn" onclick="checkType()">Comprobar</button></div>`;
+    html += `<div class="type-wrap"><input class="type-input" id="ti" placeholder="Escribe aquí..." onkeydown="if(event.key==='Enter')checkType()"><br><br><button class="action-btn primary" id="chk-btn" onclick="checkType()">Comprobar</button></div>`;
   }
   html += `<div class="feedback-box" id="fb"></div>`;
   html += `<button class="action-btn primary" id="nxt" style="display:none;margin-top:8px;" onclick="nextQ()">Siguiente →</button>`;
@@ -456,11 +852,10 @@ function checkMC(btn, chosen, ans) {
   quiz.answered = true;
   document.querySelectorAll('.opt').forEach(b => {
     b.disabled = true;
-    if (b.textContent === ans) b.classList.add('correct');
+    if (b.textContent.trim() === ans) b.classList.add('correct');
     else if (b === btn && chosen !== ans) b.classList.add('wrong');
   });
-  const ok = chosen === ans;
-  showFB(ok, ans);
+  showFB(chosen === ans, ans);
 }
 
 function checkType() {
@@ -485,10 +880,10 @@ function showFB(ok, ans) {
   saveState();
   const fb = document.getElementById('fb');
   fb.className = 'feedback-box show ' + (ok ? 'ok' : 'bad');
-  fb.textContent = ok ? '¡Correcto! +10 pts' : 'Incorrecto. Era: ' + ans;
+  fb.textContent = ok ? '¡Correcto! +10 pts' : 'Incorrecto. Respuesta: ' + ans;
   const nxt = document.getElementById('nxt');
   if (nxt) nxt.style.display = 'block';
-  if (quiz.hearts <= 0) { setTimeout(()=> showComplete(false), 1200); }
+  if (quiz.hearts <= 0) setTimeout(() => showComplete(false), 1500);
 }
 
 function nextQ() {
@@ -501,15 +896,15 @@ function showComplete(finished) {
   const pct = Math.round((quiz.score/quiz.qs.length)*100);
   if (finished && !appState.done.includes(quiz.topic.id)) appState.done.push(quiz.topic.id);
   saveState();
+  buildHome();
   const emojis = pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '💪';
-  const msgs = pct >= 80 ? '¡Excelente trabajo!' : pct >= 60 ? '¡Buen intento!' : 'Sigue practicando';
+  const msgs = pct >= 80 ? '¡Excelente trabajo!' : pct >= 60 ? '¡Buen intento!' : '¡Sigue practicando!';
   document.getElementById('complete-emoji').textContent = emojis;
   document.getElementById('complete-title').textContent = msgs;
   document.getElementById('complete-score').innerHTML = `<span>${quiz.score}</span> de ${quiz.qs.length} correctas · <span>${pct}%</span>`;
   showScreen('complete');
 }
 
-// ============ FLASH ============
 function startFlash() {
   flashIdx = 0; flashRevealed = false;
   showScreen('flash');
@@ -522,8 +917,8 @@ function renderFlash() {
   document.getElementById('flash-cat').textContent = f.cat.toUpperCase();
   document.getElementById('flash-lt').textContent = f.lt;
   document.getElementById('flash-es').textContent = f.es;
-  const card = document.getElementById('flash-card');
-  card.classList.remove('revealed');
+  document.getElementById('flash-extra').textContent = f.extra || '';
+  document.getElementById('flash-card').classList.remove('revealed');
   flashRevealed = false;
 }
 
@@ -541,7 +936,6 @@ function flashMove(d) {
   renderFlash();
 }
 
-// ============ AI ============
 function showAI() {
   showScreen('ai-screen');
   const stored = localStorage.getItem('lt_apikey') || '';
@@ -572,14 +966,14 @@ async function generateAI() {
   btn.disabled = true; btn.textContent = 'Generando...';
   document.getElementById('ai-result').innerHTML = '<div class="loading-dots">✦ Claude está pensando...</div>';
   aiAnswered = false;
-  const topicContext = aiTopic || 'cualquier tema de lituano A1/A2';
+  const topicContext = aiTopic || 'cualquier tema del curso de lituano A1/A2';
   const levelNote = aiLevel === 'mix' ? 'A1 y A2' : aiLevel;
-  const prompt = `Eres un experto en lituano. Genera UNA pregunta de práctica de nivel ${levelNote} sobre el tema: ${topicContext}.
+  const prompt = `Eres un experto en lituano. Genera UNA pregunta de práctica de nivel ${levelNote} sobre: ${topicContext}.
 
-Responde SOLO con JSON válido, sin texto adicional, sin markdown, sin bloques de código:
-{"type":"mc","question":"pregunta en español","hint":"pista corta o vacío","answer":"respuesta correcta en lituano o español según corresponda","options":["op1","op2","op3","op4"],"explanation":"explicación breve en español de por qué es correcto"}
+Responde SOLO con JSON válido, sin texto adicional, sin markdown:
+{"type":"mc","question":"pregunta en español","hint":"pista corta o vacío","answer":"respuesta correcta","options":["op1","op2","op3","op4"],"explanation":"explicación breve en español"}
 
-Las 4 opciones deben incluir la respuesta correcta. Varía el tipo de pregunta: traducción, completar conjugación, elegir la forma correcta, etc. El nivel ${levelNote} implica ${levelNote==='A1'?'vocabulario básico, saludos, números, presentación':'casos gramaticales, conjugaciones, frases más complejas'}.`;
+Las 4 opciones incluyen la respuesta correcta. Varía el tipo: traducción, conjugación, elegir forma correcta, completar frase, identificar el caso gramatical, etc.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -610,7 +1004,9 @@ function renderAIQ(q) {
   opts.forEach(o => {
     html += `<button class="opt" onclick="checkAIOpt(this,'${esc(o)}','${esc(q.answer)}','${esc(q.explanation)}')">${o}</button>`;
   });
-  html += `</div><div class="feedback-box" id="ai-fb"></div></div>`;
+  html += `</div><div class="feedback-box" id="ai-fb"></div>
+  <button class="gen-btn" style="margin-top:1rem;" onclick="generateAI()">Otra pregunta ✦</button>
+  </div>`;
   document.getElementById('ai-result').innerHTML = html;
 }
 
@@ -619,7 +1015,7 @@ function checkAIOpt(btn, chosen, ans, exp) {
   aiAnswered = true;
   document.querySelectorAll('#ai-result .opt').forEach(b => {
     b.disabled = true;
-    if (b.textContent === ans) b.classList.add('correct');
+    if (b.textContent.trim() === ans) b.classList.add('correct');
     else if (b === btn && chosen !== ans) b.classList.add('wrong');
   });
   const ok = chosen === ans;
@@ -633,7 +1029,6 @@ function checkAIOpt(btn, chosen, ans, exp) {
   fb.textContent = (ok?'¡Correcto! +15 pts — ':'Incorrecto. ') + exp;
 }
 
-// ============ NAV ============
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
@@ -645,7 +1040,6 @@ function shuffle(a) {
   return a;
 }
 
-// ============ INIT ============
 buildHome();
 showScreen('home');
 </script>
