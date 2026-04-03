@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lietuvių">
+<meta name="theme-color" content="#0a0a0f">
+<title>Lietuvių Kalba</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c27;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.15);
+    --text: #f0ede8;
+    --muted: rgba(240,237,232,0.5);
+    --accent: #c8a96e;
+    --accent2: #7ec8a9;
+    --accent3: #a97ec8;
+    --danger: #c87e7e;
+    --success: #7ec8a9;
+    --flag-y: #F9B234;
+    --flag-g: #006A44;
+    --flag-r: #C1272D;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
+
+  /* ---- SCREENS ---- */
+  .screen { position: absolute; inset: 0; display: flex; flex-direction: column; overflow: hidden; transition: opacity 0.3s, transform 0.3s; }
+  .screen.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
+
+  /* ---- HOME ---- */
+  #home { background: var(--bg); }
+  .flag-stripe { height: 4px; background: linear-gradient(90deg, var(--flag-y) 33.3%, var(--flag-g) 33.3% 66.6%, var(--flag-r) 66.6%); }
+  .home-header { padding: 3rem 1.5rem 1.5rem; }
+  .home-header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 8vw, 3rem); color: var(--text); line-height: 1; }
+  .home-header h1 em { font-style: italic; color: var(--accent); }
+  .home-header p { color: var(--muted); font-size: 14px; margin-top: 6px; font-weight: 300; }
+  .stats-row { display: flex; gap: 8px; padding: 0 1.5rem 1.5rem; }
+  .stat-pill { flex: 1; background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
+  .stat-pill .n { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--accent); }
+  .stat-pill .l { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .topics-label { padding: 0 1.5rem 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .topics-grid { padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; overflow-y: auto; padding-bottom: 1rem; }
+  .topic-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 1rem; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+  .topic-card::before { content: ''; position: absolute; inset: 0; background: var(--card-color, rgba(200,169,110,0.08)); opacity: 0; transition: opacity 0.2s; }
+  .topic-card:active::before { opacity: 1; }
+  .topic-card .icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .topic-card .name { font-size: 14px; font-weight: 500; color: var(--text); }
+  .topic-card .sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .topic-card .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); position: absolute; top: 12px; right: 12px; display: none; }
+  .topic-card.done .dot { display: block; }
+  .ai-btn { margin: 1rem 1.5rem; background: linear-gradient(135deg, rgba(200,169,110,0.15), rgba(126,200,169,0.1)); border: 0.5px solid rgba(200,169,110,0.3); border-radius: 14px; padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.2s; }
+  .ai-btn:active { transform: scale(0.98); }
+  .ai-btn .ai-icon { font-size: 22px; }
+  .ai-btn .ai-text { text-align: left; }
+  .ai-btn .ai-title { font-size: 14px; font-weight: 500; color: var(--accent); }
+  .ai-btn .ai-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* ---- QUIZ SCREEN ---- */
+  #quiz { background: var(--bg); }
+  .quiz-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
+  .back-btn { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; padding: 4px; }
+  .quiz-topic-name { font-size: 14px; color: var(--muted); font-weight: 300; }
+  .prog-wrap { flex: 1; }
+  .prog-bar { height: 4px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .prog-label { font-size: 11px; color: var(--muted); text-align: right; margin-top: 4px; }
+  .hearts { font-size: 16px; letter-spacing: 2px; }
+  .quiz-body { flex: 1; overflow-y: auto; padding: 0 1.5rem 2rem; display: flex; flex-direction: column; }
+  .q-type-badge { display: inline-flex; align-items: center; gap: 5px; background: var(--surface2); border: 0.5px solid var(--border); border-radius: 99px; padding: 4px 10px; font-size: 11px; color: var(--muted); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  .q-main { font-family: 'DM Serif Display', serif; font-size: clamp(1.3rem, 5vw, 1.8rem); color: var(--text); line-height: 1.3; margin-bottom: 0.5rem; }
+  .q-hint { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; font-style: italic; }
+  .options-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+  .opt { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; font-size: 15px; color: var(--text); cursor: pointer; text-align: left; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
+  .opt:active:not(:disabled) { transform: scale(0.98); }
+  .opt.selected { border-color: var(--accent); background: rgba(200,169,110,0.1); }
+  .opt.correct { border-color: var(--success); background: rgba(126,200,169,0.15); color: var(--success); }
+  .opt.wrong { border-color: var(--danger); background: rgba(200,126,126,0.15); color: var(--danger); }
+  .opt:disabled { cursor: default; }
+  .type-wrap { margin-bottom: 1.5rem; }
+  .type-input { width: 100%; background: var(--surface); border: 1px solid var(--border2); border-radius: 14px; padding: 14px 16px; font-size: 16px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
+  .type-input:focus { border-color: var(--accent); }
+  .type-input.correct { border-color: var(--success); background: rgba(126,200,169,0.1); }
+  .type-input.wrong { border-color: var(--danger); background: rgba(200,126,126,0.1); }
+  .feedback-box { border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-bottom: 1rem; display: none; }
+  .feedback-box.show { display: block; }
+  .feedback-box.ok { background: rgba(126,200,169,0.12); color: var(--success); border: 0.5px solid rgba(126,200,169,0.3); }
+  .feedback-box.bad { background: rgba(200,126,126,0.12); color: var(--danger); border: 0.5px solid rgba(200,126,126,0.3); }
+  .action-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .action-btn.primary { background: var(--accent); color: var(--bg); }
+  .action-btn.primary:active { transform: scale(0.98); }
+  .action-btn.secondary { background: var(--surface2); color: var(--text); }
+  .action-btn:disabled { opacity: 0.35; cursor: default; }
+
+  /* ---- FLASH SCREEN ---- */
+  #flash { background: var(--bg); }
+  .flash-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
+  .flash-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; }
+  .flash-card { width: 100%; max-width: 400px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 24px; padding: 2.5rem 2rem; text-align: center; cursor: pointer; transition: transform 0.15s; min-height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .flash-card:active { transform: scale(0.97); }
+  .flash-lt { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 7vw, 2.5rem); color: var(--text); margin-bottom: 0.5rem; }
+  .flash-cat { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+  .flash-es { font-size: 20px; color: var(--accent); margin-top: 1.5rem; display: none; }
+  .flash-tap { font-size: 12px; color: var(--muted); margin-top: 0.5rem; display: none; }
+  .flash-card.revealed .flash-es { display: block; }
+  .flash-card.revealed .flash-tap { display: block; }
+  .flash-counter { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
+  .flash-nav { display: flex; gap: 12px; width: 100%; max-width: 400px; margin-top: 1.5rem; }
+  .flash-nav button { flex: 1; padding: 14px; border: 0.5px solid var(--border); background: var(--surface); border-radius: 14px; color: var(--text); font-size: 15px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .flash-nav button:active { background: var(--surface2); }
+
+  /* ---- AI SCREEN ---- */
+  #ai-screen { background: var(--bg); }
+  .ai-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
+  .ai-body { flex: 1; overflow-y: auto; padding: 1rem 1.5rem 2rem; display: flex; flex-direction: column; }
+  .ai-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px; }
+  .topic-selector { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+  .topic-chip { background: var(--surface); border: 0.5px solid var(--border); border-radius: 99px; padding: 6px 12px; font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+  .topic-chip.active { background: rgba(200,169,110,0.15); border-color: rgba(200,169,110,0.4); color: var(--accent); }
+  .level-selector { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+  .level-btn { flex: 1; background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 10px; text-align: center; font-size: 13px; color: var(--muted); cursor: pointer; }
+  .level-btn.active { background: rgba(126,200,169,0.1); border-color: var(--accent2); color: var(--accent2); }
+  .gen-btn { width: 100%; padding: 16px; background: var(--accent); color: var(--bg); border: none; border-radius: 14px; font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+  .gen-btn:active { transform: scale(0.98); }
+  .gen-btn:disabled { opacity: 0.4; cursor: default; }
+  .ai-result { margin-top: 1.5rem; flex: 1; }
+  .loading-dots { text-align: center; padding: 2rem; color: var(--muted); font-size: 14px; }
+  .ai-q-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 18px; padding: 1.5rem; }
+  .ai-q-top { font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
+  .ai-q-text { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--text); margin-bottom: 0.5rem; line-height: 1.3; }
+  .ai-q-hint { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; font-style: italic; }
+  .ai-opts { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ---- COMPLETE ---- */
+  #complete { background: var(--bg); justify-content: center; align-items: center; gap: 1rem; padding: 2rem; }
+  .complete-emoji { font-size: 64px; }
+  .complete-title { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--text); text-align: center; }
+  .complete-score { font-size: 15px; color: var(--muted); text-align: center; }
+  .complete-score span { color: var(--accent); font-weight: 500; }
+
+  /* ---- KEY HINT ---- */
+  .key-row { background: var(--surface); border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
+  .key-row strong { color: var(--accent); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div class="screen" id="home">
+  <div class="flag-stripe"></div>
+  <div class="home-header">
+    <h1>Lietuvių<br><em>Kalba</em></h1>
+    <p>A1 · A2 — Aprende lituano</p>
+  </div>
+  <div class="stats-row">
+    <div class="stat-pill"><div class="n" id="s-racha">0</div><div class="l">racha</div></div>
+    <div class="stat-pill"><div class="n" id="s-pts">0</div><div class="l">puntos</div></div>
+    <div class="stat-pill"><div class="n" id="s-pct">—</div><div class="l">precisión</div></div>
+  </div>
+  <div class="topics-label">Lecciones</div>
+  <div class="topics-grid" id="topics-grid"></div>
+  <button class="ai-btn" onclick="showAI()">
+    <span class="ai-icon">✦</span>
+    <div class="ai-text">
+      <div class="ai-title">Modo IA — preguntas infinitas</div>
+      <div class="ai-sub">Genera ejercicios nuevos con Claude</div>
+    </div>
+  </button>
+</div>
+
+<!-- QUIZ -->
+<div class="screen hidden" id="quiz">
+  <div class="quiz-top">
+    <button class="back-btn" onclick="goHome()">‹</button>
+    <div style="flex:1;">
+      <div class="prog-wrap">
+        <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+        <div class="prog-label"><span id="prog-txt">1/8</span></div>
+      </div>
+    </div>
+    <div class="hearts" id="hearts-display">♥♥♥</div>
+  </div>
+  <div class="quiz-body" id="quiz-body"></div>
+</div>
+
+<!-- FLASH -->
+<div class="screen hidden" id="flash">
+  <div class="flash-top">
+    <button class="back-btn" onclick="goHome()">‹</button>
+    <span style="font-size:14px;color:var(--muted);">Flashcards</span>
+  </div>
+  <div class="flash-body">
+    <div class="flash-counter" id="flash-counter">1 / 40</div>
+    <div class="flash-card" id="flash-card" onclick="revealCard()">
+      <div class="flash-cat" id="flash-cat"></div>
+      <div class="flash-lt" id="flash-lt"></div>
+      <div class="flash-es" id="flash-es"></div>
+      <div class="flash-tap">toca para continuar →</div>
+    </div>
+    <div class="flash-nav">
+      <button onclick="flashMove(-1)">← Anterior</button>
+      <button onclick="flashMove(1)">Siguiente →</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI SCREEN -->
+<div class="screen hidden" id="ai-screen">
+  <div class="ai-top">
+    <button class="back-btn" onclick="goHome()">‹</button>
+    <span style="font-size:14px;color:var(--accent);">✦ Modo IA</span>
+  </div>
+  <div class="ai-body">
+    <div class="ai-label">Nivel</div>
+    <div class="level-selector">
+      <div class="level-btn active" data-level="A1" onclick="selectLevel(this)">A1 Básico</div>
+      <div class="level-btn" data-level="A2" onclick="selectLevel(this)">A2 Elemental</div>
+      <div class="level-btn" data-level="mix" onclick="selectLevel(this)">A1+A2 Mix</div>
+    </div>
+    <div class="ai-label">Tema</div>
+    <div class="topic-selector" id="ai-chips"></div>
+    <div class="ai-label" style="margin-top:0.5rem;">Tu clave API de Claude</div>
+    <input type="password" id="api-key-input" placeholder="sk-ant-..." style="width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--text);margin-bottom:1.5rem;outline:none;font-family:'DM Sans',sans-serif;">
+    <div class="key-row">La clave se guarda <strong>solo en este dispositivo</strong> (localStorage). Nunca se envía a ningún servidor externo.</div>
+    <button class="gen-btn" id="gen-btn" onclick="generateAI()">Generar ejercicio ✦</button>
+    <div class="ai-result" id="ai-result"></div>
+  </div>
+</div>
+
+<!-- COMPLETE -->
+<div class="screen hidden" id="complete">
+  <div class="complete-emoji" id="complete-emoji">🎉</div>
+  <div class="complete-title" id="complete-title">¡Excelente!</div>
+  <div class="complete-score" id="complete-score"></div>
+  <button class="action-btn primary" style="max-width:300px;margin-top:1rem;" onclick="goHome()">Volver al inicio</button>
+  <button class="action-btn secondary" style="max-width:300px;margin-top:8px;" id="retry-btn">Repetir lección</button>
+</div>
+
+<script>
+// ============ DATA ============
+const TOPICS = [
+  { id:'greet', icon:'👋', name:'Saludos', color:'rgba(200,169,110,0.08)',
+    keys:['Labas! = Hola','Labas rytas! = Buenos días','Laba diena! = Buenas tardes','Labas vakaras! = Buenas noches','Labánaktis! = Buenas noches (despedida)','Iki! = Hasta luego (informal)','Viso gero! = Adiós','Sudie! = Adiós','Prašau = Por favor','Ačiū = Gracias','Atsiprašau = Perdona','Nieko tokio! = No pasa nada'],
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "Buenos días"?',hint:'Saludo matutino',ans:'Labas rytas!',opts:['Laba diena!','Labas rytas!','Labas vakaras!','Labánaktis!']},
+      {type:'mc',q:'¿Qué significa "Laba diena!"?',hint:'',ans:'Buenas tardes',opts:['Buenos días','Buenas noches','Buenas tardes','Hasta luego']},
+      {type:'mc',q:'"Sveikas" se usa para saludar a...',hint:'Género masculino singular',ans:'Un hombre',opts:['Una mujer','Un grupo mixto','Un hombre','Plural femenino']},
+      {type:'mc',q:'¿Cómo se dice "Adiós" (formal)?',hint:'',ans:'Viso gero!',opts:['Iki!','Sudie!','Viso gero!','Ate!']},
+      {type:'type',q:'Escribe "Por favor" en lituano:',hint:'',ans:'Prašau',accept:['prašau','prasau']},
+      {type:'mc',q:'"Ačiū" significa...',hint:'',ans:'Gracias',opts:['Por favor','Lo siento','Gracias','De nada']},
+      {type:'mc',q:'¿Qué significa "Atsiprašau"?',hint:'',ans:'Perdona / Lo siento',opts:['De nada','Gracias','Perdona / Lo siento','Hola']},
+      {type:'type',q:'¿Cómo se dice "Hasta luego" informal?',hint:'Muy corto',ans:'Iki',accept:['iki','iki!']}
+    ]
+  },
+  { id:'nums', icon:'🔢', name:'Números', color:'rgba(126,200,169,0.06)',
+    keys:['0=nulis','1=vienas','2=du(m)/dvi(f)','3=trys','4=keturi','5=penki','6=šeši','7=septyni','8=aštuoni','9=devyni','10=dešimt','11=vienuolika','12=dvylika','20=dvidešimt','100=šimtas','1000=tūkstantis'],
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "5"?',hint:'',ans:'penki',opts:['keturi','šeši','penki','trys']},
+      {type:'mc',q:'"Septyni" es el número...',hint:'',ans:'7',opts:['6','8','7','9']},
+      {type:'type',q:'¿Cómo se dice "3"?',hint:'',ans:'trys',accept:['trys']},
+      {type:'mc',q:'¿Cómo se dice "20"?',hint:'',ans:'dvidešimt',opts:['dešimt','vienuolika','dvidešimt','dvylika']},
+      {type:'mc',q:'"Dvylika" es el número...',hint:'',ans:'12',opts:['11','13','12','14']},
+      {type:'type',q:'¿Cómo se dice "1"?',hint:'Masculino',ans:'vienas',accept:['vienas']},
+      {type:'mc',q:'¿Cómo se dice "100"?',hint:'',ans:'šimtas',opts:['dešimt','šimtas','tūkstantis','dvidešimt']},
+      {type:'mc',q:'"Du" vs "dvi" — ¿cuándo se usa "dvi"?',hint:'Género',ans:'Femenino',opts:['Masculino','Femenino','Plural','Neutro']}
+    ]
+  },
+  { id:'pronouns', icon:'👤', name:'Pronombres', color:'rgba(169,126,200,0.06)',
+    keys:['Aš=Yo','Tu=Tú','Jis=Él','Ji=Ella','Mes=Nosotros','Jūs=Vosotros/Usted','Jie=Ellos','Jos=Ellas','MAN=a mí','TAU=a ti','JAM=a él','JAI=a ella'],
+    questions:[
+      {type:'mc',q:'"Jis" significa...',hint:'3ª persona singular',ans:'Él',opts:['Ella','Él','Nosotros','Ellos']},
+      {type:'mc',q:'¿Cuál es el pronombre para "nosotros"?',hint:'',ans:'Mes',opts:['Jūs','Jie','Mes','Jos']},
+      {type:'type',q:'¿Cómo se dice "yo" en lituano?',hint:'',ans:'Aš',accept:['aš','as']},
+      {type:'mc',q:'"Man patinka" — ¿qué caso es MAN?',hint:'Para la edad y gustos',ans:'Dativo (a mí)',opts:['Nominativo','Acusativo','Dativo (a mí)','Genitivo']},
+      {type:'mc',q:'"Jos" significa...',hint:'Plural',ans:'Ellas',opts:['Ella','Ellos','Ellas','Vosotras']},
+      {type:'mc',q:'¿Qué pronombre se usa con "patinka" para "a él"?',hint:'',ans:'Jam',opts:['Jis','Jo','Jam','Jai']},
+      {type:'mc',q:'"Jūs" puede significar...',hint:'Dos usos',ans:'Vosotros / Usted formal',opts:['Ellos','Vosotros / Usted formal','Nosotros','Ellas']},
+      {type:'type',q:'¿Cómo se dice "ella"?',hint:'',ans:'Ji',accept:['ji']}
+    ]
+  },
+  { id:'verbs', icon:'🔤', name:'Verbos', color:'rgba(200,126,126,0.06)',
+    keys:['BŪTI(ser/estar): esu,esi,yra,esame,esate,yra','TURĖTI(tener): turiu,turi,turi,turime,turite,turi','NORĖTI(querer): noriu,nori,nori,norime,norite,nori','GYVENTI(vivir): gyvenu,gyveni,gyvena,gyvename,gyvenate,gyvena','KALBĖTI(hablar): kalbu,kalbi,kalba,kalbame,kalbate,kalba'],
+    questions:[
+      {type:'mc',q:'"Aš ESU" significa...',hint:'BŪTI',ans:'Yo soy/estoy',opts:['Yo tengo','Yo quiero','Yo soy/estoy','Yo vivo']},
+      {type:'mc',q:'¿Cómo se conjuga NORĖTI para "nosotros"?',hint:'Queremos',ans:'Norime',opts:['Noriu','Nori','Norime','Norite']},
+      {type:'type',q:'Conjuga VALGYTI (comer) para "yo": Aš ___',hint:'',ans:'valgau',accept:['valgau']},
+      {type:'mc',q:'"Jis / Ji NORI" — ¿qué verbo es?',hint:'',ans:'NORĖTI',opts:['TURĖTI','NORĖTI','GYVENTI','KALBĖTI']},
+      {type:'mc',q:'¿Cómo se dice "Yo no tengo"?',hint:'Negación',ans:'Aš neturiu',opts:['Aš nori','Aš neturiu','Aš nesu','Aš negaliu']},
+      {type:'mc',q:'"Mes KALBAME" significa...',hint:'KALBĖTI',ans:'Nosotros hablamos',opts:['Vosotros habláis','Ellos hablan','Nosotros hablamos','Yo hablo']},
+      {type:'type',q:'¿Cómo se dice "yo vivo"?',hint:'GYVENTI',ans:'gyvenu',accept:['gyvenu','aš gyvenu']},
+      {type:'mc',q:'¿Cuál es la negación de "yra" (es/está)?',hint:'3ª persona',ans:'Nėra',opts:['Nesi','Nesu','Nėra','Nesame']}
+    ]
+  },
+  { id:'family', icon:'👨‍👩‍👧', name:'Familia', color:'rgba(200,169,110,0.06)',
+    keys:['Tėvas/Tėtis=Padre','Mama/Motina=Madre','Brolis=Hermano','Sesuo/Sesė=Hermana','Sūnus=Hijo','Duktė/Dukra=Hija','Močiutė=Abuela','Senelis=Abuelo','Dėdė=Tío','Teta=Tía','Vyras=Esposo/Hombre','Žmona=Esposa'],
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "hermano"?',hint:'',ans:'Brolis',opts:['Sesuo','Brolis','Sūnus','Dėdė']},
+      {type:'mc',q:'"Duktė" significa...',hint:'',ans:'Hija',opts:['Hijo','Hija','Hermana','Madre']},
+      {type:'type',q:'¿Cómo se dice "abuela"?',hint:'Diminutivo cariñoso',ans:'Močiutė',accept:['močiutė','mociute']},
+      {type:'mc',q:'¿Cuándo usas "Brolį" en vez de "Brolis"?',hint:'Casos gramaticales',ans:'Acusativo (¿a quién?)',opts:['Nominativo','Acusativo (¿a quién?)','Genitivo','Dativo']},
+      {type:'mc',q:'"Žmona" significa...',hint:'',ans:'Esposa',opts:['Esposo','Novia','Esposa','Amiga']},
+      {type:'type',q:'¿Cómo se dice "tío"?',hint:'',ans:'Dėdė',accept:['dėdė','dede']},
+      {type:'mc',q:'"Vyras" tiene dos significados:',hint:'',ans:'Hombre y esposo',opts:['Padre y tío','Hombre y esposo','Hijo y hermano','Amigo y novio']},
+      {type:'mc',q:'¿Cómo se dice "padres" (pl)?',hint:'',ans:'Tėvai',opts:['Tėvas','Tėvai','Tėvų','Tėvus']}
+    ]
+  },
+  { id:'colors', icon:'🎨', name:'Colores', color:'rgba(126,200,169,0.06)',
+    keys:['Raudona/as=Rojo','Mėlyna/as=Azul','Geltona/as=Amarillo','Balta/as=Blanco','Juoda/as=Negro','Žalia/ias=Verde','Violetinė/inis=Morado','Oranžinė/inis=Naranja','Ruda/as=Marrón','Pilka/as=Gris','Rožinė/inis=Rosa'],
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "rojo" (femenino)?',hint:'Los colores concuerdan en género',ans:'Raudona',opts:['Mėlyna','Geltona','Raudona','Žalia']},
+      {type:'mc',q:'"Žalias" es...',hint:'Masculino',ans:'Verde',opts:['Azul','Verde','Amarillo','Rojo']},
+      {type:'type',q:'¿Cómo se dice "blanco" (femenino)?',hint:'',ans:'Balta',accept:['balta']},
+      {type:'mc',q:'¿Cuál es el masculino de "Raudona"?',hint:'',ans:'Raudonas',opts:['Raudonė','Raudonai','Raudonas','Raudonos']},
+      {type:'mc',q:'"Pilka / Pilkas" es...',hint:'',ans:'Gris',opts:['Marrón','Gris','Naranja','Rosa']},
+      {type:'type',q:'¿Cómo se dice "azul" (femenino)?',hint:'',ans:'Mėlyna',accept:['mėlyna','melyna']},
+      {type:'mc',q:'¿Por qué "Šita mašina yra Mėlyna"?',hint:'Género de mašina',ans:'Mašina es femenino',opts:['Mašina es masculino','Mašina es femenino','Es un error','Es neutro']},
+      {type:'mc',q:'¿Cómo se dice "negro" (masculino)?',hint:'',ans:'Juodas',opts:['Juoda','Juodė','Juodas','Juodai']}
+    ]
+  },
+  { id:'time', icon:'📅', name:'Tiempo', color:'rgba(169,126,200,0.06)',
+    keys:['Pirmadienis=Lunes','Antradienis=Martes','Trečiadienis=Miércoles','Ketvirtadienis=Jueves','Penktadienis=Viernes','Šeštadienis=Sábado','Sekmadienis=Domingo','Šiandien=Hoy','Vakar=Ayer','Rytoj=Mañana','Rytas=Mañana(n)','Vakaras=Tarde/Noche'],
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "lunes"?',hint:'',ans:'Pirmadienis',opts:['Antradienis','Pirmadienis','Trečiadienis','Sekmadienis']},
+      {type:'mc',q:'"Penktadienis" es...',hint:'Quinto día',ans:'Viernes',opts:['Jueves','Sábado','Viernes','Miércoles']},
+      {type:'type',q:'¿Cómo se dice "domingo"?',hint:'',ans:'Sekmadienis',accept:['sekmadienis']},
+      {type:'mc',q:'"Vakar" significa...',hint:'',ans:'Ayer',opts:['Mañana','Hoy','Ayer','Ahora']},
+      {type:'mc',q:'¿Cuándo usas "Vasarą" (acusativo)?',hint:'',ans:'Para decir "durante el verano"',opts:['Para nombrar el verano','Para decir "durante el verano"','Para el genitivo','Para el dativo']},
+      {type:'mc',q:'"Sausis" es el mes de...',hint:'',ans:'Enero',opts:['Febrero','Enero','Marzo','Diciembre']},
+      {type:'mc',q:'¿Cómo preguntas la fecha?',hint:'',ans:'Kokia šiandien data?',opts:['Koks laikas?','Kokia šiandien data?','Kada?','Kur?']},
+      {type:'type',q:'¿Cómo se dice "hoy"?',hint:'',ans:'Šiandien',accept:['šiandien','siandien']}
+    ]
+  },
+  { id:'phrases', icon:'💬', name:'Frases', color:'rgba(200,169,110,0.06)',
+    keys:['Mano vardas=Mi nombre es','Aš esu iš=Soy de','Man patinka=Me gusta','Aš nesuprantu=No entiendo','Kiek tai kainuoja?=¿Cuánto cuesta?','Iš kur tu esi?=¿De dónde eres?','Kur tu gyveni?=¿Dónde vives?','Gerai=Bien/OK','Man reikia=Necesito'],
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "No entiendo"?',hint:'',ans:'Aš nesuprantu',opts:['Aš suprantu','Aš nesuprantu','Aš nekalbu','Aš nežinau']},
+      {type:'mc',q:'"Kiek tai kainuoja?" significa...',hint:'',ans:'¿Cuánto cuesta?',opts:['¿Dónde vives?','¿Cómo te llamas?','¿Cuánto cuesta?','¿Qué es esto?']},
+      {type:'type',q:'¿Cómo se dice "Sí"?',hint:'',ans:'Taip',accept:['taip']},
+      {type:'mc',q:'¿Cómo preguntas "¿De dónde eres?"?',hint:'',ans:'Iš kur tu esi?',opts:['Kur tu gyveni?','Kas tu esi?','Iš kur tu esi?','Koks tavo vardas?']},
+      {type:'mc',q:'"Man reikia" significa...',hint:'',ans:'Necesito',opts:['Me gusta','Tengo','Necesito','Quiero']},
+      {type:'mc',q:'¿Cómo se dice "Mi nombre es..."?',hint:'',ans:'Mano vardas yra...',opts:['Aš esu...','Mano vardas yra...','Mano pavardė...','Mano adresas...']},
+      {type:'type',q:'¿Cómo se dice "No"?',hint:'',ans:'Ne',accept:['ne']},
+      {type:'mc',q:'"Gerai" significa...',hint:'Respuesta positiva',ans:'Bien / OK',opts:['Mal','Bien / OK','No sé','Quizás']}
+    ]
+  },
+  { id:'routine', icon:'⏰', name:'Rutina', color:'rgba(126,200,169,0.06)',
+    keys:['Atsikelti=Levantarse','Pusryčiauti=Desayunar','Pietauti=Almorzar','Vakarieniauti=Cenar','Grįžti namo=Volver a casa','Eiti miegoti=Ir a dormir','Valgyti=Comer','Gerti=Beber','Gaminti=Cocinar','Dažnai=A menudo','Visada=Siempre','Niekada=Nunca'],
+    questions:[
+      {type:'mc',q:'"Atsikelti" significa...',hint:'Inicio del día',ans:'Levantarse',opts:['Acostarse','Levantarse','Desayunar','Trabajar']},
+      {type:'mc',q:'¿Cómo se dice "almorzar"?',hint:'',ans:'Pietauti',opts:['Pusryčiauti','Vakarieniauti','Pietauti','Valgyti']},
+      {type:'mc',q:'"Dažnai" significa...',hint:'Frecuencia',ans:'A menudo',opts:['Nunca','A veces','Siempre','A menudo']},
+      {type:'type',q:'Conjuga VALGYTI para "yo": Aš ___',hint:'',ans:'valgau',accept:['valgau']},
+      {type:'mc',q:'¿Cómo se dice "siempre"?',hint:'',ans:'Visada',opts:['Niekada','Kartais','Visada','Retai']},
+      {type:'mc',q:'"Rytas" / "Ryte" — ¿cuál es la diferencia?',hint:'Casos',ans:'Rytas es nominativo, Ryte es locativo (en la mañana)',opts:['Son iguales','Rytas es nominativo, Ryte es locativo (en la mañana)','Rytas es plural','Ryte es plural']},
+      {type:'mc',q:'¿Cómo preguntas "¿Cuándo?"?',hint:'',ans:'Kada?',opts:['Kur?','Kas?','Kada?','Kiek?']},
+      {type:'type',q:'¿Cómo se dice "nunca"?',hint:'',ans:'Niekada',accept:['niekada']}
+    ]
+  }
+];
+
+const FLASHCARDS = [
+  {lt:'Labas!',es:'¡Hola!',cat:'saludos'},{lt:'Labas rytas!',es:'Buenos días',cat:'saludos'},{lt:'Laba diena!',es:'Buenas tardes',cat:'saludos'},{lt:'Labas vakaras!',es:'Buenas noches',cat:'saludos'},{lt:'Labánaktis!',es:'Buenas noches (despedida)',cat:'saludos'},{lt:'Ačiū',es:'Gracias',cat:'básico'},{lt:'Prašau',es:'Por favor',cat:'básico'},{lt:'Atsiprašau',es:'Perdona',cat:'básico'},{lt:'Taip',es:'Sí',cat:'básico'},{lt:'Ne',es:'No',cat:'básico'},
+  {lt:'Aš esu',es:'Yo soy/estoy',cat:'verbos'},{lt:'Aš turiu',es:'Yo tengo',cat:'verbos'},{lt:'Aš gyvenu',es:'Yo vivo',cat:'verbos'},{lt:'Man patinka',es:'Me gusta',cat:'verbos'},{lt:'Aš noriu',es:'Yo quiero',cat:'verbos'},{lt:'Aš kalbu',es:'Yo hablo',cat:'verbos'},{lt:'Aš suprantu',es:'Yo entiendo',cat:'verbos'},{lt:'Aš einu',es:'Yo voy',cat:'verbos'},{lt:'Aš valgau',es:'Yo como',cat:'verbos'},{lt:'Aš miegu',es:'Yo duermo',cat:'verbos'},
+  {lt:'Tėvas / Tėtis',es:'Padre / Papá',cat:'familia'},{lt:'Mama / Motina',es:'Madre / Mamá',cat:'familia'},{lt:'Brolis',es:'Hermano',cat:'familia'},{lt:'Sesuo / Sesė',es:'Hermana',cat:'familia'},{lt:'Sūnus',es:'Hijo',cat:'familia'},{lt:'Duktė',es:'Hija',cat:'familia'},{lt:'Močiutė',es:'Abuela',cat:'familia'},{lt:'Senelis',es:'Abuelo',cat:'familia'},{lt:'Vyras',es:'Esposo / Hombre',cat:'familia'},{lt:'Žmona',es:'Esposa',cat:'familia'},
+  {lt:'Raudona/as',es:'Rojo/a',cat:'colores'},{lt:'Mėlyna/as',es:'Azul',cat:'colores'},{lt:'Žalia/ias',es:'Verde',cat:'colores'},{lt:'Geltona/as',es:'Amarillo/a',cat:'colores'},{lt:'Juoda/as',es:'Negro/a',cat:'colores'},{lt:'Balta/as',es:'Blanco/a',cat:'colores'},{lt:'Pilka/as',es:'Gris',cat:'colores'},
+  {lt:'Pirmadienis',es:'Lunes',cat:'tiempo'},{lt:'Penktadienis',es:'Viernes',cat:'tiempo'},{lt:'Sekmadienis',es:'Domingo',cat:'tiempo'},{lt:'Šiandien',es:'Hoy',cat:'tiempo'},{lt:'Vakar',es:'Ayer',cat:'tiempo'},{lt:'Rytoj',es:'Mañana',cat:'tiempo'},{lt:'Sausis',es:'Enero',cat:'tiempo'},{lt:'Gruodis',es:'Diciembre',cat:'tiempo'},
+  {lt:'Mano vardas yra...',es:'Mi nombre es...',cat:'frases'},{lt:'Aš esu iš...',es:'Soy de...',cat:'frases'},{lt:'Iš kur tu esi?',es:'¿De dónde eres?',cat:'frases'},{lt:'Kur tu gyveni?',es:'¿Dónde vives?',cat:'frases'},{lt:'Man reikia',es:'Necesito',cat:'frases'},{lt:'Aš nesuprantu',es:'No entiendo',cat:'frases'}
+];
+
+// ============ STATE ============
+let appState = JSON.parse(localStorage.getItem('lt_state') || '{"pts":0,"total":0,"correct":0,"racha":0,"done":[]}');
+let quiz = { topic:null, qs:[], idx:0, score:0, hearts:3, answered:false };
+let flashIdx = 0, flashRevealed = false;
+let aiLevel = 'A1', aiTopic = '';
+let aiAnswered = false, aiCorrect = null;
+
+function saveState() { localStorage.setItem('lt_state', JSON.stringify(appState)); }
+
+// ============ HOME ============
+function buildHome() {
+  document.getElementById('s-pts').textContent = appState.pts;
+  const pct = appState.total > 0 ? Math.round((appState.correct/appState.total)*100) + '%' : '—';
+  document.getElementById('s-pct').textContent = pct;
+  document.getElementById('s-racha').textContent = appState.racha;
+  const grid = document.getElementById('topics-grid');
+  grid.innerHTML = '';
+  TOPICS.forEach(t => {
+    const done = appState.done.includes(t.id);
+    const d = document.createElement('button');
+    d.className = 'topic-card' + (done ? ' done' : '');
+    d.style.setProperty('--card-color', t.color);
+    d.innerHTML = `<div class="dot"></div><span class="icon">${t.icon}</span><div class="name">${t.name}</div><div class="sub">${t.questions.length} ejercicios</div>`;
+    d.onclick = () => startTopic(t);
+    grid.appendChild(d);
+  });
+  // flashcard button
+  const fb = document.createElement('button');
+  fb.className = 'topic-card';
+  fb.innerHTML = `<span class="icon">📇</span><div class="name">Flashcards</div><div class="sub">${FLASHCARDS.length} palabras</div>`;
+  fb.onclick = startFlash;
+  grid.appendChild(fb);
+}
+
+// ============ QUIZ ============
+function startTopic(t) {
+  quiz.topic = t;
+  quiz.qs = shuffle([...t.questions]);
+  quiz.idx = 0; quiz.score = 0; quiz.hearts = 3; quiz.answered = false;
+  document.getElementById('retry-btn').onclick = () => startTopic(t);
+  showScreen('quiz');
+  renderQ();
+}
+
+function renderQ() {
+  const q = quiz.qs[quiz.idx];
+  const total = quiz.qs.length;
+  document.getElementById('prog-fill').style.width = ((quiz.idx/total)*100) + '%';
+  document.getElementById('prog-txt').textContent = (quiz.idx+1) + '/' + total;
+  document.getElementById('hearts-display').textContent = '♥'.repeat(quiz.hearts) + '♡'.repeat(3-quiz.hearts);
+  quiz.answered = false;
+  let html = `<div class="q-type-badge">${q.type === 'mc' ? '◉ opción múltiple' : '✎ escribe'}</div>`;
+  html += `<div class="q-main">${q.q}</div>`;
+  if (q.hint) html += `<div class="q-hint">${q.hint}</div>`;
+  if (q.type === 'mc') {
+    html += '<div class="options-grid">';
+    shuffle([...q.opts]).forEach(o => {
+      html += `<button class="opt" onclick="checkMC(this,'${esc(o)}','${esc(q.ans)}')">${o}</button>`;
+    });
+    html += '</div>';
+  } else {
+    html += `<div class="type-wrap"><input class="type-input" id="ti" placeholder="Escribe..." onkeydown="if(event.key==='Enter')checkType()"><br><br><button class="action-btn primary" id="chk-btn" onclick="checkType()">Comprobar</button></div>`;
+  }
+  html += `<div class="feedback-box" id="fb"></div>`;
+  html += `<button class="action-btn primary" id="nxt" style="display:none;margin-top:8px;" onclick="nextQ()">Siguiente →</button>`;
+  document.getElementById('quiz-body').innerHTML = html;
+  if (q.type === 'type') setTimeout(() => document.getElementById('ti')?.focus(), 200);
+}
+
+function esc(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+function checkMC(btn, chosen, ans) {
+  if (quiz.answered) return;
+  quiz.answered = true;
+  document.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === ans) b.classList.add('correct');
+    else if (b === btn && chosen !== ans) b.classList.add('wrong');
+  });
+  const ok = chosen === ans;
+  showFB(ok, ans);
+}
+
+function checkType() {
+  if (quiz.answered) return;
+  const ti = document.getElementById('ti');
+  if (!ti) return;
+  const val = ti.value.trim().toLowerCase();
+  const q = quiz.qs[quiz.idx];
+  const accepts = (q.accept || [q.ans]).map(a => a.toLowerCase());
+  const ok = accepts.some(a => val === a);
+  ti.disabled = true;
+  document.getElementById('chk-btn').disabled = true;
+  ti.classList.add(ok ? 'correct' : 'wrong');
+  quiz.answered = true;
+  showFB(ok, q.ans);
+}
+
+function showFB(ok, ans) {
+  if (ok) { quiz.score++; appState.pts += 10; appState.correct++; appState.racha++; }
+  else { quiz.hearts--; appState.racha = 0; }
+  appState.total++;
+  saveState();
+  const fb = document.getElementById('fb');
+  fb.className = 'feedback-box show ' + (ok ? 'ok' : 'bad');
+  fb.textContent = ok ? '¡Correcto! +10 pts' : 'Incorrecto. Era: ' + ans;
+  const nxt = document.getElementById('nxt');
+  if (nxt) nxt.style.display = 'block';
+  if (quiz.hearts <= 0) { setTimeout(()=> showComplete(false), 1200); }
+}
+
+function nextQ() {
+  quiz.idx++;
+  if (quiz.idx >= quiz.qs.length) showComplete(true);
+  else renderQ();
+}
+
+function showComplete(finished) {
+  const pct = Math.round((quiz.score/quiz.qs.length)*100);
+  if (finished && !appState.done.includes(quiz.topic.id)) appState.done.push(quiz.topic.id);
+  saveState();
+  const emojis = pct >= 80 ? '🎉' : pct >= 60 ? '👍' : '💪';
+  const msgs = pct >= 80 ? '¡Excelente trabajo!' : pct >= 60 ? '¡Buen intento!' : 'Sigue practicando';
+  document.getElementById('complete-emoji').textContent = emojis;
+  document.getElementById('complete-title').textContent = msgs;
+  document.getElementById('complete-score').innerHTML = `<span>${quiz.score}</span> de ${quiz.qs.length} correctas · <span>${pct}%</span>`;
+  showScreen('complete');
+}
+
+// ============ FLASH ============
+function startFlash() {
+  flashIdx = 0; flashRevealed = false;
+  showScreen('flash');
+  renderFlash();
+}
+
+function renderFlash() {
+  const f = FLASHCARDS[flashIdx];
+  document.getElementById('flash-counter').textContent = (flashIdx+1) + ' / ' + FLASHCARDS.length;
+  document.getElementById('flash-cat').textContent = f.cat.toUpperCase();
+  document.getElementById('flash-lt').textContent = f.lt;
+  document.getElementById('flash-es').textContent = f.es;
+  const card = document.getElementById('flash-card');
+  card.classList.remove('revealed');
+  flashRevealed = false;
+}
+
+function revealCard() {
+  if (!flashRevealed) {
+    document.getElementById('flash-card').classList.add('revealed');
+    flashRevealed = true;
+  } else {
+    flashMove(1);
+  }
+}
+
+function flashMove(d) {
+  flashIdx = (flashIdx + d + FLASHCARDS.length) % FLASHCARDS.length;
+  renderFlash();
+}
+
+// ============ AI ============
+function showAI() {
+  showScreen('ai-screen');
+  const stored = localStorage.getItem('lt_apikey') || '';
+  document.getElementById('api-key-input').value = stored;
+  const chips = document.getElementById('ai-chips');
+  chips.innerHTML = '';
+  ['Aleatorio',...TOPICS.map(t=>t.name)].forEach((n,i) => {
+    const c = document.createElement('div');
+    c.className = 'topic-chip' + (i===0?' active':'');
+    c.textContent = n;
+    c.onclick = () => { document.querySelectorAll('.topic-chip').forEach(x=>x.classList.remove('active')); c.classList.add('active'); aiTopic = i===0?'':n; };
+    chips.appendChild(c);
+  });
+  aiTopic = '';
+}
+
+function selectLevel(el) {
+  document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  aiLevel = el.dataset.level;
+}
+
+async function generateAI() {
+  const key = document.getElementById('api-key-input').value.trim();
+  if (!key) { alert('Ingresa tu clave API de Claude (sk-ant-...)'); return; }
+  localStorage.setItem('lt_apikey', key);
+  const btn = document.getElementById('gen-btn');
+  btn.disabled = true; btn.textContent = 'Generando...';
+  document.getElementById('ai-result').innerHTML = '<div class="loading-dots">✦ Claude está pensando...</div>';
+  aiAnswered = false;
+  const topicContext = aiTopic || 'cualquier tema de lituano A1/A2';
+  const levelNote = aiLevel === 'mix' ? 'A1 y A2' : aiLevel;
+  const prompt = `Eres un experto en lituano. Genera UNA pregunta de práctica de nivel ${levelNote} sobre el tema: ${topicContext}.
+
+Responde SOLO con JSON válido, sin texto adicional, sin markdown, sin bloques de código:
+{"type":"mc","question":"pregunta en español","hint":"pista corta o vacío","answer":"respuesta correcta en lituano o español según corresponda","options":["op1","op2","op3","op4"],"explanation":"explicación breve en español de por qué es correcto"}
+
+Las 4 opciones deben incluir la respuesta correcta. Varía el tipo de pregunta: traducción, completar conjugación, elegir la forma correcta, etc. El nivel ${levelNote} implica ${levelNote==='A1'?'vocabulario básico, saludos, números, presentación':'casos gramaticales, conjugaciones, frases más complejas'}.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'x-api-key': key, 'anthropic-version':'2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:600, messages:[{role:'user',content:prompt}] })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    const raw = data.content[0].text.trim();
+    const clean = raw.replace(/```json|```/g,'').trim();
+    const q = JSON.parse(clean);
+    renderAIQ(q);
+  } catch(e) {
+    document.getElementById('ai-result').innerHTML = `<div style="color:var(--danger);font-size:14px;padding:1rem;">Error: ${e.message}<br><br>Verifica tu clave API.</div>`;
+  }
+  btn.disabled = false; btn.textContent = 'Generar ejercicio ✦';
+}
+
+function renderAIQ(q) {
+  aiAnswered = false;
+  const opts = shuffle([...q.options]);
+  let html = `<div class="ai-q-card">
+    <div class="ai-q-top">✦ IA — ${aiLevel} · ${aiTopic||'Aleatorio'}</div>
+    <div class="ai-q-text">${q.question}</div>
+    ${q.hint ? `<div class="ai-q-hint">${q.hint}</div>` : ''}
+    <div class="ai-opts">`;
+  opts.forEach(o => {
+    html += `<button class="opt" onclick="checkAIOpt(this,'${esc(o)}','${esc(q.answer)}','${esc(q.explanation)}')">${o}</button>`;
+  });
+  html += `</div><div class="feedback-box" id="ai-fb"></div></div>`;
+  document.getElementById('ai-result').innerHTML = html;
+}
+
+function checkAIOpt(btn, chosen, ans, exp) {
+  if (aiAnswered) return;
+  aiAnswered = true;
+  document.querySelectorAll('#ai-result .opt').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === ans) b.classList.add('correct');
+    else if (b === btn && chosen !== ans) b.classList.add('wrong');
+  });
+  const ok = chosen === ans;
+  if (ok) { appState.pts += 15; appState.correct++; appState.racha++; }
+  else { appState.racha = 0; }
+  appState.total++;
+  saveState();
+  buildHome();
+  const fb = document.getElementById('ai-fb');
+  fb.className = 'feedback-box show ' + (ok?'ok':'bad');
+  fb.textContent = (ok?'¡Correcto! +15 pts — ':'Incorrecto. ') + exp;
+}
+
+// ============ NAV ============
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+function goHome() { buildHome(); showScreen('home'); }
+
+function shuffle(a) {
+  for (let i=a.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+// ============ INIT ============
+buildHome();
+showScreen('home');
+</script>
+</body>
+</html>
