@@ -133,6 +133,32 @@
   .complete-score span { color: var(--accent); font-weight: 500; }
   .key-row { background: var(--surface); border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
   .key-row strong { color: var(--accent); }
+
+  #pronun { background: var(--bg); }
+  .pronun-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
+  .pronun-body { flex: 1; overflow-y: auto; padding: 0 1.5rem 2rem; display: flex; flex-direction: column; align-items: center; }
+  .pronun-card { width: 100%; max-width: 420px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 24px; padding: 2rem 1.5rem 1.5rem; text-align: center; margin-bottom: 1.5rem; }
+  .pronun-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.75rem; }
+  .pronun-lt { font-family: 'DM Serif Display', serif; font-size: clamp(1.3rem, 5vw, 1.9rem); color: var(--text); line-height: 1.3; margin-bottom: 0.5rem; }
+  .pronun-es { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 1rem; }
+  .pronun-tip { font-size: 12px; color: rgba(200,169,110,0.8); background: rgba(200,169,110,0.08); border-radius: 8px; padding: 5px 10px; display: inline-block; }
+  .mic-btn { width: 76px; height: 76px; border-radius: 50%; border: 2px solid var(--accent); background: rgba(200,169,110,0.1); cursor: pointer; display: flex; align-items: center; justify-content: center; margin: 0.75rem auto; transition: all 0.2s; font-size: 30px; flex-shrink: 0; }
+  .mic-btn.listening { border-color: #c87e7e; background: rgba(200,126,126,0.15); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+  .mic-label { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 0.75rem; }
+  .heard-box { background: var(--surface2); border-radius: 12px; padding: 12px 14px; font-size: 15px; color: var(--text); min-height: 44px; text-align: center; margin-bottom: 1rem; width: 100%; max-width: 420px; }
+  .pronun-fb { border-radius: 14px; padding: 14px 16px; font-size: 14px; margin-bottom: 1rem; display: none; width: 100%; max-width: 420px; text-align: center; line-height: 1.5; }
+  .pronun-fb.show { display: block; }
+  .pronun-fb.ok { background: rgba(126,200,169,0.12); color: var(--success); border: 0.5px solid rgba(126,200,169,0.3); }
+  .pronun-fb.bad { background: rgba(200,126,126,0.12); color: var(--danger); border: 0.5px solid rgba(200,126,126,0.3); }
+  .pronun-fb.skip { background: rgba(200,169,110,0.1); color: var(--accent); border: 0.5px solid rgba(200,169,110,0.2); }
+  .pronun-actions { display: none; gap: 8px; width: 100%; max-width: 420px; }
+  .dg-setup { background: var(--surface); border: 0.5px solid var(--border); border-radius: 18px; padding: 1.5rem; width: 100%; max-width: 420px; margin-top: 0.5rem; }
+  .dg-setup p { font-size: 13px; color: var(--muted); margin-bottom: 1rem; line-height: 1.6; }
+  .dg-setup a { color: var(--accent); }
+  .dg-input { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--text); margin-bottom: 0.75rem; outline: none; font-family: 'DM Sans', sans-serif; }
+  .dg-input:focus { border-color: var(--accent); }
+
   ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
@@ -153,6 +179,13 @@
   </div>
   <div class="topics-label">Lecciones</div>
   <div class="topics-grid" id="topics-grid"></div>
+  <button class="ai-btn" onclick="showPronun()" style="margin-bottom:0.5rem;">
+    <span class="ai-icon">🎙️</span>
+    <div class="ai-text">
+      <div class="ai-title">Pronunciación — habla lituano</div>
+      <div class="ai-sub">Repite frases con reconocimiento de voz</div>
+    </div>
+  </button>
   <button class="ai-btn" onclick="showAI()">
     <span class="ai-icon">✦</span>
     <div class="ai-text">
@@ -216,6 +249,39 @@
     <div class="key-row">La clave se guarda <strong>solo en este dispositivo</strong> (localStorage). Nunca se envía a ningún servidor externo.</div>
     <button class="gen-btn" id="gen-btn" onclick="generateAI()">Generar ejercicio ✦</button>
     <div class="ai-result" id="ai-result"></div>
+  </div>
+</div>
+
+
+<div class="screen hidden" id="pronun">
+  <div class="pronun-top">
+    <button class="back-btn" onclick="goHome()">&#8249;</button>
+    <span style="font-size:14px;color:var(--muted);">&#127908; Pronunciación</span>
+    <span style="margin-left:auto;font-size:12px;color:var(--muted);" id="pronun-counter">1/10</span>
+  </div>
+  <div class="pronun-body">
+    <div style="width:100%;max-width:420px;margin-bottom:1.5rem;">
+      <div class="prog-bar"><div class="prog-fill" id="pronun-prog" style="width:0%"></div></div>
+    </div>
+    <div class="pronun-card" id="pronun-card" style="display:none;">
+      <div class="pronun-label" id="pronun-cat"></div>
+      <div class="pronun-lt" id="pronun-lt"></div>
+      <div class="pronun-es" id="pronun-es"></div>
+      <div class="pronun-tip" id="pronun-tip"></div>
+    </div>
+    <button class="mic-btn" id="mic-btn" onclick="toggleMic()" style="display:none;">&#127908;</button>
+    <div class="mic-label" id="mic-label" style="display:none;">Toca para hablar</div>
+    <div class="heard-box" id="heard-box" style="display:none;"></div>
+    <div class="pronun-fb" id="pronun-fb"></div>
+    <div class="pronun-actions" id="pronun-actions">
+      <button class="action-btn secondary" style="flex:1;" onclick="skipPronun()">Saltar</button>
+      <button class="action-btn primary" style="flex:2;" onclick="nextPronun()">Siguiente &#8594;</button>
+    </div>
+    <div class="dg-setup" id="dg-setup">
+      <p>Para pronunciación necesitás una clave API gratuita de <a href="https://deepgram.com" target="_blank">Deepgram</a> ($200 de crédito inicial gratis).</p>
+      <input class="dg-input" id="dg-key-input" type="password" placeholder="Clave API de Deepgram...">
+      <button class="action-btn primary" onclick="saveDGKey()" style="width:100%;">Guardar y empezar</button>
+    </div>
   </div>
 </div>
 
@@ -776,6 +842,222 @@ const FLASHCARDS = [
   {lt:'Iš + Genitivo',es:'De (origen)',extra:'Ej: iš Lietuvos',cat:'gramática'},
   {lt:'Į + Acusativo',es:'Hacia / A (destino)',extra:'Ej: į Lietuvą',cat:'gramática'}
 ];
+
+
+// ══════════════════════════════════════════════
+// PRONUNCIATION DATA & LOGIC
+// ══════════════════════════════════════════════
+const PRONUN_PHRASES = [
+  {lt:'Aš atsikeliu.',es:'Me levanto.',cat:'Rutina',tip:'at-si-KE-liu'},
+  {lt:'Aš pusryčiauju.',es:'Desayuno.',cat:'Rutina',tip:'pus-ry-ČIAU-ju'},
+  {lt:'Aš einu į darbą.',es:'Voy al trabajo.',cat:'Rutina',tip:'EI-nu į DAR-bą'},
+  {lt:'Aš pietauju.',es:'Almuerzo.',cat:'Rutina',tip:'pie-TAU-ju'},
+  {lt:'Aš grįžtu namo.',es:'Vuelvo a casa.',cat:'Rutina',tip:'GRĮŽ-tu NA-mo'},
+  {lt:'Aš vakarieniauju.',es:'Ceno.',cat:'Rutina',tip:'va-ka-rie-NIAU-ju'},
+  {lt:'Aš einu miegoti.',es:'Voy a dormir.',cat:'Rutina',tip:'EI-nu mie-GO-ti'},
+  {lt:'Aš gaminu maistą.',es:'Cocino comida.',cat:'Rutina',tip:'GA-mi-nu MAIS-tą'},
+  {lt:'Aš geriu kavą.',es:'Bebo café.',cat:'Rutina',tip:'GE-riu KA-vą'},
+  {lt:'Aš skaitau knygą.',es:'Leo un libro.',cat:'Rutina',tip:'SKAI-tau KNY-gą'},
+  {lt:'Aš šoku.',es:'Bailo.',cat:'Tiempo libre',tip:'ŠO-ku'},
+  {lt:'Aš plaukiu.',es:'Nado.',cat:'Tiempo libre',tip:'PLAU-kiu'},
+  {lt:'Aš žaidžiu futbolą.',es:'Juego fútbol.',cat:'Tiempo libre',tip:'ŽAIDŽ-iu fut-BO-lą'},
+  {lt:'Aš klausau muzikos.',es:'Escucho música.',cat:'Tiempo libre',tip:'KLAU-sau mu-ZI-kos'},
+  {lt:'Aš žiūriu filmus.',es:'Veo películas.',cat:'Tiempo libre',tip:'ŽIŪ-riu FIL-mus'},
+  {lt:'Aš sportuoju.',es:'Hago deporte.',cat:'Tiempo libre',tip:'spor-TUO-ju'},
+  {lt:'Aš vaikštau parke.',es:'Camino en el parque.',cat:'Tiempo libre',tip:'VAIK-štau PAR-ke'},
+  {lt:'Aš piešiu.',es:'Dibujo.',cat:'Tiempo libre',tip:'PIE-šiu'},
+  {lt:'Aš kalbu lietuviškai.',es:'Hablo lituano.',cat:'Verbos',tip:'KAL-bu lie-tu-VIŠ-kai'},
+  {lt:'Aš suprantu.',es:'Entiendo.',cat:'Verbos',tip:'su-PRAN-tu'},
+  {lt:'Aš noriu vandens.',es:'Quiero agua.',cat:'Verbos',tip:'NO-riu VAN-dens'},
+  {lt:'Aš turiu klausimą.',es:'Tengo una pregunta.',cat:'Verbos',tip:'TU-riu KLAU-si-mą'},
+  {lt:'Aš gyvenu Lietuvoje.',es:'Vivo en Lituania.',cat:'Verbos',tip:'gy-VE-nu lie-tu-VO-je'},
+  {lt:'Aš dirbu biure.',es:'Trabajo en oficina.',cat:'Verbos',tip:'DIR-bu BIU-re'},
+  {lt:'Aš moku lietuviškai.',es:'Sé lituano.',cat:'Verbos',tip:'MO-ku lie-tu-VIŠ-kai'},
+  {lt:'Kaip jūs vadinatės?',es:'¿Cómo se llama usted?',cat:'Preguntas',tip:'KAIP jūs va-di-NA-tės'},
+  {lt:'Iš kur tu esi?',es:'¿De dónde eres?',cat:'Preguntas',tip:'IŠ kur tu E-si'},
+  {lt:'Kur tu gyveni?',es:'¿Dónde vives?',cat:'Preguntas',tip:'KUR tu gy-VE-ni'},
+  {lt:'Kiek tau metų?',es:'¿Cuántos años tienes?',cat:'Preguntas',tip:'KIEK tau ME-tų'},
+  {lt:'Ar tu kalbi angliškai?',es:'¿Hablas inglés?',cat:'Preguntas',tip:'AR tu KAL-bi ang-LIŠ-kai'},
+  {lt:'Kaip sekasi?',es:'¿Cómo estás?',cat:'Preguntas',tip:'KAIP SE-ka-si'},
+  {lt:'Ką tu veiki?',es:'¿Qué haces?',cat:'Preguntas',tip:'KĄ tu VEI-ki'},
+  {lt:'Kur tu dirbi?',es:'¿Dónde trabajas?',cat:'Preguntas',tip:'KUR tu DIR-bi'}
+];
+
+let pronunSt = { phrases:[], idx:0, score:0, listening:false, mr:null, chunks:[], dgKey:'' };
+
+function normalizeText(s) {
+  return (s||'').toLowerCase()
+    .replace(/[āą]/g,'a').replace(/č/g,'c').replace(/[ėęe]/g,'e')
+    .replace(/[įi]/g,'i').replace(/š/g,'s').replace(/[ūų]/g,'u').replace(/ž/g,'z')
+    .replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
+}
+function lev(a,b){
+  const m=a.length,n=b.length,dp=[];
+  for(let i=0;i<=m;i++){dp[i]=[i];for(let j=1;j<=n;j++)dp[i][j]=i===0?j:0;}
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)
+    dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
+function flexScore(heard, expected) {
+  const h = normalizeText(heard), e = normalizeText(expected);
+  if (!h) return 0;
+  if (h === e) return 1;
+  const hw = h.split(' ').filter(Boolean), ew = e.split(' ').filter(Boolean);
+  if (!ew.length) return 0;
+  let matched = 0;
+  ew.forEach(w => { if (hw.some(hw2 => lev(hw2,w) <= Math.max(1, Math.floor(w.length*0.3)))) matched++; });
+  return matched / ew.length;
+}
+
+function showPronun() {
+  showScreen('pronun');
+  const key = localStorage.getItem('lt_dgkey') || '';
+  const setup = document.getElementById('dg-setup');
+  const card = document.getElementById('pronun-card');
+  const mic = document.getElementById('mic-btn');
+  const micLbl = document.getElementById('mic-label');
+  const heard = document.getElementById('heard-box');
+  if (!key) {
+    setup.style.display = 'block';
+    card.style.display = 'none'; mic.style.display = 'none';
+    micLbl.style.display = 'none'; heard.style.display = 'none';
+    document.getElementById('pronun-actions').style.display = 'none';
+    return;
+  }
+  pronunSt.dgKey = key;
+  startPronunSession();
+}
+
+function saveDGKey() {
+  const k = document.getElementById('dg-key-input').value.trim();
+  if (!k) { alert('Ingresa tu clave API de Deepgram'); return; }
+  localStorage.setItem('lt_dgkey', k);
+  pronunSt.dgKey = k;
+  startPronunSession();
+}
+
+function startPronunSession() {
+  document.getElementById('dg-setup').style.display = 'none';
+  document.getElementById('pronun-card').style.display = 'block';
+  document.getElementById('mic-btn').style.display = 'flex';
+  document.getElementById('mic-label').style.display = 'block';
+  document.getElementById('heard-box').style.display = 'block';
+  pronunSt.phrases = shuffle([...PRONUN_PHRASES]).slice(0,10);
+  pronunSt.idx = 0; pronunSt.score = 0;
+  renderPronun();
+}
+
+function renderPronun() {
+  const p = pronunSt.phrases[pronunSt.idx];
+  const total = pronunSt.phrases.length;
+  document.getElementById('pronun-counter').textContent = (pronunSt.idx+1)+'/'+total;
+  document.getElementById('pronun-prog').style.width = ((pronunSt.idx/total)*100)+'%';
+  document.getElementById('pronun-cat').textContent = p.cat;
+  document.getElementById('pronun-lt').textContent = p.lt;
+  document.getElementById('pronun-es').textContent = p.es;
+  document.getElementById('pronun-tip').textContent = '🔊 '+p.tip;
+  document.getElementById('heard-box').textContent = '...';
+  document.getElementById('pronun-fb').className = 'pronun-fb';
+  document.getElementById('pronun-actions').style.display = 'none';
+  const mb = document.getElementById('mic-btn');
+  mb.classList.remove('listening');
+  mb.innerHTML = '🎙️';
+  document.getElementById('mic-label').textContent = 'Toca para hablar';
+}
+
+async function toggleMic() {
+  if (pronunSt.listening) { stopRec(); return; }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    pronunSt.chunks = [];
+    pronunSt.mr = new MediaRecorder(stream);
+    pronunSt.mr.ondataavailable = e => { if(e.data.size>0) pronunSt.chunks.push(e.data); };
+    pronunSt.mr.onstop = sendToDG;
+    pronunSt.mr.start();
+    pronunSt.listening = true;
+    const mb = document.getElementById('mic-btn');
+    mb.classList.add('listening'); mb.innerHTML = '⏹️';
+    document.getElementById('mic-label').textContent = 'Grabando... toca para parar';
+    document.getElementById('heard-box').textContent = '🎤 Escuchando...';
+    pronunSt.timer = setTimeout(()=>{ if(pronunSt.listening) stopRec(); }, 6000);
+  } catch(e) {
+    document.getElementById('heard-box').textContent = 'No se pudo acceder al micrófono: '+e.message;
+  }
+}
+
+function stopRec() {
+  clearTimeout(pronunSt.timer);
+  if(pronunSt.mr && pronunSt.mr.state!=='inactive'){
+    pronunSt.mr.stop();
+    pronunSt.mr.stream.getTracks().forEach(t=>t.stop());
+  }
+  pronunSt.listening = false;
+  const mb = document.getElementById('mic-btn');
+  mb.classList.remove('listening'); mb.innerHTML = '⏳';
+  document.getElementById('mic-label').textContent = 'Procesando...';
+}
+
+async function sendToDG() {
+  const blob = new Blob(pronunSt.chunks, {type:'audio/webm'});
+  try {
+    const res = await fetch('https://api.deepgram.com/v1/listen?language=lt&model=nova-2', {
+      method:'POST',
+      headers:{'Authorization':'Token '+pronunSt.dgKey,'Content-Type':'audio/webm'},
+      body: blob
+    });
+    const data = await res.json();
+    const t = data?.results?.channels?.[0]?.alternatives?.[0]?.transcript || '';
+    handleHeard(t);
+  } catch(e) {
+    document.getElementById('heard-box').textContent = 'Error de conexión';
+    document.getElementById('mic-btn').innerHTML = '🎙️';
+    document.getElementById('mic-label').textContent = 'Intentá de nuevo';
+  }
+}
+
+function handleHeard(heard) {
+  const p = pronunSt.phrases[pronunSt.idx];
+  document.getElementById('heard-box').textContent = heard || '(sin audio detectado)';
+  document.getElementById('mic-btn').innerHTML = '🎙️';
+  document.getElementById('mic-label').textContent = 'Intentá de nuevo';
+  const score = flexScore(heard, p.lt);
+  const fb = document.getElementById('pronun-fb');
+  if (score >= 0.65) {
+    fb.className = 'pronun-fb show ok';
+    fb.textContent = score >= 0.9 ? '¡Perfecto! 🎉 +20 pts' : '¡Bien dicho! 👍 ('+Math.round(score*100)+'% — +20 pts)';
+    pronunSt.score++; appState.pts += 20; appState.correct++; appState.racha++;
+  } else if (score > 0) {
+    fb.className = 'pronun-fb show bad';
+    fb.textContent = 'Casi! ('+Math.round(score*100)+'%) Escuchaste: "'+heard+'" — esperado: "'+p.lt+'"';
+    appState.racha = 0;
+  } else {
+    fb.className = 'pronun-fb show bad';
+    fb.textContent = 'No se detectó nada. Verificá tu micrófono e intentá de nuevo.';
+  }
+  appState.total++; saveState(); buildHome();
+  document.getElementById('pronun-actions').style.display = 'flex';
+}
+
+function skipPronun() {
+  const fb = document.getElementById('pronun-fb');
+  fb.className = 'pronun-fb show skip';
+  fb.textContent = 'Saltado — era: "'+pronunSt.phrases[pronunSt.idx].lt+'"';
+  document.getElementById('pronun-actions').style.display = 'flex';
+}
+
+function nextPronun() {
+  pronunSt.idx++;
+  if (pronunSt.idx >= pronunSt.phrases.length) {
+    const pct = Math.round((pronunSt.score/pronunSt.phrases.length)*100);
+    document.getElementById('complete-emoji').textContent = pct>=70?'🎙️🎉':'🎙️💪';
+    document.getElementById('complete-title').textContent = pct>=70?'¡Gran pronunciación!':'¡Seguí practicando!';
+    document.getElementById('complete-score').innerHTML = '<span>'+pronunSt.score+'</span> de '+pronunSt.phrases.length+' frases · <span>'+pct+'%</span>';
+    document.getElementById('retry-btn').onclick = showPronun;
+    showScreen('complete');
+  } else {
+    renderPronun();
+  }
+}
 
 let appState = JSON.parse(localStorage.getItem('lt_state2') || '{"pts":0,"total":0,"correct":0,"racha":0,"done":[]}');
 let quiz = { topic:null, qs:[], idx:0, score:0, hearts:3, answered:false };
