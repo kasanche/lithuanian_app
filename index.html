@@ -1347,24 +1347,36 @@ function renderQ() {
   const total = quiz.qs.length;
   document.getElementById('prog-fill').style.width = ((quiz.idx/total)*100) + '%';
   document.getElementById('prog-txt').textContent = (quiz.idx+1) + '/' + total;
-  document.getElementById('hearts-display').textContent = '♥'.repeat(quiz.hearts) + '♡'.repeat(3-quiz.hearts);
+  document.getElementById('hearts-display').textContent = '\u2665'.repeat(quiz.hearts) + '\u2661'.repeat(3-quiz.hearts);
   quiz.answered = false;
-  let html = `<div class="q-type-badge">${q.type==='mc'?'◉ opción múltiple':q.type==='fill'?'✏️ completar':'✎ escribe'}</div>`;
-  html += `<div class="q-main">${q.q}</div>`;
-  if (q.hint) html += `<div class="q-hint">${q.hint}</div>`;
-  if (q.type === 'mc') {
+
+  var badgeLabel = q.type==='mc' ? '&#9673; opci\u00f3n m\u00faltiple' : q.type==='fill' ? '&#9999;&#65039; completar' : '&#9998; escribe';
+  var qText = q.type==='fill' ? q.q.replace('___', '<span class="fill-blank" id="fill-blank">___</span>') : q.q;
+  var html = '<div class="q-type-badge">' + badgeLabel + '</div>';
+  html += '<div class="q-main">' + qText + '</div>';
+  if (q.hint) html += '<div class="q-hint">' + q.hint + '</div>';
+
+  if (q.type === 'mc' || q.type === 'fill') {
+    var checkFn = q.type === 'fill' ? 'checkFill' : 'checkMC';
+    var ansArg = q.type === 'fill' ? esc(q.blank) : esc(q.ans);
     html += '<div class="options-grid">';
-    shuffle([...q.opts]).forEach(o => {
-      html += `<button class="opt" onclick="checkMC(this,'${esc(o)}','${esc(q.ans)}')">${o}</button>`;
+    shuffle([...q.opts]).forEach(function(o) {
+      html += '<button class="opt" onclick="' + checkFn + '(this,\'' + esc(o) + '\',\'' + ansArg + '\')">' + o + '</button>';
     });
     html += '</div>';
   } else {
-    html += `<div class="type-wrap"><input class="type-input" id="ti" placeholder="Escribe aquí..." onkeydown="if(event.key==='Enter')checkType()"><br><br><button class="action-btn primary" id="chk-btn" onclick="checkType()">Comprobar</button></div>`;
+    html += '<div class="type-wrap">';
+        html += '<input class="type-input" id="ti" placeholder="Escribe aqu\u00ed..." onkeydown="handleTypeKey(event)">';
+    html += '<br><br>';
+    html += '<button class="action-btn primary" id="chk-btn" onclick="checkType()">Comprobar</button>';
+    html += '</div>';
   }
-  html += `<div class="feedback-box" id="fb"></div>`;
-  html += `<button class="action-btn primary" id="nxt" style="display:none;margin-top:8px;" onclick="nextQ()">Siguiente →</button>`;
+  html += '<div class="feedback-box" id="fb"></div>';
+  html += '<button class="action-btn primary" id="nxt" style="display:none;margin-top:8px;" onclick="nextQ()">Siguiente \u2192</button>';
   document.getElementById('quiz-body').innerHTML = html;
-  if (q.type === 'type') setTimeout(() => document.getElementById('ti')?.focus(), 200);
+  if (q.type === 'type') {
+    setTimeout(function() { var ti = document.getElementById('ti'); if(ti) ti.focus(); }, 200);
+  }
 }
 
 function esc(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
@@ -1380,16 +1392,19 @@ function checkMC(btn, chosen, ans) {
   showFB(chosen === ans, ans);
 }
 
+function handleTypeKey(e){if(e.key==='Enter')checkType();}
 function checkType() {
   if (quiz.answered) return;
-  const ti = document.getElementById('ti');
-  if (!ti) return;
-  const val = ti.value.trim().toLowerCase();
-  const q = quiz.qs[quiz.idx];
-  const accepts = (q.accept || [q.ans]).map(a => a.toLowerCase());
-  const ok = accepts.some(a => val === a);
+  var ti = document.getElementById('ti');
+  var chkBtn = document.getElementById('chk-btn');
+  if (!ti) { console.log('no ti element'); return; }
+  var val = ti.value.trim().toLowerCase();
+  if (!val) { ti.focus(); return; }
+  var q = quiz.qs[quiz.idx];
+  var accepts = (q.accept || [q.ans]).map(function(a){ return a.toLowerCase(); });
+  var ok = accepts.some(function(a){ return val === a; });
   ti.disabled = true;
-  document.getElementById('chk-btn').disabled = true;
+  if (chkBtn) chkBtn.disabled = true;
   ti.classList.add(ok ? 'correct' : 'wrong');
   quiz.answered = true;
   showFB(ok, q.ans);
