@@ -159,6 +159,8 @@
   .dg-input { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--text); margin-bottom: 0.75rem; outline: none; font-family: 'DM Sans', sans-serif; }
   .dg-input:focus { border-color: var(--accent); }
 
+
+  .fill-blank { display: inline-block; min-width: 100px; border-bottom: 2px solid var(--accent); margin: 0 4px; text-align: center; font-weight: 500; color: var(--accent); padding: 0 8px; }
   ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
@@ -734,6 +736,246 @@ const TOPICS = [
       {type:'mc',q:'"Kada tu gimei?" — "Aš gimiau _____ mėnesį"',hint:'En el mes de...',ans:'Gegužės (mayo, ej.)',opts:['Gegužė','Gegužės (mayo, ej.)','Gegužei','Gegužę']}
     ]
   }
+
+  ,{ id:'fill_practice', icon:'✏️', name:'Completar frases', color:'rgba(255,200,100,0.07)',
+    questions:[
+      {type:'fill',q:'Aš ___ iš Costa Rica.',blank:'esu',hint:'verbo ser/estar (yo)',opts:['esu','esi','esame','yra']},
+      {type:'fill',q:'Mano ___ yra Karen.',blank:'vardas',hint:'mi ___ es Karen',opts:['vardas','pavardė','adresas','numeris']},
+      {type:'fill',q:'___ tau metų?',blank:'Kiek',hint:'¿Cuántos ___ tienes?',opts:['Kiek','Kas','Kur','Kada']},
+      {type:'fill',q:'Man ___ kava.',blank:'patinka',hint:'me gusta el café',opts:['patinka','reikia','noriu','turiu']},
+      {type:'fill',q:'Aš gyvenu ___.',blank:'Lietuvoje',hint:'Vivo en Lituania (locativo)',opts:['Lietuvoje','Lietuva','Lietuvos','Lietuvą']},
+      {type:'fill',q:'Jis ___ lietuvis.',blank:'yra',hint:'Él ___ lituano',opts:['yra','esu','esi','esame']},
+      {type:'fill',q:'___ tu gyveni?',blank:'Kur',hint:'¿___ vives?',opts:['Kur','Kas','Kada','Kodėl']},
+      {type:'fill',q:'Aš ___ kavą.',blank:'geriu',hint:'Yo bebo café (GERTI)',opts:['geriu','valgau','noriu','turiu']},
+      {type:'fill',q:'Ji ___ Vilniuje.',blank:'gyvena',hint:'Ella vive en Vilnius',opts:['gyvena','gyvenu','gyveni','gyvenate']},
+      {type:'fill',q:'Mes ___ lietuviškai.',blank:'kalbame',hint:'Nosotros hablamos lituano',opts:['kalbame','kalbu','kalbi','kalba']},
+      {type:'fill',q:'___ tu esi?',blank:'Iš kur',hint:'¿De dónde eres?',opts:['Iš kur','Kas tu','Kur tu','Kodėl tu']},
+      {type:'fill',q:'Man ___ vandens.',blank:'reikia',hint:'Necesito agua',opts:['reikia','patinka','noriu','turiu']},
+      {type:'fill',q:'Aš ___ į darbą.',blank:'einu',hint:'Voy al trabajo (EITI)',opts:['einu','važiuoju','skubu','grįžtu']},
+      {type:'fill',q:'Jūs ___ angliškai?',blank:'kalbate',hint:'¿Vosotros habláis inglés?',opts:['kalbate','kalbame','kalba','kalbu']},
+      {type:'fill',q:'Tai ___ mano draugas.',blank:'yra',hint:'Este ___ mi amigo',opts:['yra','esu','esi','esame']},
+      {type:'fill',q:'Aš ___ studentė.',blank:'esu',hint:'Yo soy estudiante (f)',opts:['esu','esi','yra','esame']},
+      {type:'fill',q:'___ tu dirbi?',blank:'Kur',hint:'¿Dónde trabajas?',opts:['Kur','Kas','Kiek','Kodėl']},
+      {type:'fill',q:'Jis ___ trisdešimt metų.',blank:'turi',hint:'Él tiene 30 años — NO se usa turi, se usa dativo',opts:['turi','JAM — dativo','yra','esu']},
+      {type:'fill',q:'Aš ___ pietus.',blank:'valgau',hint:'Como el almuerzo (VALGYTI)',opts:['valgau','geriu','gaminu','noriu']},
+      {type:'fill',q:'Ji ___ į kinas.',blank:'eina',hint:'Ella va al cine (EITI)',opts:['eina','einu','einame','einate']},
+      {type:'fill',q:'Man ___ šokoladas.',blank:'patinka',hint:'Me gusta el chocolate',opts:['patinka','reikia','noriu','mėgstu']},
+      {type:'fill',q:'Mes ___ Kaune.',blank:'gyvename',hint:'Vivimos en Kaunas',opts:['gyvename','gyvenu','gyveni','gyvena']},
+      {type:'fill',q:'Aš ___ kavą ryte.',blank:'geriu',hint:'Bebo café en la mañana',opts:['geriu','valgau','gaminu','noriu']},
+      {type:'fill',q:'Koks ___ vardas?',blank:'tavo',hint:'¿Cuál es tu nombre? (informal)',opts:['tavo','jūsų','mano','jo']},
+      {type:'fill',q:'Aš ___ namo.',blank:'grįžtu',hint:'Vuelvo a casa (GRĮŽTI)',opts:['grįžtu','einu','važiuoju','bėgu']},
+      {type:'fill',q:'Jie ___ lietuviškai.',blank:'kalba',hint:'Ellos hablan lituano',opts:['kalba','kalbame','kalbate','kalbu']},
+      {type:'fill',q:'___ sekasi?',blank:'Kaip',hint:'¿Cómo estás?',opts:['Kaip','Kas','Kur','Kiek']},
+      {type:'fill',q:'Aš ___ restorane.',blank:'dirbu',hint:'Trabajo en un restaurante (DIRBTI)',opts:['dirbu','gyvenu','einu','noriu']},
+      {type:'fill',q:'Ji ___ laiminga.',blank:'yra',hint:'Ella está feliz',opts:['yra','esu','esi','esame']},
+      {type:'fill',q:'Mums ___ lietuvių kalba.',blank:'patinka',hint:'Nos gusta el idioma lituano',opts:['patinka','reikia','norime','turime']}
+    ]
+  }
+  ,{ id:'possessives', icon:'👆', name:'Posesivos', color:'rgba(169,126,200,0.07)',
+    questions:[
+      {type:'mc',q:'"Mano" significa...',hint:'Posesivo',ans:'Mi / mío',opts:['Tu / tuyo','Mi / mío','Su / suyo','Nuestro']},
+      {type:'mc',q:'"Tavo" se usa con...',hint:'',ans:'Tú (informal)',opts:['Yo','Tú (informal)','Él/Ella','Vosotros']},
+      {type:'mc',q:'¿Cuál es el posesivo "su" de ella (JI)?',hint:'',ans:'Jos',opts:['Jo','Jos','Jų','Jūsų']},
+      {type:'mc',q:'¿Cuál es el posesivo "su" de él (JIS)?',hint:'',ans:'Jo',opts:['Jo','Jos','Jam','Jų']},
+      {type:'mc',q:'"Mūsų" significa...',hint:'',ans:'Nuestro/a',opts:['Vuestro/a','Su (de ellos)','Nuestro/a','Mi']},
+      {type:'mc',q:'"Jūsų" significa...',hint:'Formal o plural',ans:'Vuestro / Su (formal)',opts:['Mi','Tu','Nuestro','Vuestro / Su (formal)']},
+      {type:'mc',q:'"Jų" es el posesivo de...',hint:'',ans:'Jie/Jos (ellos/ellas)',opts:['Jis','Ji','Jie/Jos (ellos/ellas)','Jūs']},
+      {type:'fill',q:'___ vardas yra Tomas.',blank:'Jo',hint:'Su nombre (de él) es Tomas',opts:['Jo','Jos','Jų','Jūsų']},
+      {type:'fill',q:'___ vardas yra Sara.',blank:'Jos',hint:'Su nombre (de ella) es Sara',opts:['Jos','Jo','Jų','Jūsų']},
+      {type:'mc',q:'"Šitas yra mano brolis" — ¿qué significa "mano"?',hint:'',ans:'Mi (posesivo de yo)',opts:['Tu','Mi (posesivo de yo)','Su','Nuestro']},
+      {type:'mc',q:'¿Cómo se dice "tu casa" (informal)?',hint:'',ans:'Tavo namai',opts:['Mano namai','Tavo namai','Jo namai','Jūsų namai']},
+      {type:'mc',q:'¿Cómo se dice "nuestro amigo"?',hint:'',ans:'Mūsų draugas',opts:['Mano draugas','Tavo draugas','Mūsų draugas','Jūsų draugas']},
+      {type:'fill',q:'___ automobilis yra žalias.',blank:'Mano',hint:'Mi coche es verde',opts:['Mano','Tavo','Jo','Jų']},
+      {type:'mc',q:'"Jų namai yra Vilniuje" significa...',hint:'',ans:'Su casa (de ellos) está en Vilnius',opts:['Nuestra casa está en Vilnius','Tu casa está en Vilnius','Su casa (de ellos) está en Vilnius','Mi casa está en Vilnius']},
+      {type:'mc',q:'¿Cuál es el posesivo de "Mes" (nosotros)?',hint:'',ans:'Mūsų',opts:['Mano','Tavo','Mūsų','Jūsų']},
+      {type:'fill',q:'"___ pavardė yra Mockevičius." (de él)',blank:'Jo',hint:'Su apellido (de él)',opts:['Jo','Jos','Mano','Tavo']},
+      {type:'mc',q:'¿Cómo se dice "su teléfono" (de ella)?',hint:'',ans:'Jos telefonas',opts:['Jo telefonas','Jos telefonas','Jų telefonas','Mūsų telefonas']},
+      {type:'mc',q:'"Tavo draugas" significa...',hint:'',ans:'Tu amigo (informal)',opts:['Mi amigo','Tu amigo (informal)','Su amigo','Nuestro amigo']},
+      {type:'fill',q:'Čia ___ sesuo.',blank:'mano',hint:'Esta es mi hermana',opts:['mano','tavo','jo','jų']},
+      {type:'mc',q:'¿Cómo se dice "vuestro profesor" (formal)?',hint:'',ans:'Jūsų mokytojas',opts:['Mūsų mokytojas','Tavo mokytojas','Jūsų mokytojas','Jo mokytojas']},
+      {type:'mc',q:'Para decir "Su nombre es..." (de él): ',hint:'',ans:'Jo vardas yra...',opts:['Jis vardas yra...','Jo vardas yra...','Jam vardas yra...','Jį vardas yra...']},
+      {type:'fill',q:'___ mama gyvena Kaune.',blank:'Mūsų',hint:'Nuestra mamá vive en Kaunas',opts:['Mūsų','Jūsų','Mano','Jo']},
+      {type:'mc',q:'"Jos pavardė" vs "Jų pavardė" — diferencia:',hint:'',ans:'Jos = de ella (sing), Jų = de ellos/ellas (pl)',opts:['Son iguales','Jos = de ella (sing), Jų = de ellos/ellas (pl)','Jos es formal','Jų es informal']},
+      {type:'mc',q:'¿Cómo preguntas "¿Cuál es tu apellido?" (formal)?',hint:'',ans:'Kokia jūsų pavardė?',opts:['Kokia tavo pavardė?','Kokia jūsų pavardė?','Kas jūsų pavardė?','Koks jūsų pavardė?']},
+      {type:'fill',q:'___ brolis yra inžinierius.',blank:'Tavo',hint:'Tu hermano es ingeniero',opts:['Tavo','Mano','Jos','Mūsų']},
+      {type:'mc',q:'"Mano" nunca cambia porque...',hint:'',ans:'Los posesivos lituanos son invariables (no concuerdan)',opts:['Es una excepción','Los posesivos lituanos son invariables (no concuerdan)','Solo se usa con masculino','Es un error']},
+      {type:'mc',q:'¿Cómo se dice "el trabajo de ella"?',hint:'',ans:'Jos darbas',opts:['Jai darbas','Ji darbas','Jos darbas','Jų darbas']},
+      {type:'fill',q:'___ šeima yra didelė.',blank:'Jų',hint:'Su familia (de ellos) es grande',opts:['Jų','Mūsų','Jūsų','Jo']},
+      {type:'mc',q:'"Savo" se usa cuando...',hint:'Reflexivo',ans:'El sujeto y el poseedor son la misma persona',opts:['Siempre con 3ª persona','El sujeto y el poseedor son la misma persona','Solo en plural','Solo con mano']},
+      {type:'mc',q:'"Jis gyvena su savo drauge" significa...',hint:'Savo = reflexivo',ans:'Él vive con su (propia) novia',opts:['Él vive con su novia (otra persona)','Él vive con su (propia) novia','Ellos viven con su novia','Ella vive con su novio']}
+    ]
+  }
+  ,{ id:'introduce', icon:'🤝', name:'Presentar personas', color:'rgba(126,200,169,0.07)',
+    questions:[
+      {type:'mc',q:'"Čia mano draugas Tomas" significa...',hint:'',ans:'Este es mi amigo Tomas',opts:['Este es mi hermano Tomas','Este es mi amigo Tomas','Esta es mi amiga Tomas','Tomas es mi novio']},
+      {type:'mc',q:'Para decir "Su nombre es Sara" (de ella) usas:',hint:'Posesivo de Ji',ans:'Jos vardas yra Sara',opts:['Ji vardas yra Sara','Jos vardas yra Sara','Jai vardas yra Sara','Jų vardas yra Sara']},
+      {type:'mc',q:'"JAI 37" significa...',hint:'Edad en dativo',ans:'Ella tiene 37 años',opts:['Ella es 37','Ella tiene 37 años','A ella le gustan los 37','Ella vive 37 años']},
+      {type:'fill',q:'Čia mano brolis. ___ vardas yra Jonny.',blank:'Jo',hint:'Su nombre (de él)',opts:['Jo','Jos','Jų','Jam']},
+      {type:'mc',q:'¿Cómo presentas a tu hermana?',hint:'',ans:'Čia mano sesuo.',opts:['Tai mano sesuo yra.','Čia mano sesuo.','Čia yra sesuo mano.','Mano sesuo čia yra.']},
+      {type:'fill',q:'Šitas yra mano draugas. ___ yra lietuvis.',blank:'Jis',hint:'Él es lituano (nominativo)',opts:['Jis','Jo','Jam','Jį']},
+      {type:'mc',q:'"JAI patinka žiūrėti televizorių" significa...',hint:'',ans:'A ella le gusta ver televisión',opts:['Ella ve televisión','A ella le gusta ver televisión','Ella quiere ver televisión','Le gusta la televisión']},
+      {type:'mc',q:'Para decir la edad de ella usas...',hint:'Dativo',ans:'JAI (a ella)',opts:['JI (ella)','JOS (su/de ella)','JAI (a ella)','Jį']},
+      {type:'fill',q:'Čia mano mama. ___ vardas yra Isabel.',blank:'Jos',hint:'Su nombre (de ella)',opts:['Jos','Jo','Jų','Joms']},
+      {type:'mc',q:'"JIS gyvena Berlyne su savo drauge" — ¿qué indica "savo"?',hint:'Reflexivo',ans:'Con su propia novia (de él)',opts:['Con la novia de otro','Con su propia novia (de él)','Con nuestra novia','Con tu novia']},
+      {type:'mc',q:'¿Cómo dices "A él le gustan los loros"?',hint:'PATIKTI + dativo',ans:'Jam patinka papūgos',opts:['Jis patinka papūgos','Jo patinka papūgos','Jam patinka papūgos','Jį patinka papūgos']},
+      {type:'fill',q:'Čia mano draugas. ___ 33 metai.',blank:'Jam',hint:'Él tiene 33 años (dativo)',opts:['Jam','Jis','Jo','Jį']},
+      {type:'mc',q:'Para presentar a alguien decís "Čia..." o...',hint:'',ans:'Šitas/Šita yra...',opts:['Tas/Ta yra...','Šitas/Šita yra...','Anas/Ana yra...','Kur yra...']},
+      {type:'mc',q:'"JOS / JO" se usan para...',hint:'',ans:'Su (posesivo de ella/él)',opts:['A ella/a él (dativo)','Su (posesivo de ella/él)','Ella/él (nominativo)','A ellas/ellos (dativo)']},
+      {type:'mc',q:'"JAI / JAM" se usan para...',hint:'',ans:'A ella / A él (dativo)',opts:['Su (posesivo)','A ella / A él (dativo)','Ella / Él (nominativo)','De ella / De él (genitivo)']},
+      {type:'fill',q:'Čia mano draugė. ___ patinka šokti.',blank:'Jai',hint:'A ella le gusta bailar',opts:['Jai','Ji','Jos','Joms']},
+      {type:'mc',q:'¿Cómo se dice "Este es mi novio"?',hint:'',ans:'Čia mano vaikinas.',opts:['Čia mano vyras.','Čia mano draugas.','Čia mano vaikinas.','Šitas mano draugas yra.']},
+      {type:'mc',q:'Para decir "Ella vive en Bristol" usas...',hint:'KUR? — locativo',ans:'Ji gyvena Bristolyje.',opts:['Ji gyvena Bristolą.','Ji gyvena Bristolyje.','Ji gyvena Bristolo.','Ji gyvena į Bristolą.']},
+      {type:'fill',q:'Čia mano tėvas. ___ patinka žvejoti.',blank:'Jam',hint:'A él le gusta pescar',opts:['Jam','Jis','Jo','Jį']},
+      {type:'mc',q:'"JI / JIS" se usan como...',hint:'',ans:'Sujeto de la oración (nominativo)',opts:['Objeto (acusativo)','Sujeto de la oración (nominativo)','Posesivo','Dativo']},
+      {type:'mc',q:'¿Cómo presentas a tus padres?',hint:'',ans:'Čia mano tėvai.',opts:['Čia mano tėvas ir mama.','Čia mano tėvai.','Abi son correctas','Čia yra mano tėvai.']},
+      {type:'fill',q:'Šita yra mano draugė. ___ vardas yra Laura.',blank:'Jos',hint:'Su nombre (de ella)',opts:['Jos','Jo','Jų','Jūsų']},
+      {type:'mc',q:'¿Cómo dices "A ella le gusta el k-pop"?',hint:'',ans:'Jai patinka k-popas.',opts:['Ji patinka k-popas.','Jos patinka k-popas.','Jai patinka k-popas.','Jį patinka k-popas.']},
+      {type:'mc',q:'Para introducir a alguien a un grupo:',hint:'',ans:'Leiskite pristatyti...',opts:['Čia yra...','Leiskite pristatyti...','Šitas/Šita...','Ambas Čia y Šitas son correctas']},
+      {type:'fill',q:'Čia mano kolega. ___ dirba su manimi.',blank:'Jis',hint:'Él trabaja conmigo',opts:['Jis','Jo','Jam','Jį']},
+      {type:'mc',q:'Socialinė padėtis — "Bedarbis/Bedarbė" significa:',hint:'',ans:'Desempleado/a',opts:['Jubilado/a','Estudiante','Desempleado/a','Trabajador/a']},
+      {type:'mc',q:'"Studentas/Studentė" significa...',hint:'',ans:'Estudiante universitario/a',opts:['Alumno de colegio','Estudiante universitario/a','Profesor/a','Trabajador/a']},
+      {type:'mc',q:'"Pensininkas/Pensininkė" significa...',hint:'',ans:'Jubilado/a',opts:['Desempleado/a','Trabajador/a','Jubilado/a','Estudiante']},
+      {type:'fill',q:'Aš esu ___. (Soy estudiante universitaria, femenino)',blank:'studentė',hint:'',opts:['studentė','mokinė','mokytoja','darbininkė']},
+      {type:'mc',q:'"Darbininkas/Darbininkė" significa...',hint:'',ans:'Trabajador/a (manual)',opts:['Jefe/a','Trabajador/a (manual)','Empleado de oficina','Empresario/a']}
+    ]
+  }
+  ,{ id:'couple_phrases', icon:'💑', name:'Frases con tu novio', color:'rgba(200,126,169,0.07)',
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "Te quiero/amo"?',hint:'',ans:'Aš tave myliu.',opts:['Aš tave noriu.','Aš tave myliu.','Man patinka tu.','Aš tave mėgstu.']},
+      {type:'mc',q:'"Ar nori kur nors eiti šį vakarą?" significa...',hint:'',ans:'¿Quieres ir a algún lugar esta noche?',opts:['¿Puedes ir a algún lugar?','¿Quieres ir a algún lugar esta noche?','¿Dónde quieres ir esta noche?','¿Fuiste a algún lugar esta noche?']},
+      {type:'fill',q:'Aš ___ tave.',blank:'myliu',hint:'Te amo (MYLĖTI)',opts:['myliu','noriu','turiu','geriu']},
+      {type:'mc',q:'¿Cómo se dice "Eres muy importante para mí"?',hint:'',ans:'Tu man labai svarbus/svarbi.',opts:['Tu man labai svarbus/svarbi.','Tu esi geras/gera.','Man patinki tu.','Tu esi mano.']},
+      {type:'mc',q:'"Aš pasiilgau tavęs" significa...',hint:'',ans:'Te extrañé / te eché de menos',opts:['Te quiero','Te extrañé / te eché de menos','Me alegro de verte','Gracias por todo']},
+      {type:'fill',q:'Tu man labai ___.',blank:'patinki',hint:'Me gustas mucho (PATIKTI, tú→ man)',opts:['patinki','patinka','patinku','patinkate']},
+      {type:'mc',q:'¿Cómo se dice "¿Qué quieres comer hoy?"?',hint:'',ans:'Ką nori valgyti šiandien?',opts:['Kur nori eiti šiandien?','Ką nori valgyti šiandien?','Kada valgome šiandien?','Kas yra šiandien?']},
+      {type:'mc',q:'"Einame valgyti" significa...',hint:'',ans:'Vamos a comer',opts:['Comamos aquí','Vamos a comer','Quiero comer','Comemos juntos']},
+      {type:'fill',q:'___ vakarieniaujame kartu?',blank:'Ar',hint:'¿Cenamos juntos? (Ar = partícula de pregunta)',opts:['Ar','Kas','Kur','Kada']},
+      {type:'mc',q:'¿Cómo se dice "Estoy cansado/a"?',hint:'',ans:'Aš esu pavargęs/pavargusi.',opts:['Aš esu laimingas/laiminga.','Aš esu pavargęs/pavargusi.','Man blogai.','Aš esu liūdnas/liūdna.']},
+      {type:'mc',q:'"Ar galime kartu žiūrėti filmą?" significa...',hint:'',ans:'¿Podemos ver una película juntos?',opts:['¿Cuándo vemos una película?','¿Podemos ver una película juntos?','¿Qué película vemos?','¿Te gusta ver películas?']},
+      {type:'fill',q:'Aš ___ laimingas/laiminga su tavimi.',blank:'esu',hint:'Soy feliz contigo',opts:['esu','noriu','turiu','myliu']},
+      {type:'mc',q:'¿Cómo se dice "Buenas noches, amor"?',hint:'',ans:'Labánaktis, meile.',opts:['Labánaktis, draugas.','Labánaktis, meile.','Labas vakaras, meile.','Viso gero, meile.']},
+      {type:'mc',q:'"Praleiskime savaitgalį kartu" significa...',hint:'',ans:'Pasemos el fin de semana juntos',opts:['Trabajemos juntos el finde','Pasemos el fin de semana juntos','¿Tienes planes el finde?','El finde estoy ocupado/a']},
+      {type:'fill',q:'Man ___ tavo šypsena.',blank:'patinka',hint:'Me gusta tu sonrisa',opts:['patinka','reikia','noriu','myliu']},
+      {type:'mc',q:'¿Cómo se dice "¿Puedo ayudarte?"?',hint:'',ans:'Ar galiu tau padėti?',opts:['Ar noriu tau padėti?','Ar galiu tau padėti?','Ar reikia tau pagalbos?','Abi b y c son correctas']},
+      {type:'mc',q:'"Su tavimi viskas gerai" significa...',hint:'',ans:'Contigo todo está bien',opts:['Sin ti todo está bien','Contigo todo está bien','Todo va bien hoy','Eres muy bueno/a']},
+      {type:'fill',q:'Einame ___ restoraną.',blank:'į',hint:'Vamos al restaurante (į + acusativo)',opts:['į','iš','su','ant']},
+      {type:'mc',q:'¿Cómo se dice "Te extraño"?',hint:'En presente',ans:'Aš pasiilgstu tavęs.',opts:['Aš pasiilgau tavęs.','Aš pasiilgstu tavęs.','Aš noriu tavęs.','Man trūksta tavęs.']},
+      {type:'mc',q:'"Kartu" significa...',hint:'',ans:'Juntos',opts:['Aquí','Ahora','Juntos','También']},
+      {type:'fill',q:'Tu esi mano ___ žmogus.',blank:'mylimas/mylima',hint:'Eres mi persona amada (m/f)',opts:['mylimas/mylima','geras/gera','laimingas/laiminga','svarbus/svarbi']},
+      {type:'mc',q:'¿Cómo se dice "¿Cómo estuvo tu día?"?',hint:'',ans:'Kaip buvo tavo diena?',opts:['Kaip yra tavo diena?','Kaip buvo tavo diena?','Ką veikei šiandien?','Kur buvai šiandien?']},
+      {type:'mc',q:'"Aš esu laimingas/laiminga su tavimi" — ¿qué caso es "tavimi"?',hint:'',ans:'Instrumental (su + instr.)',opts:['Acusativo','Dativo','Genitivo','Instrumental (su + instr.)']},
+      {type:'fill',q:'___ noriu praleisti su tavimi.',blank:'Laiką',hint:'Quiero pasar el tiempo contigo (laikas = tiempo, acusativo)',opts:['Laiką','Laikas','Laiko','Laiku']},
+      {type:'mc',q:'¿Cómo se dice "Feliz aniversario"?',hint:'',ans:'Laimingos sukaktuvės!',opts:['Su gimtadieniu!','Laimingos sukaktuvės!','Laimingų metų!','Su šventėmis!']},
+      {type:'mc',q:'"Myliu tave" vs "Aš tave myliu" — diferencia:',hint:'',ans:'Ninguna — el orden es flexible en lituano',opts:['La primera es más formal','Ninguna — el orden es flexible en lituano','La segunda es incorrecta','Solo la primera es correcta']},
+      {type:'fill',q:'Aš esu pavargusi, bet ___ su tavimi.',blank:'laiminga',hint:'Estoy cansada pero feliz contigo',opts:['laiminga','laimingas','laimingos','laimingi']},
+      {type:'mc',q:'¿Cómo se dice "¿Qué hacemos hoy?"?',hint:'',ans:'Ką mes šiandien veiksime?',opts:['Ką mes vakar veikėme?','Ką mes šiandien veiksime?','Kur mes šiandien eisime?','Kaip mes šiandien gyvensime?']},
+      {type:'mc',q:'"Meile" significa...',hint:'',ans:'Amor (sustantivo)',opts:['Querido/a (adj)','Amor (sustantivo)','Amiga','Te quiero (verbo)']},
+      {type:'mc',q:'¿Cómo se dice "Gracias por todo"?',hint:'',ans:'Ačiū už viską.',opts:['Ačiū labai.','Ačiū už viską.','Labai dėkoju.','Abi a y c son correctas']}
+    ]
+  }
+  ,{ id:'leisure', icon:'🎯', name:'Leisure activities', color:'rgba(100,200,255,0.07)',
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "tocar la guitarra"?',hint:'GROTI',ans:'Groti gitara',opts:['Skambinti gitara','Groti gitara','Žaisti gitara','Daryti gitara']},
+      {type:'mc',q:'"Aš šoku" — ŠOKTI significa...',hint:'',ans:'Bailar',opts:['Nadar','Bailar','Correr','Saltar']},
+      {type:'fill',q:'Aš ___ į sporto klubą tris kartus per savaitę.',blank:'einu',hint:'Voy al gym 3 veces por semana',opts:['einu','važiuoju','skubu','grįžtu']},
+      {type:'mc',q:'¿Cómo se dice "jugar al baloncesto"?',hint:'',ans:'Žaisti krepšinį',opts:['Žaisti futbolą','Žaisti krepšinį','Žaisti tenisą','Žaisti rankinį']},
+      {type:'mc',q:'"Aš plaukiu" — PLAUKTI significa...',hint:'',ans:'Nadar',opts:['Volar','Nadar','Correr','Saltar']},
+      {type:'fill',q:'Man patinka ___ serialus.',blank:'žiūrėti',hint:'Me gusta ver series (ŽIŪRĖTI)',opts:['žiūrėti','klausyti','skaityti','žaisti']},
+      {type:'mc',q:'¿Cómo se dice "ir al cine"?',hint:'',ans:'Eiti į kiną',opts:['Eiti į restoraną','Eiti į kiną','Eiti į parduotuvę','Eiti į kavinę']},
+      {type:'mc',q:'"Aš piešiu" — PIEŠTI significa...',hint:'',ans:'Dibujar',opts:['Pintar paredes','Dibujar','Escribir','Colorear']},
+      {type:'mc',q:'¿Cuántos veces por semana? "Tris ___ per savaitę"',hint:'',ans:'kartus',opts:['kartą','kartus','kartai','kartų']},
+      {type:'fill',q:'Aš žaidžiu ___ penktadieniais.',blank:'futbolą',hint:'Juego fútbol los viernes (acusativo)',opts:['futbolą','futbolas','futbolo','futbolui']},
+      {type:'mc',q:'"Einame į diskoteką" significa...',hint:'',ans:'Vamos a la discoteca',opts:['Vamos al cine','Vamos a la discoteca','Vamos al parque','Vamos al restaurante']},
+      {type:'mc',q:'¿Cómo se dice "leer" en lituano?',hint:'',ans:'Skaityti',opts:['Rašyti','Skaityti','Kalbėti','Klausyti']},
+      {type:'fill',q:'Man patinka ___ muzikos.',blank:'klausyti',hint:'Me gusta escuchar música (KLAUSYTI + genitivo)',opts:['klausyti','žiūrėti','skaityti','groti']},
+      {type:'mc',q:'"Sporto klubas" significa...',hint:'',ans:'Gimnasio / club deportivo',opts:['Campo de fútbol','Gimnasio / club deportivo','Piscina','Parque']},
+      {type:'mc',q:'¿Cómo se dice "Me gusta correr"?',hint:'BĖGIOTI',ans:'Man patinka bėgioti.',opts:['Aš bėgu labai.','Man patinka bėgioti.','Man reikia bėgioti.','Aš noriu bėgti.']},
+      {type:'fill',q:'Aš groju ___ vakarais.',blank:'gitara',hint:'Toco guitarra por las noches (instrumental)',opts:['gitara','gitarą','gitaros','gitarai']},
+      {type:'mc',q:'"Ką tau patinka daryti savaitgalį?" significa...',hint:'',ans:'¿Qué te gusta hacer el fin de semana?',opts:['¿Qué haces el fin de semana?','¿Qué te gusta hacer el fin de semana?','¿Con quién salís el finde?','¿Cuándo salís?']},
+      {type:'mc',q:'¿Cómo se dice "cocinar pasteles"?',hint:'',ans:'Kepti pyragus',opts:['Gaminti pyragus','Kepti pyragus','Daryti pyragus','Virti pyragus']},
+      {type:'fill',q:'Aš ___ krepšinį su draugais.',blank:'žaidžiu',hint:'Juego baloncesto con amigos (ŽAISTI)',opts:['žaidžiu','žaidi','žaidžia','žaidžiame']},
+      {type:'mc',q:'"Vaikštau parke" — VAIKŠČIOTI significa...',hint:'',ans:'Caminar / pasear',opts:['Correr','Caminar / pasear','Andar en bici','Saltar']},
+      {type:'mc',q:'¿Cómo se dice "escuchar música"?',hint:'Verbo + caso',ans:'Klausyti muzikos',opts:['Klausyti muzika','Klausyti muzikos','Klausyti muziką','Klausyti muzikų']},
+      {type:'mc',q:'"Pirmą kartą" significa...',hint:'',ans:'La primera vez',opts:['Por primera vez hoy','La primera vez','Una vez por semana','La vez anterior']},
+      {type:'fill',q:'Kokias dienas tu eini į ___ ?',blank:'sporto klubą',hint:'¿Qué días vas al gym? (acusativo)',opts:['sporto klubą','sporto klubas','sporto klube','sporto klubo']},
+      {type:'mc',q:'"Man patinka skaityti knygas" — ¿qué caso es "knygas"?',hint:'',ans:'Acusativo (KĄ?)',opts:['Nominativo','Acusativo (KĄ?)','Genitivo','Locativo']},
+      {type:'mc',q:'¿Cómo se dice "hacer deporte"?',hint:'',ans:'Sportuoti',opts:['Daryti sportą','Žaisti sportą','Sportuoti','Eiti į sportą']},
+      {type:'fill',q:'Aš ___ į parką kiekvieną dieną.',blank:'vaikštau',hint:'Camino al parque cada día (VAIKŠČIOTI)',opts:['vaikštau','einu','bėgu','važiuoju']},
+      {type:'mc',q:'"Tinklinis" es...',hint:'Deporte',ans:'Voleibol',opts:['Tenis','Voleibol','Balonmano','Baloncesto']},
+      {type:'mc',q:'¿Cómo se dice "¿Cuántas veces por semana vas al gym?"',hint:'',ans:'Kiek kartų per savaitę eini į sporto klubą?',opts:['Kada eini į sporto klubą?','Kiek kartų per savaitę eini į sporto klubą?','Kur eini sportuoti?','Ar eini į sporto klubą?']},
+      {type:'fill',q:'Man patinka žaisti ___ su draugais.',blank:'šachmatais',hint:'Me gusta jugar ajedrez (šachmatai)',opts:['šachmatais','šachmatus','šachmatų','šachmatai']},
+      {type:'mc',q:'"Rankinis" es...',hint:'Deporte de equipo',ans:'Balonmano',opts:['Baloncesto','Tenis','Balonmano','Voleibol']}
+    ]
+  }
+  ,{ id:'verb_conjugations', icon:'🔀', name:'Conjugaciones', color:'rgba(255,150,100,0.07)',
+    questions:[
+      {type:'fill',q:'BŪTI — Aš ___, Tu esi, Jis/Ji yra',blank:'esu',hint:'Yo soy/estoy',opts:['esu','esi','yra','esame']},
+      {type:'fill',q:'TURĖTI — Mes ___, Jūs turite, Jie turi',blank:'turime',hint:'Nosotros tenemos',opts:['turime','turiu','turi','turite']},
+      {type:'fill',q:'NORĖTI — Tu ___, Jis nori, Mes norime',blank:'nori',hint:'Tú quieres',opts:['nori','noriu','norime','norite']},
+      {type:'fill',q:'GYVENTI — Jis/Ji ___, Mes gyvename, Jūs gyvenate',blank:'gyvena',hint:'Él/Ella vive',opts:['gyvena','gyvenu','gyveni','gyvename']},
+      {type:'fill',q:'KALBĖTI — Jūs ___, Jie kalba, Aš kalbu',blank:'kalbate',hint:'Vosotros habláis',opts:['kalbate','kalbame','kalba','kalbu']},
+      {type:'fill',q:'EITI — Mes ___, Jūs einate, Jie eina',blank:'einame',hint:'Nosotros vamos',opts:['einame','einu','eini','eina']},
+      {type:'fill',q:'VALGYTI — Tu ___, Jis valgo, Mes valgome',blank:'valgai',hint:'Tú comes',opts:['valgai','valgau','valgo','valgome']},
+      {type:'fill',q:'GERTI — Jie/Jos ___, Mes geriame, Jūs geriate',blank:'geria',hint:'Ellos/ellas beben',opts:['geria','geriu','geri','geriame']},
+      {type:'fill',q:'DIRBTI — Jis/Ji ___, Mes dirbame, Jūs dirbate',blank:'dirba',hint:'Él/Ella trabaja',opts:['dirba','dirbu','dirbi','dirbame']},
+      {type:'fill',q:'MIEGOTI — Aš ___, Tu miegi, Jis miega',blank:'miegu',hint:'Yo duermo',opts:['miegu','miegi','miega','miegame']},
+      {type:'fill',q:'SKAITYTI — Jūs ___, Jie skaito, Aš skaitau',blank:'skaitote',hint:'Vosotros leéis',opts:['skaitote','skaitome','skaito','skaitau']},
+      {type:'fill',q:'RAŠYTI — Mes ___, Jūs rašote, Jie rašo',blank:'rašome',hint:'Nosotros escribimos',opts:['rašome','rašau','rašai','rašo']},
+      {type:'fill',q:'ŠOKTI — Tu ___, Jis šoka, Mes šokame',blank:'šoki',hint:'Tú bailas',opts:['šoki','šoku','šoka','šokame']},
+      {type:'fill',q:'PLAUKTI — Aš ___, Tu plauki, Jis plaukia',blank:'plaukiu',hint:'Yo nado',opts:['plaukiu','plauki','plaukia','plaukiame']},
+      {type:'fill',q:'VAŽIUOTI — Jis/Ji ___, Mes važiuojame, Jūs važiuojate',blank:'važiuoja',hint:'Él/Ella va (en transporte)',opts:['važiuoja','važiuoju','važiuoji','važiuojame']},
+      {type:'fill',q:'GAMINTI — Aš ___, Tu gamini, Jis gamina',blank:'gaminu',hint:'Yo cocino',opts:['gaminu','gamini','gamina','gaminame']},
+      {type:'fill',q:'SKAMBINTI — Jūs ___, Jie skambina, Mes skambiname',blank:'skambinate',hint:'Vosotros llamáis (por teléfono)',opts:['skambinate','skambiname','skambina','skambinu']},
+      {type:'fill',q:'MOKYTIS — Aš ___, Tu mokaisi, Jis mokosi',blank:'mokausi',hint:'Yo estudio/aprendo (reflexivo)',opts:['mokausi','mokaisi','mokosi','mokomės']},
+      {type:'fill',q:'GRĮŽTI — Mes ___, Jūs grįžtate, Jie grįžta',blank:'grįžtame',hint:'Nosotros volvemos',opts:['grįžtame','grįžtu','grįžti','grįžta']},
+      {type:'fill',q:'SUPRASTI — Tu ___, Jis supranta, Mes suprantame',blank:'supranti',hint:'Tú entiendes',opts:['supranti','suprantu','supranta','suprantame']},
+      {type:'mc',q:'¿Cuál es la conjugación correcta de ŽAISTI para "ellos"?',hint:'',ans:'žaidžia',opts:['žaidžiu','žaidi','žaidžia','žaidžiame']},
+      {type:'mc',q:'¿Cuál es la conjugación de KEPTI (hornear) para "nosotros"?',hint:'',ans:'kepame',opts:['kepu','kepi','kepa','kepame']},
+      {type:'mc',q:'El pasado de BŪTI (ser/estar) para "él/ella" es...',hint:'',ans:'buvo',opts:['buvau','buvai','buvo','buvome']},
+      {type:'mc',q:'El pasado de KALBĖTI para "yo" es...',hint:'',ans:'kalbėjau',opts:['kalbėjau','kalbėjai','kalbėjo','kalbėjome']},
+      {type:'mc',q:'El pasado de GYVENTI para "nosotros" es...',hint:'',ans:'gyvenome',opts:['gyvenau','gyvenai','gyveno','gyvenome']},
+      {type:'fill',q:'LAUKTI — Aš ___, Tu lauki, Jis laukia',blank:'laukiu',hint:'Yo espero (LAUKTI)',opts:['laukiu','lauki','laukia','laukiame']},
+      {type:'fill',q:'DARYTI — Jis/Ji ___, Mes darome, Jūs darote',blank:'daro',hint:'Él/Ella hace',opts:['daro','darau','darai','darome']},
+      {type:'mc',q:'¿Cuál es la negación de "jis turi" (él tiene)?',hint:'',ans:'jis neturi',opts:['jis nori','jis neturi','jis neturiu','jis turima']},
+      {type:'mc',q:'ATEITI (venir/llegar) para "yo" es...',hint:'Similar a EITI',ans:'ateinu',opts:['ateiu','ateinu','ateiną','ateinau']},
+      {type:'mc',q:'¿Cuál es la diferencia entre EITI y VAŽIUOTI?',hint:'',ans:'EITI = ir a pie, VAŽIUOTI = ir en transporte',opts:['Son sinónimos','EITI = ir a pie, VAŽIUOTI = ir en transporte','EITI es formal, VAŽIUOTI informal','VAŽIUOTI solo para coches']}
+    ]
+  }
+  ,{ id:'conversation', icon:'💭', name:'Conversaciones', color:'rgba(126,169,200,0.07)',
+    questions:[
+      {type:'mc',q:'Alguien dice: "Labas! Koks tavo vardas?" — ¿qué respondés?',hint:'',ans:'Mano vardas yra Karen.',opts:['Gerai, ačiū.','Mano vardas yra Karen.','Aš esu iš Costa Rica.','Man 30 metų.']},
+      {type:'mc',q:'Alguien dice: "Iš kur tu esi?" — ¿qué respondés?',hint:'',ans:'Aš esu iš Costa Rica.',opts:['Aš gyvenu Heredioje.','Aš esu iš Costa Rica.','Man patinka Costa Rica.','Aš dirbu Heredioje.']},
+      {type:'mc',q:'Te preguntan: "Kiek tau metų?" — ¿qué respondés?',hint:'Dativo + número + metų',ans:'Man 30 metų.',opts:['Aš esu 30 metai.','Aš turiu 30 metų.','Man 30 metų.','Aš 30 metai esu.']},
+      {type:'mc',q:'Alguien dice: "Kaip sekasi?" — ¿qué respondés?',hint:'',ans:'Ačiū, gerai. O tau?',opts:['Mano vardas Karen.','Ačiū, gerai. O tau?','Aš esu Costa Rica.','Ne, ačiū.']},
+      {type:'fill',q:'— Ar tu kalbi lietuviškai? — Taip, ___ truputį.',blank:'kalbu',hint:'Sí, hablo un poco',opts:['kalbu','kalbame','kalba','kalbate']},
+      {type:'mc',q:'Querés pedir la cuenta en un restaurante. Decís:',hint:'',ans:'Prašau sąskaitą.',opts:['Ačiū už viską.','Prašau sąskaitą.','Kiek tai kainuoja?','Noriu valgyti.']},
+      {type:'mc',q:'En una tienda te preguntan "Ar galiu jums padėti?" — ¿qué significa?',hint:'',ans:'¿Puedo ayudarle?',opts:['¿Qué quiere comprar?','¿Puedo ayudarle?','¿Cuánto vale?','¿Tiene algo más barato?']},
+      {type:'fill',q:'— Ką tu veiki? — Aš ___ informatiko.',blank:'dirbu',hint:'Trabajo como informático',opts:['dirbu','esu','mokausi','gyvenu']},
+      {type:'mc',q:'Tu novio pregunta: "Ar nori valgyti?" — ¿qué respondés si tenés hambre?',hint:'',ans:'Taip, noriu. Kur eisime?',opts:['Ne, ačiū.','Taip, noriu. Kur eisime?','Aš pavargusi.','Man patinka valgyti.']},
+      {type:'mc',q:'Querés decir que no entendés algo. Decís:',hint:'',ans:'Atsiprašau, nesuprantu. Ar galite pakartoti?',opts:['Aš nekalbu.','Atsiprašau, nesuprantu. Ar galite pakartoti?','Ne, aš suprantu.','Kalbėkite lietuviškai.']},
+      {type:'fill',q:'— Kur tu dirbi? — Aš dirbu ___ (en una empresa/compañía)',blank:'įmonėje',hint:'Locativo de įmonė (empresa)',opts:['įmonėje','įmonę','įmonės','įmonė']},
+      {type:'mc',q:'Alguien dice "Iki pasimatymo!" — ¿qué respondés?',hint:'',ans:'Iki! / Viso gero!',opts:['Labas!','Iki! / Viso gero!','Ačiū!','Prašau!']},
+      {type:'mc',q:'Tu novio dice "Aš tave myliu" — ¿qué respondés?',hint:'',ans:'Aš tave irgi myliu.',opts:['Ačiū.','Aš tave irgi myliu.','Man patinka tu.','Gerai.']},
+      {type:'fill',q:'— Kokia tavo profesija? — Aš esu ___.',blank:'inžinierė',hint:'Soy ingeniera (femenino)',opts:['inžinierė','inžinierius','mokytoja','studentė']},
+      {type:'mc',q:'En una cafetería querés pedir café con leche:',hint:'',ans:'Prašau kavos su pienu.',opts:['Noriu kava su pienas.','Prašau kavos su pienu.','Man patinka kava.','Duokite kavą.']},
+      {type:'mc',q:'Alguien te invita: "Einame į kiną šiandien?" — si no podés vas:',hint:'',ans:'Atsiprašau, šiandien negaliu.',opts:['Taip, einame!','Atsiprašau, šiandien negaliu.','Man nepatinka kinas.','Kada?']},
+      {type:'fill',q:'— Ar tu esi vedęs/ištekėjusi? — Ne, aš ___ ištekėjusi.',blank:'nesu',hint:'No, no estoy casada',opts:['nesu','nesate','nesi','nėra']},
+      {type:'mc',q:'Querés saber dónde está el baño:',hint:'',ans:'Atsiprašau, kur yra tualetas?',opts:['Kur yra restoranas?','Atsiprašau, kur yra tualetas?','Kiek kainuoja?','Ar galite padėti?']},
+      {type:'mc',q:'Tu novio te pregunta "Kaip buvo tavo diena?" — respondés bien:',hint:'Pasado',ans:'Buvo labai gera, ačiū!',opts:['Yra labai gera, ačiū!','Buvo labai gera, ačiū!','Bus labai gera!','Man patinka diena.']},
+      {type:'fill',q:'— Kur tu mokaisi? — Aš mokausi ___ (en la universidad)',blank:'universitete',hint:'Locativo de universitetas',opts:['universitete','universitetą','universiteto','universitetas']},
+      {type:'mc',q:'Al conocer a alguien decís "Malonu susipažinti" — significa:',hint:'',ans:'Mucho gusto / Encantado/a de conocerte',opts:['Hasta luego','Mucho gusto / Encantado/a de conocerte','¿Cómo te llamas?','Bienvenido/a']},
+      {type:'mc',q:'Tu novio dice "Pasiilgau tavęs" — ¿qué respondés?',hint:'',ans:'Aš taip pat pasiilgau tavęs.',opts:['Ačiū.','Aš taip pat pasiilgau tavęs.','Man gerai.','Aš čia.']},
+      {type:'fill',q:'— Ar tau patinka Lietuva? — Taip, ___ labai!',blank:'patinka',hint:'Sí, me gusta mucho',opts:['patinka','noriu','reikia','turiu']},
+      {type:'mc',q:'En el teléfono querés decir "Un momento, por favor":',hint:'',ans:'Palaukite, prašau.',opts:['Atsikalbėkite.','Palaukite, prašau.','Skambinkite vėliau.','Atsiprašau.']},
+      {type:'mc',q:'Querés proponer ir a un restaurante:',hint:'',ans:'Einame į restoraną?',opts:['Norite restoraną?','Einame į restoraną?','Reikia restorano?','Kur yra restoranas?']},
+      {type:'fill',q:'— Ko tu nori gerti? — ___ kavos, prašau.',blank:'Noriu',hint:'Quiero café, por favor',opts:['Noriu','Man','Reikia','Galiu']},
+      {type:'mc',q:'"Irgi" en "Aš irgi" significa...',hint:'',ans:'También / yo también',opts:['Muy / mucho','También / yo también','Siempre','Ya']},
+      {type:'mc',q:'Alguien dice "Sveiki atvykę į Lietuvą!" — significa:',hint:'',ans:'¡Bienvenidos a Lituania!',opts:['¡Hola, Lituania!','¡Bienvenidos a Lituania!','¡Hasta luego, Lituania!','¡Gracias, Lituania!']},
+      {type:'fill',q:'— Ką tu mėgsti veikti laisvalaikiu? — Man patinka ___ ir šokti.',blank:'skaityti',hint:'Me gusta leer y bailar',opts:['skaityti','rašyti','miegoti','dirbti']},
+      {type:'mc',q:'"Pakartokite, prašau" significa...',hint:'',ans:'Repita, por favor',opts:['Hable más despacio, por favor','Repita, por favor','No entiendo','¿Puede escribirlo?']}
+    ]
+  }
+
 ];
 
 const FLASHCARDS = [
@@ -1107,7 +1349,7 @@ function renderQ() {
   document.getElementById('prog-txt').textContent = (quiz.idx+1) + '/' + total;
   document.getElementById('hearts-display').textContent = '♥'.repeat(quiz.hearts) + '♡'.repeat(3-quiz.hearts);
   quiz.answered = false;
-  let html = `<div class="q-type-badge">${q.type==='mc'?'◉ opción múltiple':'✎ escribe'}</div>`;
+  let html = `<div class="q-type-badge">${q.type==='mc'?'◉ opción múltiple':q.type==='fill'?'✏️ completar':'✎ escribe'}</div>`;
   html += `<div class="q-main">${q.q}</div>`;
   if (q.hint) html += `<div class="q-hint">${q.hint}</div>`;
   if (q.type === 'mc') {
@@ -1166,6 +1408,19 @@ function showFB(ok, ans) {
   if (quiz.hearts <= 0) setTimeout(() => showComplete(false), 1500);
 }
 
+
+function checkFill(btn, chosen, blank) {
+  if (quiz.answered) return;
+  quiz.answered = true;
+  document.querySelectorAll('.opt').forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim() === blank) b.classList.add('correct');
+    else if (b === btn && chosen !== blank) b.classList.add('wrong');
+  });
+  var fillEl = document.getElementById('fill-blank');
+  if (fillEl) { fillEl.textContent = blank; fillEl.style.color = chosen===blank?'var(--success)':'var(--danger)'; }
+  showFB(chosen === blank, blank);
+}
 function nextQ() {
   quiz.idx++;
   if (quiz.idx >= quiz.qs.length) showComplete(true);
