@@ -6,164 +6,607 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Lietuvių">
-<meta name="theme-color" content="#0a0a0f">
+<meta name="theme-color" content="#07060d">
 <title>Lietuvių Kalba</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0f;
-    --surface: #13131a;
-    --surface2: #1c1c27;
-    --border: rgba(255,255,255,0.08);
-    --border2: rgba(255,255,255,0.15);
-    --text: #f0ede8;
-    --muted: rgba(240,237,232,0.5);
-    --accent: #c8a96e;
-    --accent2: #7ec8a9;
-    --accent3: #a97ec8;
-    --danger: #c87e7e;
-    --success: #7ec8a9;
+    --bg: #07060d;
+    --bg2: #0d0c18;
+    --surface: #11101e;
+    --surface2: #191828;
+    --surface3: #201f32;
+    --border: rgba(255,255,255,0.06);
+    --border2: rgba(255,255,255,0.12);
+    --text: #ede9e0;
+    --muted: rgba(237,233,224,0.42);
+    --muted2: rgba(237,233,224,0.22);
+    --amber: #d4a853;
+    --amber2: #f0c76a;
+    --amber-dim: rgba(212,168,83,0.12);
+    --amber-glow: rgba(212,168,83,0.06);
+    --teal: #5fc8a0;
+    --teal-dim: rgba(95,200,160,0.12);
+    --rose: #c0706e;
+    --rose-dim: rgba(192,112,110,0.12);
     --flag-y: #F9B234;
     --flag-g: #006A44;
     --flag-r: #C1272D;
+    --r: 16px;
+    --r-lg: 22px;
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
-  .screen { position: absolute; inset: 0; display: flex; flex-direction: column; overflow: hidden; transition: opacity 0.3s, transform 0.3s; }
-  .screen.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
+
+  html, body {
+    height: 100%; overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; overflow: hidden;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    z-index: 1;
+  }
+  .screen.hidden { opacity: 0; pointer-events: none; transform: translateY(18px); }
+
+  /* ─────────────────────────────────────────
+     FLAG STRIPE — thicker, glowing
+  ───────────────────────────────────────── */
+  .flag-stripe {
+    height: 3px;
+    background: linear-gradient(90deg, var(--flag-y) 33.3%, var(--flag-g) 33.3% 66.6%, var(--flag-r) 66.6%);
+    flex-shrink: 0;
+  }
+
+  /* ─────────────────────────────────────────
+     HOME SCREEN
+  ───────────────────────────────────────── */
   #home { background: var(--bg); }
-  .flag-stripe { height: 4px; background: linear-gradient(90deg, var(--flag-y) 33.3%, var(--flag-g) 33.3% 66.6%, var(--flag-r) 66.6%); }
-  .home-header { padding: 3rem 1.5rem 1.5rem; }
-  .home-header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 8vw, 3rem); color: var(--text); line-height: 1; }
-  .home-header h1 em { font-style: italic; color: var(--accent); }
-  .home-header p { color: var(--muted); font-size: 14px; margin-top: 6px; font-weight: 300; }
-  .stats-row { display: flex; gap: 8px; padding: 0 1.5rem 1.5rem; }
-  .stat-pill { flex: 1; background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; padding: 12px 8px; text-align: center; }
-  .stat-pill .n { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--accent); }
-  .stat-pill .l { font-size: 11px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .topics-label { padding: 0 1.5rem 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-  .topics-grid { padding: 0 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; overflow-y: auto; padding-bottom: 1rem; }
-  .topic-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 16px; padding: 1rem; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; text-align: left; width: 100%; }
-  .topic-card::before { content: ''; position: absolute; inset: 0; background: var(--card-color, rgba(200,169,110,0.08)); opacity: 0; transition: opacity 0.2s; }
+
+  .home-header {
+    padding: 2.2rem 1.5rem 0.8rem;
+    position: relative;
+  }
+  .home-header::after {
+    content: 'LT';
+    position: absolute; right: 1.5rem; top: 2.2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem; font-weight: 700; font-style: italic;
+    color: rgba(212,168,83,0.055);
+    line-height: 1; pointer-events: none; user-select: none;
+    letter-spacing: -0.02em;
+  }
+  .home-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 7vw, 2.7rem);
+    font-weight: 400; line-height: 1.05;
+    color: var(--text); letter-spacing: -0.01em;
+  }
+  .home-header h1 em {
+    font-style: italic; color: var(--amber);
+    font-weight: 700;
+  }
+  .home-header p {
+    color: var(--muted); font-size: 12px;
+    margin-top: 5px; font-weight: 300;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  .stats-row {
+    display: flex; gap: 8px;
+    padding: 1rem 1.5rem 1rem;
+  }
+  .stat-pill {
+    flex: 1;
+    background: var(--surface);
+    border: 0.5px solid var(--border2);
+    border-radius: var(--r); padding: 11px 8px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .stat-pill::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--amber-glow), transparent);
+  }
+  .stat-pill .n {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px; color: var(--amber); line-height: 1;
+    position: relative;
+  }
+  .stat-pill .l {
+    font-size: 10px; color: var(--muted);
+    margin-top: 3px; text-transform: uppercase;
+    letter-spacing: 0.08em; font-weight: 500;
+    position: relative;
+  }
+
+  .topics-label {
+    padding: 0 1.5rem 8px;
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--muted2);
+    font-weight: 600;
+  }
+
+  .topics-grid {
+    padding: 0 1.5rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; flex: 1; overflow-y: auto; padding-bottom: 0.75rem;
+  }
+  .topics-grid::-webkit-scrollbar { width: 2px; }
+  .topics-grid::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+
+  .topic-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--r-lg); padding: 1rem;
+    cursor: pointer; transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    position: relative; overflow: hidden;
+    text-align: left; width: 100%;
+  }
+  .topic-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: var(--card-color, var(--amber-glow));
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .topic-card:active { transform: scale(0.97); }
   .topic-card:active::before { opacity: 1; }
-  .topic-card .icon { font-size: 24px; margin-bottom: 8px; display: block; }
-  .topic-card .name { font-size: 14px; font-weight: 500; color: var(--text); }
-  .topic-card .sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
-  .topic-card .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); position: absolute; top: 12px; right: 12px; display: none; }
+  .topic-card .icon {
+    font-size: 22px; margin-bottom: 7px;
+    display: block; line-height: 1;
+  }
+  .topic-card .name {
+    font-size: 13px; font-weight: 600;
+    color: var(--text); line-height: 1.2;
+  }
+  .topic-card .sub {
+    font-size: 10px; color: var(--muted);
+    margin-top: 3px; font-weight: 300;
+  }
+  .topic-card .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal); position: absolute;
+    top: 11px; right: 11px; display: none;
+    box-shadow: 0 0 6px var(--teal);
+  }
+  .topic-card.done { border-color: rgba(95,200,160,0.18); }
   .topic-card.done .dot { display: block; }
-  .ai-btn { margin: 0.5rem 1.5rem 1rem; background: linear-gradient(135deg, rgba(200,169,110,0.15), rgba(126,200,169,0.1)); border: 0.5px solid rgba(200,169,110,0.3); border-radius: 14px; padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.2s; width: calc(100% - 3rem); }
-  .ai-btn:active { transform: scale(0.98); }
-  .ai-btn .ai-icon { font-size: 22px; }
+
+  .ai-btn {
+    margin: 0.6rem 1.5rem 0.75rem;
+    background: linear-gradient(135deg, rgba(212,168,83,0.1), rgba(95,200,160,0.06));
+    border: 0.5px solid rgba(212,168,83,0.25);
+    border-radius: var(--r-lg); padding: 13px 15px;
+    cursor: pointer; display: flex; align-items: center;
+    gap: 12px; transition: all 0.2s;
+    width: calc(100% - 3rem);
+  }
+  .ai-btn:active { transform: scale(0.98); opacity: 0.85; }
+  .ai-btn .ai-icon { font-size: 20px; flex-shrink: 0; }
   .ai-btn .ai-text { text-align: left; }
-  .ai-btn .ai-title { font-size: 14px; font-weight: 500; color: var(--accent); }
-  .ai-btn .ai-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .ai-btn .ai-title { font-size: 13px; font-weight: 600; color: var(--amber); }
+  .ai-btn .ai-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* ─────────────────────────────────────────
+     QUIZ SCREEN
+  ───────────────────────────────────────── */
   #quiz { background: var(--bg); }
-  .quiz-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
-  .back-btn { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; padding: 4px; }
+
+  .quiz-top {
+    padding: 0.9rem 1.5rem;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .back-btn {
+    background: var(--surface2); border: 0.5px solid var(--border2);
+    border-radius: 10px; color: var(--muted);
+    font-size: 18px; cursor: pointer; padding: 6px 10px;
+    line-height: 1; transition: color 0.15s, background 0.15s;
+  }
+  .back-btn:active { color: var(--text); background: var(--surface3); }
+
   .prog-wrap { flex: 1; }
-  .prog-bar { height: 4px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
-  .prog-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .prog-label { font-size: 11px; color: var(--muted); text-align: right; margin-top: 4px; }
-  .hearts { font-size: 16px; letter-spacing: 2px; }
-  .quiz-body { flex: 1; overflow-y: auto; padding: 0 1.5rem 2rem; display: flex; flex-direction: column; }
-  .q-type-badge { display: inline-flex; align-items: center; gap: 5px; background: var(--surface2); border: 0.5px solid var(--border); border-radius: 99px; padding: 4px 10px; font-size: 11px; color: var(--muted); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.06em; }
-  .q-main { font-family: 'DM Serif Display', serif; font-size: clamp(1.2rem, 4.5vw, 1.7rem); color: var(--text); line-height: 1.3; margin-bottom: 0.5rem; }
-  .q-hint { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; font-style: italic; }
-  .options-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
-  .opt { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; font-size: 15px; color: var(--text); cursor: pointer; text-align: left; transition: all 0.15s; font-family: 'DM Sans', sans-serif; }
-  .opt:active:not(:disabled) { transform: scale(0.98); }
-  .opt.correct { border-color: var(--success); background: rgba(126,200,169,0.15); color: var(--success); }
-  .opt.wrong { border-color: var(--danger); background: rgba(200,126,126,0.15); color: var(--danger); }
+  .prog-bar {
+    height: 3px; background: var(--surface3);
+    border-radius: 99px; overflow: hidden;
+  }
+  .prog-fill {
+    height: 100%; background: var(--amber);
+    border-radius: 99px;
+    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 0 8px rgba(212,168,83,0.5);
+  }
+  .prog-label {
+    font-size: 10px; color: var(--muted);
+    text-align: right; margin-top: 4px;
+    font-weight: 500; letter-spacing: 0.04em;
+  }
+
+  .hearts { font-size: 15px; letter-spacing: 3px; }
+
+  .quiz-body {
+    flex: 1; overflow-y: auto;
+    padding: 1.25rem 1.5rem 2rem;
+    display: flex; flex-direction: column;
+  }
+
+  .q-type-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--surface2); border: 0.5px solid var(--border2);
+    border-radius: 99px; padding: 4px 11px;
+    font-size: 10px; color: var(--muted);
+    margin-bottom: 1.1rem; text-transform: uppercase;
+    letter-spacing: 0.08em; font-weight: 600;
+    width: fit-content;
+  }
+
+  .q-main {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.15rem, 4.2vw, 1.6rem);
+    color: var(--text); line-height: 1.35;
+    margin-bottom: 0.4rem; font-weight: 400;
+  }
+
+  .q-hint {
+    font-size: 12px; color: var(--muted);
+    margin-bottom: 1.4rem; font-style: italic;
+    font-weight: 300;
+  }
+
+  .options-grid {
+    display: flex; flex-direction: column;
+    gap: 7px; margin-bottom: 1.25rem;
+  }
+
+  .opt {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--r); padding: 13px 15px;
+    font-size: 14px; font-weight: 400;
+    color: var(--text); cursor: pointer;
+    text-align: left; transition: all 0.15s;
+    font-family: 'Outfit', sans-serif;
+    position: relative; overflow: hidden;
+  }
+  .opt::before {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--amber); opacity: 0;
+    transition: opacity 0.15s;
+    border-radius: 3px 0 0 3px;
+  }
+  .opt:active:not(:disabled) { transform: scale(0.985); }
+  .opt:hover:not(:disabled)::before { opacity: 0.5; }
+  .opt.correct {
+    border-color: rgba(95,200,160,0.4);
+    background: var(--teal-dim); color: var(--teal);
+  }
+  .opt.correct::before { opacity: 1; background: var(--teal); }
+  .opt.wrong {
+    border-color: rgba(192,112,110,0.4);
+    background: var(--rose-dim); color: var(--rose);
+  }
+  .opt.wrong::before { opacity: 1; background: var(--rose); }
   .opt:disabled { cursor: default; }
-  .type-wrap { margin-bottom: 1.5rem; }
-  .type-input { width: 100%; background: var(--surface); border: 1px solid var(--border2); border-radius: 14px; padding: 14px 16px; font-size: 16px; color: var(--text); font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.2s; }
-  .type-input:focus { border-color: var(--accent); }
-  .type-input.correct { border-color: var(--success); background: rgba(126,200,169,0.1); }
-  .type-input.wrong { border-color: var(--danger); background: rgba(200,126,126,0.1); }
-  .feedback-box { border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-bottom: 1rem; display: none; line-height: 1.5; }
+
+  .type-wrap { margin-bottom: 1.25rem; }
+  .type-input {
+    width: 100%; background: var(--surface);
+    border: 1px solid var(--border2); border-radius: var(--r);
+    padding: 13px 15px; font-size: 16px; color: var(--text);
+    font-family: 'Outfit', sans-serif; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .type-input:focus {
+    border-color: rgba(212,168,83,0.5);
+    box-shadow: 0 0 0 3px rgba(212,168,83,0.08);
+  }
+  .type-input.correct {
+    border-color: rgba(95,200,160,0.4);
+    background: var(--teal-dim);
+  }
+  .type-input.wrong {
+    border-color: rgba(192,112,110,0.4);
+    background: var(--rose-dim);
+  }
+
+  .feedback-box {
+    border-radius: var(--r); padding: 12px 14px;
+    font-size: 13px; margin-bottom: 1rem;
+    display: none; line-height: 1.55; font-weight: 400;
+  }
   .feedback-box.show { display: block; }
-  .feedback-box.ok { background: rgba(126,200,169,0.12); color: var(--success); border: 0.5px solid rgba(126,200,169,0.3); }
-  .feedback-box.bad { background: rgba(200,126,126,0.12); color: var(--danger); border: 0.5px solid rgba(200,126,126,0.3); }
-  .action-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-  .action-btn.primary { background: var(--accent); color: var(--bg); }
-  .action-btn.primary:active { transform: scale(0.98); }
-  .action-btn.secondary { background: var(--surface2); color: var(--text); }
-  .action-btn:disabled { opacity: 0.35; cursor: default; }
+  .feedback-box.ok {
+    background: var(--teal-dim); color: var(--teal);
+    border: 0.5px solid rgba(95,200,160,0.25);
+  }
+  .feedback-box.bad {
+    background: var(--rose-dim); color: var(--rose);
+    border: 0.5px solid rgba(192,112,110,0.25);
+  }
+
+  .action-btn {
+    width: 100%; padding: 15px; border-radius: var(--r);
+    border: none; font-size: 15px;
+    font-family: 'Outfit', sans-serif; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.01em;
+  }
+  .action-btn.primary {
+    background: var(--amber); color: #07060d;
+    box-shadow: 0 4px 20px rgba(212,168,83,0.25);
+  }
+  .action-btn.primary:active { transform: scale(0.98); box-shadow: none; }
+  .action-btn.secondary {
+    background: var(--surface2); color: var(--text);
+    border: 0.5px solid var(--border2);
+  }
+  .action-btn:disabled { opacity: 0.3; cursor: default; }
+
+  /* ─────────────────────────────────────────
+     FLASHCARD SCREEN
+  ───────────────────────────────────────── */
   #flash { background: var(--bg); }
-  .flash-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
-  .flash-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.5rem; }
-  .flash-card { width: 100%; max-width: 400px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 24px; padding: 2.5rem 2rem; text-align: center; cursor: pointer; transition: transform 0.15s; min-height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  .flash-card:active { transform: scale(0.97); }
-  .flash-lt { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 6vw, 2.3rem); color: var(--text); margin-bottom: 0.5rem; }
-  .flash-cat { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
-  .flash-es { font-size: 20px; color: var(--accent); margin-top: 1.5rem; display: none; }
-  .flash-extra { font-size: 13px; color: var(--muted); margin-top: 0.5rem; display: none; font-style: italic; }
+
+  .flash-top {
+    padding: 0.9rem 1.5rem;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .flash-body {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 1.5rem; gap: 0;
+  }
+
+  .flash-counter {
+    font-size: 11px; color: var(--muted);
+    margin-bottom: 1.25rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  .flash-card {
+    width: 100%; max-width: 380px;
+    background: var(--surface);
+    border: 0.5px solid var(--border2);
+    border-radius: 28px; padding: 2.5rem 2rem;
+    text-align: center; cursor: pointer;
+    transition: transform 0.18s, box-shadow 0.18s, border-color 0.25s;
+    min-height: 210px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .flash-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,168,83,0.07), transparent 70%);
+    pointer-events: none;
+  }
+  .flash-card:active { transform: scale(0.97); box-shadow: none; }
+  .flash-card.revealed { border-color: rgba(212,168,83,0.3); }
+
+  .flash-cat {
+    font-size: 10px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 0.9rem; font-weight: 600;
+    position: relative;
+  }
+  .flash-lt {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.55rem, 5.5vw, 2.1rem);
+    color: var(--text); margin-bottom: 0.4rem;
+    font-weight: 400; line-height: 1.2; position: relative;
+  }
+  .flash-es {
+    font-size: 18px; color: var(--amber);
+    margin-top: 1.4rem; display: none;
+    font-weight: 500; position: relative;
+    animation: fadeUp 0.3s ease;
+  }
+  .flash-extra {
+    font-size: 12px; color: var(--muted);
+    margin-top: 0.4rem; display: none;
+    font-style: italic; position: relative;
+    animation: fadeUp 0.3s ease 0.05s both;
+  }
   .flash-card.revealed .flash-es { display: block; }
   .flash-card.revealed .flash-extra { display: block; }
-  .flash-counter { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
-  .flash-nav { display: flex; gap: 12px; width: 100%; max-width: 400px; margin-top: 1.5rem; }
-  .flash-nav button { flex: 1; padding: 14px; border: 0.5px solid var(--border); background: var(--surface); border-radius: 14px; color: var(--text); font-size: 15px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .flash-hint {
+    font-size: 11px; color: var(--muted2); margin-top: 0.9rem;
+    position: relative; font-weight: 300;
+  }
+
+  .flash-nav {
+    display: flex; gap: 8px;
+    width: 100%; max-width: 380px; margin-top: 1.25rem;
+  }
+  .flash-nav button {
+    flex: 1; padding: 13px;
+    border: 0.5px solid var(--border2);
+    background: var(--surface); border-radius: var(--r);
+    color: var(--text); font-size: 14px;
+    cursor: pointer; font-family: 'Outfit', sans-serif;
+    font-weight: 500; transition: background 0.15s, border-color 0.15s;
+  }
   .flash-nav button:active { background: var(--surface2); }
+  .flash-nav button:first-child { color: var(--muted); }
+
+  /* ─────────────────────────────────────────
+     AI SCREEN
+  ───────────────────────────────────────── */
   #ai-screen { background: var(--bg); }
-  .ai-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
-  .ai-body { flex: 1; overflow-y: auto; padding: 1rem 1.5rem 2rem; display: flex; flex-direction: column; }
-  .ai-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 8px; }
-  .topic-selector { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
-  .topic-chip { background: var(--surface); border: 0.5px solid var(--border); border-radius: 99px; padding: 6px 12px; font-size: 13px; color: var(--muted); cursor: pointer; transition: all 0.15s; }
-  .topic-chip.active { background: rgba(200,169,110,0.15); border-color: rgba(200,169,110,0.4); color: var(--accent); }
-  .level-selector { display: flex; gap: 8px; margin-bottom: 1.5rem; }
-  .level-btn { flex: 1; background: var(--surface); border: 0.5px solid var(--border); border-radius: 10px; padding: 10px; text-align: center; font-size: 13px; color: var(--muted); cursor: pointer; }
-  .level-btn.active { background: rgba(126,200,169,0.1); border-color: var(--accent2); color: var(--accent2); }
-  .gen-btn { width: 100%; padding: 16px; background: var(--accent); color: var(--bg); border: none; border-radius: 14px; font-size: 16px; font-family: 'DM Sans', sans-serif; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-  .gen-btn:active { transform: scale(0.98); }
-  .gen-btn:disabled { opacity: 0.4; cursor: default; }
+
+  .ai-top {
+    padding: 0.9rem 1.5rem;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .ai-body {
+    flex: 1; overflow-y: auto;
+    padding: 1.25rem 1.5rem 2rem;
+    display: flex; flex-direction: column;
+  }
+
+  .ai-label {
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--muted);
+    margin-bottom: 8px; font-weight: 600;
+  }
+
+  .topic-selector {
+    display: flex; flex-wrap: wrap;
+    gap: 6px; margin-bottom: 1.25rem;
+  }
+  .topic-chip {
+    background: var(--surface); border: 0.5px solid var(--border);
+    border-radius: 99px; padding: 5px 12px;
+    font-size: 12px; color: var(--muted);
+    cursor: pointer; transition: all 0.15s; font-weight: 400;
+  }
+  .topic-chip.active {
+    background: var(--amber-dim);
+    border-color: rgba(212,168,83,0.35); color: var(--amber);
+    font-weight: 600;
+  }
+
+  .level-selector { display: flex; gap: 7px; margin-bottom: 1.25rem; }
+  .level-btn {
+    flex: 1; background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: var(--r); padding: 9px;
+    text-align: center; font-size: 12px; color: var(--muted);
+    cursor: pointer; font-family: 'Outfit', sans-serif;
+    font-weight: 500; transition: all 0.15s;
+  }
+  .level-btn.active {
+    background: var(--teal-dim);
+    border-color: rgba(95,200,160,0.3); color: var(--teal);
+    font-weight: 600;
+  }
+
+  .gen-btn {
+    width: 100%; padding: 15px;
+    background: var(--amber); color: #07060d;
+    border: none; border-radius: var(--r);
+    font-size: 15px; font-family: 'Outfit', sans-serif;
+    font-weight: 600; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 0.01em;
+    box-shadow: 0 4px 20px rgba(212,168,83,0.22);
+  }
+  .gen-btn:active { transform: scale(0.98); box-shadow: none; }
+  .gen-btn:disabled { opacity: 0.35; cursor: default; box-shadow: none; }
+
   .ai-result { margin-top: 1.5rem; flex: 1; }
-  .loading-dots { text-align: center; padding: 2rem; color: var(--muted); font-size: 14px; }
-  .ai-q-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: 18px; padding: 1.5rem; }
-  .ai-q-top { font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
-  .ai-q-text { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--text); margin-bottom: 0.5rem; line-height: 1.3; }
-  .ai-q-hint { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; font-style: italic; }
-  .ai-opts { display: flex; flex-direction: column; gap: 8px; }
-  #complete { background: var(--bg); justify-content: center; align-items: center; gap: 1rem; padding: 2rem; }
-  .complete-emoji { font-size: 64px; }
-  .complete-title { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--text); text-align: center; }
-  .complete-score { font-size: 15px; color: var(--muted); text-align: center; }
-  .complete-score span { color: var(--accent); font-weight: 500; }
-  .key-row { background: var(--surface); border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px; color: var(--muted); }
-  .key-row strong { color: var(--accent); }
+  .loading-dots {
+    text-align: center; padding: 2.5rem;
+    color: var(--muted); font-size: 13px; font-style: italic;
+  }
 
-  #pronun { background: var(--bg); }
-  .pronun-top { padding: 1rem 1.5rem; display: flex; align-items: center; gap: 12px; }
-  .pronun-body { flex: 1; overflow-y: auto; padding: 0 1.5rem 2rem; display: flex; flex-direction: column; align-items: center; }
-  .pronun-card { width: 100%; max-width: 420px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 24px; padding: 2rem 1.5rem 1.5rem; text-align: center; margin-bottom: 1.5rem; }
-  .pronun-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 0.75rem; }
-  .pronun-lt { font-family: 'DM Serif Display', serif; font-size: clamp(1.3rem, 5vw, 1.9rem); color: var(--text); line-height: 1.3; margin-bottom: 0.5rem; }
-  .pronun-es { font-size: 14px; color: var(--muted); font-style: italic; margin-bottom: 1rem; }
-  .pronun-tip { font-size: 12px; color: rgba(200,169,110,0.8); background: rgba(200,169,110,0.08); border-radius: 8px; padding: 5px 10px; display: inline-block; }
-  .mic-btn { width: 76px; height: 76px; border-radius: 50%; border: 2px solid var(--accent); background: rgba(200,169,110,0.1); cursor: pointer; display: flex; align-items: center; justify-content: center; margin: 0.75rem auto; transition: all 0.2s; font-size: 30px; flex-shrink: 0; }
-  .mic-btn.listening { border-color: #c87e7e; background: rgba(200,126,126,0.15); animation: pulse 1s infinite; }
-  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
-  .mic-label { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 0.75rem; }
-  .heard-box { background: var(--surface2); border-radius: 12px; padding: 12px 14px; font-size: 15px; color: var(--text); min-height: 44px; text-align: center; margin-bottom: 1rem; width: 100%; max-width: 420px; }
-  .pronun-fb { border-radius: 14px; padding: 14px 16px; font-size: 14px; margin-bottom: 1rem; display: none; width: 100%; max-width: 420px; text-align: center; line-height: 1.5; }
-  .pronun-fb.show { display: block; }
-  .pronun-fb.ok { background: rgba(126,200,169,0.12); color: var(--success); border: 0.5px solid rgba(126,200,169,0.3); }
-  .pronun-fb.bad { background: rgba(200,126,126,0.12); color: var(--danger); border: 0.5px solid rgba(200,126,126,0.3); }
-  .pronun-fb.skip { background: rgba(200,169,110,0.1); color: var(--accent); border: 0.5px solid rgba(200,169,110,0.2); }
-  .pronun-actions { display: none; gap: 8px; width: 100%; max-width: 420px; }
-  .dg-setup { background: var(--surface); border: 0.5px solid var(--border); border-radius: 18px; padding: 1.5rem; width: 100%; max-width: 420px; margin-top: 0.5rem; }
-  .dg-setup p { font-size: 13px; color: var(--muted); margin-bottom: 1rem; line-height: 1.6; }
-  .dg-setup a { color: var(--accent); }
-  .dg-input { width: 100%; background: var(--surface2); border: 1px solid var(--border2); border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--text); margin-bottom: 0.75rem; outline: none; font-family: 'DM Sans', sans-serif; }
-  .dg-input:focus { border-color: var(--accent); }
+  .ai-q-card {
+    background: var(--surface); border: 0.5px solid var(--border2);
+    border-radius: var(--r-lg); padding: 1.5rem;
+  }
+  .ai-q-top {
+    font-size: 10px; color: var(--amber);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 0.85rem; font-weight: 600;
+  }
+  .ai-q-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem; color: var(--text);
+    margin-bottom: 0.4rem; line-height: 1.35;
+  }
+  .ai-q-hint {
+    font-size: 12px; color: var(--muted);
+    margin-bottom: 1.25rem; font-style: italic;
+  }
+  .ai-opts { display: flex; flex-direction: column; gap: 7px; }
 
+  /* ─────────────────────────────────────────
+     COMPLETE SCREEN
+  ───────────────────────────────────────── */
+  #complete {
+    background: var(--bg); justify-content: center;
+    align-items: center; gap: 1.1rem; padding: 2rem;
+    position: relative;
+  }
+  #complete::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(212,168,83,0.07), transparent 65%);
+    pointer-events: none;
+  }
+  .complete-emoji { font-size: 60px; position: relative; }
+  .complete-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem; color: var(--text);
+    text-align: center; font-weight: 700; position: relative;
+  }
+  .complete-score {
+    font-size: 14px; color: var(--muted);
+    text-align: center; font-weight: 300; position: relative;
+  }
+  .complete-score span { color: var(--amber); font-weight: 600; }
 
-  .fill-blank { display: inline-block; min-width: 100px; border-bottom: 2px solid var(--accent); margin: 0 4px; text-align: center; font-weight: 500; color: var(--accent); padding: 0 8px; }
-  ::-webkit-scrollbar { width: 3px; }
+  .key-row {
+    background: var(--surface); border: 0.5px solid var(--border);
+    border-radius: var(--r); padding: 10px 14px;
+    margin-bottom: 7px; font-size: 12px; color: var(--muted);
+  }
+  .key-row strong { color: var(--amber); }
+
+  /* ─────────────────────────────────────────
+     FILL-IN-BLANK
+  ───────────────────────────────────────── */
+  .fill-blank {
+    display: inline-block; min-width: 90px;
+    border-bottom: 2px solid var(--amber);
+    margin: 0 4px; text-align: center;
+    font-weight: 600; color: var(--amber); padding: 0 6px;
+  }
+
+  /* ─────────────────────────────────────────
+     SCROLLBAR
+  ───────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 2px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 99px; }
+
+  /* ─────────────────────────────────────────
+     API KEY INPUT (AI screen)
+  ───────────────────────────────────────── */
+  .key-input-wrap { margin-bottom: 1rem; }
+  .key-input-wrap input {
+    width: 100%; background: var(--surface);
+    border: 1px solid var(--border2); border-radius: var(--r);
+    padding: 12px 14px; font-size: 14px; color: var(--text);
+    font-family: 'Outfit', sans-serif; outline: none;
+    transition: border-color 0.2s;
+  }
+  .key-input-wrap input:focus {
+    border-color: rgba(212,168,83,0.45);
+  }
+  .key-input-wrap input::placeholder { color: var(--muted2); }
 </style>
 </head>
 <body>
@@ -181,13 +624,6 @@
   </div>
   <div class="topics-label">Lecciones</div>
   <div class="topics-grid" id="topics-grid"></div>
-  <button class="ai-btn" onclick="showPronun()" style="margin-bottom:0.5rem;">
-    <span class="ai-icon">🎙️</span>
-    <div class="ai-text">
-      <div class="ai-title">Pronunciación — habla lituano</div>
-      <div class="ai-sub">Repite frases con reconocimiento de voz</div>
-    </div>
-  </button>
   <button class="ai-btn" onclick="showAI()">
     <span class="ai-icon">✦</span>
     <div class="ai-text">
@@ -235,7 +671,7 @@
 <div class="screen hidden" id="ai-screen">
   <div class="ai-top">
     <button class="back-btn" onclick="goHome()">‹</button>
-    <span style="font-size:14px;color:var(--accent);">✦ Modo IA</span>
+    <span style="font-size:14px;color:var(--amber);">✦ Modo IA</span>
   </div>
   <div class="ai-body">
     <div class="ai-label">Nivel</div>
@@ -247,7 +683,9 @@
     <div class="ai-label">Tema</div>
     <div class="topic-selector" id="ai-chips"></div>
     <div class="ai-label" style="margin-top:0.5rem;">Tu clave API de Claude</div>
-    <input type="password" id="api-key-input" placeholder="sk-ant-..." style="width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--text);margin-bottom:1.5rem;outline:none;font-family:'DM Sans',sans-serif;">
+    <div class="key-input-wrap">
+      <input type="password" id="api-key-input" placeholder="sk-ant-...">
+    </div>
     <div class="key-row">La clave se guarda <strong>solo en este dispositivo</strong> (localStorage). Nunca se envía a ningún servidor externo.</div>
     <button class="gen-btn" id="gen-btn" onclick="generateAI()">Generar ejercicio ✦</button>
     <div class="ai-result" id="ai-result"></div>
@@ -255,37 +693,6 @@
 </div>
 
 
-<div class="screen hidden" id="pronun">
-  <div class="pronun-top">
-    <button class="back-btn" onclick="goHome()">&#8249;</button>
-    <span style="font-size:14px;color:var(--muted);">&#127908; Pronunciación</span>
-    <span style="margin-left:auto;font-size:12px;color:var(--muted);" id="pronun-counter">1/10</span>
-  </div>
-  <div class="pronun-body">
-    <div style="width:100%;max-width:420px;margin-bottom:1.5rem;">
-      <div class="prog-bar"><div class="prog-fill" id="pronun-prog" style="width:0%"></div></div>
-    </div>
-    <div class="pronun-card" id="pronun-card" style="display:none;">
-      <div class="pronun-label" id="pronun-cat"></div>
-      <div class="pronun-lt" id="pronun-lt"></div>
-      <div class="pronun-es" id="pronun-es"></div>
-      <div class="pronun-tip" id="pronun-tip"></div>
-    </div>
-    <button class="mic-btn" id="mic-btn" onclick="toggleMic()" style="display:none;">&#127908;</button>
-    <div class="mic-label" id="mic-label" style="display:none;">Toca para hablar</div>
-    <div class="heard-box" id="heard-box" style="display:none;"></div>
-    <div class="pronun-fb" id="pronun-fb"></div>
-    <div class="pronun-actions" id="pronun-actions">
-      <button class="action-btn secondary" style="flex:1;" onclick="skipPronun()">Saltar</button>
-      <button class="action-btn primary" style="flex:2;" onclick="nextPronun()">Siguiente &#8594;</button>
-    </div>
-    <div class="dg-setup" id="dg-setup">
-      <p>Para pronunciación necesitás una clave API gratuita de <a href="https://deepgram.com" target="_blank">Deepgram</a> ($200 de crédito inicial gratis).</p>
-      <input class="dg-input" id="dg-key-input" type="password" placeholder="Clave API de Deepgram...">
-      <button class="action-btn primary" onclick="saveDGKey()" style="width:100%;">Guardar y empezar</button>
-    </div>
-  </div>
-</div>
 
 <div class="screen hidden" id="complete">
   <div class="complete-emoji" id="complete-emoji">🎉</div>
@@ -907,6 +1314,193 @@ const TOPICS = [
       {type:'mc',q:'"Rankinis" es...',hint:'Deporte de equipo',ans:'Balonmano',opts:['Baloncesto','Tenis','Balonmano','Voleibol']}
     ]
   }
+  ,{ id:'food', icon:'🍽️', name:'Comida y bebidas', color:'rgba(255,180,80,0.08)',
+    questions:[
+      {type:'mc',q:'"Duona" significa...',hint:'',ans:'Pan',opts:['Queso','Pan','Mantequilla','Sal']},
+      {type:'mc',q:'"Pienas" significa...',hint:'Lácteo básico',ans:'Leche',opts:['Mantequilla','Leche','Queso','Crema']},
+      {type:'mc',q:'¿Cómo se dice "queso"?',hint:'',ans:'Sūris',opts:['Pienas','Sūris','Sviestas','Grietinė']},
+      {type:'mc',q:'"Sviestas" significa...',hint:'',ans:'Mantequilla',opts:['Aceite','Mantequilla','Margarina','Crema']},
+      {type:'mc',q:'¿Cómo se dice "huevo(s)"?',hint:'',ans:'Kiaušinis / Kiaušiniai',opts:['Kiaušinis / Kiaušiniai','Grietinė','Varškė','Sūris']},
+      {type:'mc',q:'"Grietinė" significa...',hint:'Lácteo',ans:'Crema agria / nata',opts:['Leche','Mantequilla','Crema agria / nata','Yogur']},
+      {type:'mc',q:'"Varškė" significa...',hint:'',ans:'Requesón / queso fresco',opts:['Queso amarillo','Requesón / queso fresco','Nata','Leche']},
+      {type:'mc',q:'¿Cómo se dice "yogur"?',hint:'',ans:'Jogurtas',opts:['Pienas','Sūris','Jogurtas','Grietinė']},
+      {type:'mc',q:'"Vištiena" significa...',hint:'Carne',ans:'Pollo (carne)',opts:['Cerdo','Pollo (carne)','Res/ternera','Cordero']},
+      {type:'mc',q:'¿Cómo se dice "cerdo / carne de cerdo"?',hint:'',ans:'Kiauliena',opts:['Jautiena','Vištiena','Kiauliena','Aviena']},
+      {type:'mc',q:'"Jautiena" significa...',hint:'Carne',ans:'Carne de res / ternera',opts:['Cerdo','Pollo','Carne de res / ternera','Cordero']},
+      {type:'mc',q:'¿Cómo se dice "café"?',hint:'Bebida caliente',ans:'Kava',opts:['Arbata','Kava','Vanduo','Sultys']},
+      {type:'mc',q:'"Arbata" significa...',hint:'Bebida',ans:'Té',opts:['Café','Té','Agua','Jugo']},
+      {type:'mc',q:'¿Cómo se dice "agua"?',hint:'',ans:'Vanduo',opts:['Sultys','Kava','Vanduo','Alus']},
+      {type:'mc',q:'"Sultys" significa...',hint:'Bebida de fruta',ans:'Jugo / zumo',opts:['Agua','Té','Jugo / zumo','Cerveza']},
+      {type:'mc',q:'"Alus" significa...',hint:'Bebida adulta',ans:'Cerveza',opts:['Vino','Cerveza','Vodka','Agua']},
+      {type:'mc',q:'¿Cómo se dice "vino"?',hint:'',ans:'Vynas',opts:['Alus','Vynas','Sultys','Arbata']},
+      {type:'mc',q:'"Bulvė / Bulvės" significa...',hint:'Vegetal básico lituano',ans:'Papa / papas',opts:['Zanahoria','Papa / papas','Cebolla','Repollo']},
+      {type:'mc',q:'¿Cómo se dice "zanahoria"?',hint:'',ans:'Morka / Morkos',opts:['Svogūnas','Morka / Morkos','Kopūstas','Agurkas']},
+      {type:'mc',q:'"Agurkas" significa...',hint:'Vegetal verde largo',ans:'Pepino',opts:['Pepino','Pimiento','Calabacín','Berenjena']},
+      {type:'mc',q:'¿Cómo se dice "tomate"?',hint:'',ans:'Pomidoras',opts:['Agurkas','Pomidoras','Burokėlis','Kopūstas']},
+      {type:'mc',q:'"Kopūstas" significa...',hint:'',ans:'Repollo / col',opts:['Lechuga','Espinaca','Repollo / col','Brócoli']},
+      {type:'mc',q:'"Burokėlis" significa...',hint:'Vegetal morado/rojo',ans:'Remolacha',opts:['Zanahoria','Remolacha','Rábano','Papa']},
+      {type:'mc',q:'¿Cómo se dice "ajo"?',hint:'',ans:'Česnakas',opts:['Svogūnas','Česnakas','Pipiras','Druska']},
+      {type:'mc',q:'"Svogūnas" significa...',hint:'',ans:'Cebolla',opts:['Ajo','Cebolla','Puerro','Chalotas']},
+      {type:'mc',q:'¿Cómo se dice "hongo / champiñón"?',hint:'',ans:'Grybas / Grybai',opts:['Uoga','Grybas / Grybai','Žolė','Salotos']},
+      {type:'mc',q:'"Obuolys" significa...',hint:'Fruta',ans:'Manzana',opts:['Pera','Manzana','Naranja','Plátano']},
+      {type:'mc',q:'¿Cómo se dice "fresa"?',hint:'',ans:'Braškė / Braškės',opts:['Vyšnia','Braškė / Braškės','Avietė','Uoga']},
+      {type:'mc',q:'"Bananas" significa...',hint:'',ans:'Plátano / banana',opts:['Naranja','Limón','Plátano / banana','Mango']},
+      {type:'mc',q:'¿Cómo se dice "naranja"?',hint:'',ans:'Apelsinas',opts:['Citrina','Apelsinas','Greipfrutas','Bananas']},
+      {type:'mc',q:'"Druska" significa...',hint:'Condimento',ans:'Sal',opts:['Pimienta','Sal','Azúcar','Vinagre']},
+      {type:'mc',q:'¿Cómo se dice "azúcar"?',hint:'',ans:'Cukrus',opts:['Druska','Pipiras','Cukrus','Actas']},
+      {type:'mc',q:'"Aliejus" significa...',hint:'Para cocinar',ans:'Aceite',opts:['Vinagre','Sal','Aceite','Mantequilla']},
+      {type:'mc',q:'¿Cómo se dice "chocolate"?',hint:'',ans:'Šokoladas',opts:['Cukrus','Šokoladas','Saldainis','Tortas']},
+      {type:'mc',q:'"Tortas / Pyragas" significa...',hint:'',ans:'Pastel / tarta',opts:['Galleta','Pastel / tarta','Helado','Bombón']},
+      {type:'fill',q:'Aš noriu ___ (café, genitivo)',blank:'kavos',hint:'Con NORIU el sustantivo va en genitivo',opts:['kavos','kava','kavą','kavai']},
+      {type:'fill',q:'Prašau ___ su pienu. (café con leche)',blank:'kavos',hint:'Genitivo de kava',opts:['kavos','kava','kavą','kavai']},
+      {type:'mc',q:'En el restaurante, "Noriu valgyti" significa...',hint:'',ans:'Quiero comer',opts:['Quiero beber','Quiero comer','Ya comí','No tengo hambre']},
+      {type:'mc',q:'"Ledai" significa...',hint:'',ans:'Helado',opts:['Agua con hielo','Helado','Refresco frío','Té frío']},
+      {type:'mc',q:'¿Cómo se dice "sopa"?',hint:'',ans:'Sriuba',opts:['Sriuba','Troškinys','Salotos','Mišrainė']},
+      {type:'mc',q:'"Cepelinai" son...',hint:'Plato típico lituano',ans:'Albóndigas de papa rellenas',opts:['Sopa de remolacha','Albóndigas de papa rellenas','Panqueques de papa','Empanadas']},
+      {type:'mc',q:'"Šaltibarščiai" son...',hint:'Sopa fría lituana',ans:'Sopa fría de remolacha',opts:['Sopa caliente de verduras','Sopa fría de remolacha','Ensalada de pepino','Gazpacho']},
+      {type:'mc',q:'¿Cómo se dice "pan negro"?',hint:'Típico de Lituania',ans:'Juoda duona',opts:['Balta duona','Juoda duona','Šimtalapis','Batonas']},
+      {type:'fill',q:'Aš turiu ___ ir pieno. (queso, acusativo)',blank:'sūrį',hint:'Sūris → acusativo sūrį',opts:['sūrį','sūris','sūrio','sūriui']},
+      {type:'mc',q:'"Kava su pienu" significa...',hint:'',ans:'Café con leche',opts:['Café negro','Café con azúcar','Café con leche','Leche con café frío']}
+    ]
+  }
+  ,{ id:'vocabulary', icon:'📖', name:'Vocabulario general', color:'rgba(126,200,169,0.08)',
+    questions:[
+      {type:'mc',q:'"Miestas" significa...',hint:'',ans:'Ciudad',opts:['Pueblo','Ciudad','País','Región']},
+      {type:'mc',q:'¿Cómo se dice "pueblo / aldea"?',hint:'',ans:'Kaimas',opts:['Miestas','Kaimas','Šalis','Rajonas']},
+      {type:'mc',q:'"Šalis" significa...',hint:'',ans:'País',opts:['Ciudad','Pueblo','País','Continente']},
+      {type:'mc',q:'"Kalba" significa...',hint:'Sustantivo',ans:'Idioma / lengua',opts:['Hablar (verbo)','Idioma / lengua','Clase','Libro']},
+      {type:'mc',q:'¿Cómo se dice "biblioteca"?',hint:'',ans:'Biblioteka',opts:['Parduotuvė','Biblioteka','Mokykla','Paštas']},
+      {type:'mc',q:'"Parduotuvė" significa...',hint:'',ans:'Tienda',opts:['Banco','Tienda','Supermercado','Farmacia']},
+      {type:'mc',q:'¿Cómo se dice "correos / oficina de correos"?',hint:'',ans:'Paštas',opts:['Bankas','Paštas','Ligoninė','Vaistinė']},
+      {type:'mc',q:'"Ligoninė" significa...',hint:'',ans:'Hospital',opts:['Farmacia','Clínica','Hospital','Consultorio']},
+      {type:'mc',q:'¿Cómo se dice "banco"?',hint:'Institución financiera',ans:'Bankas',opts:['Kasas','Bankas','Paštas','Vaistinė']},
+      {type:'mc',q:'"Vaistinė" significa...',hint:'',ans:'Farmacia',opts:['Hospital','Farmacia','Clínica','Supermercado']},
+      {type:'mc',q:'"Tiltas" significa...',hint:'',ans:'Puente',opts:['Río','Puente','Calle','Avenida']},
+      {type:'mc',q:'¿Cómo se dice "río"?',hint:'',ans:'Upė',opts:['Ežeras','Upė','Jūra','Vandenynas']},
+      {type:'mc',q:'"Ežeras" significa...',hint:'Lituania tiene muchos',ans:'Lago',opts:['Mar','Lago','Río','Piscina']},
+      {type:'mc',q:'¿Cómo se dice "sol"?',hint:'SAULĖ',ans:'Saulė',opts:['Mėnulis','Žvaigždė','Saulė','Debesis']},
+      {type:'mc',q:'"Mėnulis" significa...',hint:'',ans:'Luna',opts:['Sol','Luna','Estrella','Nube']},
+      {type:'mc',q:'"Oras" significa...',hint:'',ans:'Tiempo / clima',opts:['Hora','Tiempo / clima','Viento','Lluvia']},
+      {type:'mc',q:'¿Cómo se dice "nieve"?',hint:'',ans:'Sniegas',opts:['Lietus','Sniegas','Vėjas','Rūkas']},
+      {type:'mc',q:'"Lietus" significa...',hint:'',ans:'Lluvia',opts:['Nieve','Lluvia','Niebla','Viento']},
+      {type:'mc',q:'¿Cómo se dice "viento"?',hint:'',ans:'Vėjas',opts:['Rūkas','Vėjas','Lietus','Audra']},
+      {type:'mc',q:'"Ugnis" significa...',hint:'',ans:'Fuego',opts:['Agua','Fuego','Tierra','Aire']},
+      {type:'mc',q:'¿Cómo se dice "libro"?',hint:'',ans:'Knyga',opts:['Sąsiuvinis','Knyga','Žodynas','Vadovėlis']},
+      {type:'mc',q:'"Žodynas" significa...',hint:'Para traducir palabras',ans:'Diccionario',opts:['Libro de texto','Cuaderno','Diccionario','Libreta']},
+      {type:'mc',q:'¿Cómo se dice "cuaderno"?',hint:'',ans:'Sąsiuvinis',opts:['Knyga','Sąsiuvinis','Vadovėlis','Tušinukas']},
+      {type:'mc',q:'"Tušinukas" significa...',hint:'Para escribir',ans:'Bolígrafo',opts:['Lápiz','Bolígrafo','Pluma','Marcador']},
+      {type:'mc',q:'¿Cómo se dice "teléfono"?',hint:'',ans:'Telefonas',opts:['Kompiuteris','Telefonas','Televizorius','Radijas']},
+      {type:'mc',q:'"Kompiuteris" significa...',hint:'',ans:'Computadora',opts:['Teléfono','Tableta','Computadora','Televisor']},
+      {type:'mc',q:'¿Cómo se dice "coche / carro"?',hint:'',ans:'Automobilis / Mašina',opts:['Traukinys','Automobilis / Mašina','Autobusas','Lėktuvas']},
+      {type:'mc',q:'"Lėktuvas" significa...',hint:'Transporte aéreo',ans:'Avión',opts:['Tren','Barco','Avión','Autobús']},
+      {type:'mc',q:'¿Cómo se dice "tren"?',hint:'',ans:'Traukinys',opts:['Autobusas','Traukinys','Laivas','Lėktuvas']},
+      {type:'mc',q:'"Laivas" significa...',hint:'Transporte acuático',ans:'Barco',opts:['Avión','Tren','Barco','Autobús']},
+      {type:'mc',q:'¿Cómo se dice "casa / hogar"?',hint:'',ans:'Namai / Namas',opts:['Butas','Namai / Namas','Kambarys','Viešbutis']},
+      {type:'mc',q:'"Butas" significa...',hint:'',ans:'Apartamento',opts:['Casa','Apartamento','Habitación','Hotel']},
+      {type:'mc',q:'¿Cómo se dice "habitación"?',hint:'',ans:'Kambarys',opts:['Butas','Kambarys','Namas','Pastatas']},
+      {type:'mc',q:'"Lova" significa...',hint:'Mueble',ans:'Cama',opts:['Mesa','Silla','Cama','Sofá']},
+      {type:'mc',q:'¿Cómo se dice "mesa"?',hint:'',ans:'Stalas',opts:['Kėdė','Stalas','Lova','Spinta']},
+      {type:'mc',q:'"Kėdė" significa...',hint:'Mueble',ans:'Silla',opts:['Mesa','Cama','Silla','Armario']},
+      {type:'mc',q:'¿Cómo se dice "llave"?',hint:'',ans:'Raktas / Raktai',opts:['Durys','Raktas / Raktai','Langas','Siena']},
+      {type:'mc',q:'"Kelionė" significa...',hint:'',ans:'Viaje',opts:['Vacaciones','Viaje','Excursión','Turismo']},
+      {type:'mc',q:'¿Cómo se dice "billete / boleto"?',hint:'',ans:'Bilietas',opts:['Pasas','Bilietas','Kortelė','Nuolaida']},
+      {type:'mc',q:'"Nuolaida" significa...',hint:'En tiendas',ans:'Descuento',opts:['Precio','Descuento','Oferta','Recibo']},
+      {type:'mc',q:'¿Cómo se dice "pasaporte"?',hint:'',ans:'Pasas',opts:['Bilietas','Pasas','Kortelė','Dokumentas']},
+      {type:'mc',q:'"Gimtadienis" significa...',hint:'Celebración anual',ans:'Cumpleaños',opts:['Aniversario','Cumpleaños','Navidad','Año nuevo']},
+      {type:'mc',q:'¿Cómo se dice "regalo"?',hint:'',ans:'Dovana',opts:['Tortas','Dovana','Gėlė','Kortelė']},
+      {type:'mc',q:'"Gėlė / Gėlės" significa...',hint:'',ans:'Flor / flores',opts:['Árbol','Hierba','Flor / flores','Planta']},
+      {type:'mc',q:'¿Cómo se dice "derecha" (dirección)?',hint:'',ans:'Dešinė',opts:['Kairė','Dešinė','Tiesiai','Atgal']},
+      {type:'mc',q:'"Kairė" significa...',hint:'Dirección',ans:'Izquierda',opts:['Derecha','Adelante','Izquierda','Atrás']},
+      {type:'mc',q:'¿Cómo se dice "todo / todos"?',hint:'',ans:'Viskas / Visi',opts:['Niekas','Kažkas','Viskas / Visi','Kiti']},
+      {type:'mc',q:'"Dabar" significa...',hint:'Tiempo',ans:'Ahora',opts:['Antes','Después','Ahora','Ya']},
+      {type:'mc',q:'¿Cómo se dice "aquí"?',hint:'',ans:'Čia',opts:['Ten','Čia','Kur','Niekur']},
+      {type:'mc',q:'"Labai" significa...',hint:'Adverbio de grado',ans:'Mucho / muy',opts:['Poco','Bastante','Mucho / muy','Demasiado']},
+      {type:'mc',q:'¿Cómo se dice "también"?',hint:'',ans:'Taip pat / Irgi',opts:['Bet','Ir','Taip pat / Irgi','Nors']},
+      {type:'mc',q:'"Jau" significa...',hint:'',ans:'Ya',opts:['Todavía','Ya','Aún','Nunca']},
+      {type:'mc',q:'¿Cómo se dice "todavía / aún"?',hint:'',ans:'Dar',opts:['Jau','Dar','Tik','Vos']},
+      {type:'mc',q:'"Tik" significa...',hint:'',ans:'Solo / únicamente',opts:['También','Siempre','Solo / únicamente','Muy']},
+      {type:'mc',q:'¿Cómo se dice "con"?',hint:'Preposición',ans:'Su',opts:['Be','Su','Nuo','Iki']},
+      {type:'mc',q:'"Be" como preposición significa...',hint:'',ans:'Sin',opts:['Con','Para','Sin','Desde']},
+      {type:'mc',q:'¿Cómo se dice "encima de"?',hint:'',ans:'Ant',opts:['Po','Ant','Prie','Tarp']},
+      {type:'mc',q:'"Po" como preposición puede significar...',hint:'',ans:'Debajo de / después de',opts:['Encima de','Junto a','Debajo de / después de','Entre']},
+      {type:'mc',q:'"Tarp" significa...',hint:'Preposición',ans:'Entre',opts:['Junto a','Encima de','Dentro de','Entre']},
+      {type:'mc',q:'¿Cómo se dice "cerca de / junto a"?',hint:'',ans:'Prie',opts:['Ant','Be','Prie','Tarp']},
+      {type:'mc',q:'"Šiuo metu" significa...',hint:'Expresión temporal',ans:'Actualmente / ahora mismo',opts:['En ese momento','Actualmente / ahora mismo','En el futuro','Antes']},
+      {type:'mc',q:'¿Cómo se dice "a veces / un poco"?',hint:'',ans:'Truputį / Kartais',opts:['Dažnai','Truputį / Kartais','Visada','Niekada']},
+      {type:'mc',q:'"Svarbus / Svarbi" significa...',hint:'Adjetivo',ans:'Importante',opts:['Difícil','Fácil','Importante','Interesante']},
+      {type:'mc',q:'¿Cómo se dice "hermoso / bonito"?',hint:'',ans:'Gražus / Graži',opts:['Didelis','Mažas','Gražus / Graži','Senas']},
+      {type:'mc',q:'"Didelis / Didelė" significa...',hint:'',ans:'Grande',opts:['Pequeño','Viejo','Grande','Nuevo']},
+      {type:'mc',q:'¿Cómo se dice "nuevo / nueva"?',hint:'',ans:'Naujas / Nauja',opts:['Senas','Naujas / Nauja','Didelis','Gražus']},
+      {type:'mc',q:'"Senas / Sena" significa...',hint:'',ans:'Viejo / antiguo',opts:['Nuevo','Grande','Viejo / antiguo','Bonito']},
+      {type:'mc',q:'¿Cómo se dice "feliz"?',hint:'',ans:'Laimingas / Laiminga',opts:['Liūdnas/Liūdna','Pavargęs/Pavargusi','Laimingas / Laiminga','Piktas/Pikta']},
+      {type:'mc',q:'"Liūdnas / Liūdna" significa...',hint:'',ans:'Triste',opts:['Alegre','Feliz','Triste','Enojado/a']},
+      {type:'mc',q:'¿Cómo se dice "cansado/a"?',hint:'',ans:'Pavargęs / Pavargusi',opts:['Laimingas/Laiminga','Sveikas/Sveika','Pavargęs / Pavargusi','Alkanas/Alkana']},
+      {type:'mc',q:'"Alkanas / Alkana" significa...',hint:'Sensación física',ans:'Hambriento/a',opts:['Sediento/a','Cansado/a','Hambriento/a','Aburrido/a']},
+      {type:'mc',q:'¿Cómo se dice "amigo / amiga"?',hint:'',ans:'Draugas / Draugė',opts:['Vaikinas/Mergina','Draugas / Draugė','Kolega','Kaimynas']},
+      {type:'mc',q:'"Kaimynas / Kaimynė" significa...',hint:'',ans:'Vecino/a',opts:['Amigo/a','Colega','Conocido/a','Vecino/a']},
+      {type:'mc',q:'¿Cómo se dice "trabajo / empleo"?',hint:'Sustantivo',ans:'Darbas',opts:['Dirbti','Darbas','Darbe','Darbovietė']},
+      {type:'mc',q:'"Laikas" significa...',hint:'',ans:'Tiempo / hora',opts:['Dinero','Lugar','Tiempo / hora','Día']},
+      {type:'mc',q:'¿Cómo se dice "dinero"?',hint:'',ans:'Pinigai',opts:['Laikas','Pinigai','Kaina','Valiuta']},
+      {type:'mc',q:'"Kaina" significa...',hint:'En la tienda',ans:'Precio',opts:['Descuento','Dinero','Precio','Moneda']}
+    ]
+  }
+  ,{ id:'verbos_ext', icon:'⚡', name:'Verbos A1-A2', color:'rgba(169,126,200,0.08)',
+    questions:[
+      {type:'mc',q:'¿Cómo se dice "hablar"?',hint:'Infinitivo',ans:'Kalbėti',opts:['Suprasti','Kalbėti','Klausyti','Skaityti']},
+      {type:'mc',q:'"EITI" significa...',hint:'Sin transporte',ans:'Ir (a pie)',opts:['Ir en coche','Ir a pie','Volar','Correr']},
+      {type:'fill',q:'PIRKTI (comprar) — Aš ___, tu perki, jis perka',blank:'perku',hint:'Yo compro',opts:['perku','pirkau','pirkti','perka']},
+      {type:'mc',q:'¿Cuál es el infinitivo de "aš geriu"?',hint:'Yo bebo',ans:'Gerti',opts:['Gėrimas','Gerti','Geriu','Geria']},
+      {type:'fill',q:'DUOTI (dar) — jis/ji ___, mes duodame',blank:'duoda',hint:'Él/Ella da',opts:['duoda','duodu','duodi','duodate']},
+      {type:'mc',q:'"PARDUOTI" significa...',hint:'Comercio',ans:'Vender',opts:['Comprar','Vender','Pagar','Regalar']},
+      {type:'fill',q:'LAUKTI (esperar) — aš ___, tu lauki, mes laukiame',blank:'laukiu',hint:'Yo espero',opts:['laukiu','lauki','laukia','laukiau']},
+      {type:'mc',q:'¿Cómo se dice "necesitar"?',hint:'Usa dativo',ans:'Reikėti',opts:['Norėti','Turėti','Reikėti','Galėti']},
+      {type:'fill',q:'GALĖTI (poder) — aš ___, tu gali, jis gali',blank:'galiu',hint:'Yo puedo',opts:['galiu','gali','galime','galit']},
+      {type:'mc',q:'"KELIAUTI" significa...',hint:'',ans:'Viajar',opts:['Caminar','Correr','Viajar','Volar']},
+      {type:'fill',q:'KELIAUTI — aš ___, tu keliauji, mes keliaujame',blank:'keliauju',hint:'Yo viajo',opts:['keliauju','keliauja','keliauji','keliaujame']},
+      {type:'mc',q:'¿Cómo se dice "esperar"?',hint:'',ans:'Laukti',opts:['Norėti','Laukti','Likti','Leisti']},
+      {type:'fill',q:'KVIESTI (invitar) — aš ___, jis kviečia',blank:'kviečiu',hint:'Yo invito',opts:['kviečiu','kvieti','kviečia','kviečiame']},
+      {type:'mc',q:'"MOKĖTI" (pagar / saber hacer) — aš mokėti para "yo pago"?',hint:'',ans:'Aš mokėsiu (futuro) / Aš mokėjau (pasado)',opts:['Aš moku','Aš mokausi','Aš mokėsiu (futuro) / Aš mokėjau (pasado)','Aš moka']},
+      {type:'mc',q:'¿Cómo se conjuga DIRBTI para "nosotros"?',hint:'',ans:'Dirbame',opts:['Dirbu','Dirbi','Dirba','Dirbame']},
+      {type:'fill',q:'GRĮŽTI (volver) — jis/ji ___, mes grįžtame',blank:'grįžta',hint:'Él/Ella vuelve',opts:['grįžta','grįžtu','grįžti','grįžtame']},
+      {type:'mc',q:'"ATEITI" significa...',hint:'Movimiento',ans:'Venir / llegar',opts:['Ir','Venir / llegar','Salir','Regresar']},
+      {type:'fill',q:'ATEITI — aš ___, tu ateini, jis ateina',blank:'ateinu',hint:'Yo vengo / llego',opts:['ateinu','ateini','ateina','ateiname']},
+      {type:'mc',q:'¿Cómo se dice "quedarse / permanecer"?',hint:'',ans:'Likti',opts:['Išeiti','Likti','Grįžti','Ateiti']},
+      {type:'fill',q:'MOKYTIS (estudiar/aprender) — aš ___, tu mokaisi',blank:'mokausi',hint:'Yo estudio/aprendo (reflexivo)',opts:['mokausi','mokosi','mokomės','mokaisi']},
+      {type:'mc',q:'"IŠEITI" significa...',hint:'Movimiento',ans:'Salir / irse',opts:['Entrar','Quedarse','Salir / irse','Llegar']},
+      {type:'fill',q:'ŽIŪRĖTI (ver/mirar) — jūs ___, jie žiūri',blank:'žiūrite',hint:'Vosotros miráis',opts:['žiūrite','žiūrime','žiūri','žiūriu']},
+      {type:'mc',q:'¿Cómo se dice "escuchar"?',hint:'',ans:'Klausyti',opts:['Girdėti','Klausyti','Žiūrėti','Kalbėti']},
+      {type:'fill',q:'KLAUSYTI (escuchar) — aš ___, tu klausai, jis klauso',blank:'klausau',hint:'Yo escucho',opts:['klausau','klausai','klauso','klausyti']},
+      {type:'mc',q:'"GIRDĖTI" significa...',hint:'Percepción',ans:'Oír / escuchar (percibir)',opts:['Ver','Oír / escuchar (percibir)','Tocar','Oler']},
+      {type:'mc',q:'¿Cómo se conjuga KEPTI (hornear/freír) para "yo"?',hint:'',ans:'Kepu',opts:['Kepu','Kepi','Kepa','Kepame']},
+      {type:'fill',q:'VIRTI (hervir/cocinar) — aš ___, tu verdi, jis verda',blank:'verdu',hint:'Yo hiervo / cocino',opts:['verdu','verdi','verda','verdame']},
+      {type:'mc',q:'"SPORTUOTI" — aš sportuoju, ¿qué significa?',hint:'',ans:'Hago deporte',opts:['Miro deporte','Hago deporte','Juego deporte','Practico yoga']},
+      {type:'fill',q:'VAIKŠČIOTI (caminar/pasear) — aš ___, tu vaikštai',blank:'vaikštau',hint:'Yo camino/paseo',opts:['vaikštau','vaikštai','vaikšto','vaikščiome']},
+      {type:'mc',q:'¿Cuál es la diferencia entre MYLĖTI y MĖGTI?',hint:'',ans:'MYLĖTI = amar, MĖGTI = gustar/disfrutar',opts:['Son sinónimos','MYLĖTI = gustar, MĖGTI = amar','MYLĖTI = amar, MĖGTI = gustar/disfrutar','Ambos significan querer']},
+      {type:'fill',q:'MYLĖTI (amar) — aš ___, tu myli, jis myli',blank:'myliu',hint:'Yo amo',opts:['myliu','myli','mylime','mylite']},
+      {type:'mc',q:'¿Cómo se dice "saber (conocimiento)"?',hint:'',ans:'Žinoti',opts:['Mokėti','Žinoti','Suprasti','Galėti']},
+      {type:'fill',q:'ŽINOTI (saber) — aš ___, tu žinai, jis žino',blank:'žinau',hint:'Yo sé',opts:['žinau','žinai','žino','žinome']},
+      {type:'mc',q:'Pasado de EITI para "nosotros":',hint:'',ans:'Ėjome',opts:['Einame','Ėjau','Ėjome','Eiti']},
+      {type:'mc',q:'Pasado de VALGYTI para "ellos/ellas":',hint:'',ans:'Valgė',opts:['Valgiau','Valgei','Valgė','Valgome']},
+      {type:'fill',q:'Pasado de GERTI para "yo": Aš ___',blank:'gėriau',hint:'Yo bebí',opts:['gėriau','gėrei','gėrė','gėrėme']},
+      {type:'mc',q:'Pasado de DIRBTI para "tú":',hint:'',ans:'Dirbai',opts:['Dirbau','Dirbai','Dirbo','Dirbome']},
+      {type:'fill',q:'Pasado de NORĖTI para "jis/ji": Jis ___',blank:'norėjo',hint:'Él quería',opts:['norėjo','norėjau','norėjai','norėjome']},
+      {type:'mc',q:'¿Cómo se forma el futuro en lituano?',hint:'Ej: eisiu, valgysi',ans:'Se añade -siu/-si/-s al stem',opts:['Se añade -iau al final','Se añade -siu/-si/-s al stem','Se usa "bus" + infinitivo','No cambia']},
+      {type:'mc',q:'Futuro de BŪTI para "él/ella":',hint:'',ans:'Bus',opts:['Yra','Buvo','Bus','Buvos']},
+      {type:'mc',q:'¿Cómo se dice "querer / desear"?',hint:'',ans:'Norėti',opts:['Mylėti','Norėti','Galėti','Reikėti']},
+      {type:'fill',q:'PADĖTI (ayudar) — aš ___, tu padedi, jis padeda',blank:'padedu',hint:'Yo ayudo',opts:['padedu','padedi','padeda','padedame']},
+      {type:'mc',q:'"PAILSĖTI" significa...',hint:'',ans:'Descansar',opts:['Cansarse','Descansar','Dormir','Relajarse profundamente']},
+      {type:'mc',q:'¿Cómo se conjuga SKAMBINTI para "ellos"?',hint:'Llamar por teléfono',ans:'Skambina',opts:['Skambinu','Skambini','Skambina','Skambiname']},
+      {type:'fill',q:'PRADĖTI (empezar) — aš ___, tu pradedi, jis pradeda',blank:'pradedu',hint:'Yo empiezo',opts:['pradedu','pradedi','pradeda','pradedame']},
+      {type:'mc',q:'"BAIGTI" significa...',hint:'Opuesto de pradėti',ans:'Terminar / acabar',opts:['Empezar','Continuar','Terminar / acabar','Pausar']},
+      {type:'mc',q:'¿Cómo se conjuga SKAITYTI para "vosotros"?',hint:'',ans:'Skaitote',opts:['Skaitau','Skaito','Skaitome','Skaitote']},
+      {type:'fill',q:'RAŠYTI (escribir) — jis/ji ___, mes rašome',blank:'rašo',hint:'Él/Ella escribe',opts:['rašo','rašau','rašai','rašome']},
+      {type:'mc',q:'"PIEŠTI" significa...',hint:'Arte',ans:'Dibujar',opts:['Pintar paredes','Dibujar','Escribir','Colorear']},
+      {type:'mc',q:'¿Cómo se dice "volar"?',hint:'',ans:'Skristi',opts:['Važiuoti','Plaukti','Skristi','Bėgti']},
+      {type:'fill',q:'SKRISTI (volar) — aš ___, tu skrendi, jis skrenda',blank:'skridu',hint:'Yo vuelo',opts:['skridu','skrendu','skrendi','skrenda']},
+      {type:'mc',q:'¿Cómo se dice "correr"?',hint:'',ans:'Bėgti / Bėgioti',opts:['Skristi','Šokti','Bėgti / Bėgioti','Vaikščioti']},
+      {type:'fill',q:'BĖGIOTI (correr habitualmente) — aš ___, tu bėgioji',blank:'bėgioju',hint:'Yo corro (habitualmente)',opts:['bėgioju','bėgioji','bėgioja','bėgiojame']}
+    ]
+  }
   ,{ id:'verb_conjugations', icon:'🔀', name:'Conjugaciones', color:'rgba(255,150,100,0.07)',
     questions:[
       {type:'fill',q:'BŪTI — Aš ___, Tu esi, Jis/Ji yra',blank:'esu',hint:'Yo soy/estoy',opts:['esu','esi','yra','esame']},
@@ -1086,220 +1680,7 @@ const FLASHCARDS = [
 ];
 
 
-// ══════════════════════════════════════════════
-// PRONUNCIATION DATA & LOGIC
-// ══════════════════════════════════════════════
-const PRONUN_PHRASES = [
-  {lt:'Aš atsikeliu.',es:'Me levanto.',cat:'Rutina',tip:'at-si-KE-liu'},
-  {lt:'Aš pusryčiauju.',es:'Desayuno.',cat:'Rutina',tip:'pus-ry-ČIAU-ju'},
-  {lt:'Aš einu į darbą.',es:'Voy al trabajo.',cat:'Rutina',tip:'EI-nu į DAR-bą'},
-  {lt:'Aš pietauju.',es:'Almuerzo.',cat:'Rutina',tip:'pie-TAU-ju'},
-  {lt:'Aš grįžtu namo.',es:'Vuelvo a casa.',cat:'Rutina',tip:'GRĮŽ-tu NA-mo'},
-  {lt:'Aš vakarieniauju.',es:'Ceno.',cat:'Rutina',tip:'va-ka-rie-NIAU-ju'},
-  {lt:'Aš einu miegoti.',es:'Voy a dormir.',cat:'Rutina',tip:'EI-nu mie-GO-ti'},
-  {lt:'Aš gaminu maistą.',es:'Cocino comida.',cat:'Rutina',tip:'GA-mi-nu MAIS-tą'},
-  {lt:'Aš geriu kavą.',es:'Bebo café.',cat:'Rutina',tip:'GE-riu KA-vą'},
-  {lt:'Aš skaitau knygą.',es:'Leo un libro.',cat:'Rutina',tip:'SKAI-tau KNY-gą'},
-  {lt:'Aš šoku.',es:'Bailo.',cat:'Tiempo libre',tip:'ŠO-ku'},
-  {lt:'Aš plaukiu.',es:'Nado.',cat:'Tiempo libre',tip:'PLAU-kiu'},
-  {lt:'Aš žaidžiu futbolą.',es:'Juego fútbol.',cat:'Tiempo libre',tip:'ŽAIDŽ-iu fut-BO-lą'},
-  {lt:'Aš klausau muzikos.',es:'Escucho música.',cat:'Tiempo libre',tip:'KLAU-sau mu-ZI-kos'},
-  {lt:'Aš žiūriu filmus.',es:'Veo películas.',cat:'Tiempo libre',tip:'ŽIŪ-riu FIL-mus'},
-  {lt:'Aš sportuoju.',es:'Hago deporte.',cat:'Tiempo libre',tip:'spor-TUO-ju'},
-  {lt:'Aš vaikštau parke.',es:'Camino en el parque.',cat:'Tiempo libre',tip:'VAIK-štau PAR-ke'},
-  {lt:'Aš piešiu.',es:'Dibujo.',cat:'Tiempo libre',tip:'PIE-šiu'},
-  {lt:'Aš kalbu lietuviškai.',es:'Hablo lituano.',cat:'Verbos',tip:'KAL-bu lie-tu-VIŠ-kai'},
-  {lt:'Aš suprantu.',es:'Entiendo.',cat:'Verbos',tip:'su-PRAN-tu'},
-  {lt:'Aš noriu vandens.',es:'Quiero agua.',cat:'Verbos',tip:'NO-riu VAN-dens'},
-  {lt:'Aš turiu klausimą.',es:'Tengo una pregunta.',cat:'Verbos',tip:'TU-riu KLAU-si-mą'},
-  {lt:'Aš gyvenu Lietuvoje.',es:'Vivo en Lituania.',cat:'Verbos',tip:'gy-VE-nu lie-tu-VO-je'},
-  {lt:'Aš dirbu biure.',es:'Trabajo en oficina.',cat:'Verbos',tip:'DIR-bu BIU-re'},
-  {lt:'Aš moku lietuviškai.',es:'Sé lituano.',cat:'Verbos',tip:'MO-ku lie-tu-VIŠ-kai'},
-  {lt:'Kaip jūs vadinatės?',es:'¿Cómo se llama usted?',cat:'Preguntas',tip:'KAIP jūs va-di-NA-tės'},
-  {lt:'Iš kur tu esi?',es:'¿De dónde eres?',cat:'Preguntas',tip:'IŠ kur tu E-si'},
-  {lt:'Kur tu gyveni?',es:'¿Dónde vives?',cat:'Preguntas',tip:'KUR tu gy-VE-ni'},
-  {lt:'Kiek tau metų?',es:'¿Cuántos años tienes?',cat:'Preguntas',tip:'KIEK tau ME-tų'},
-  {lt:'Ar tu kalbi angliškai?',es:'¿Hablas inglés?',cat:'Preguntas',tip:'AR tu KAL-bi ang-LIŠ-kai'},
-  {lt:'Kaip sekasi?',es:'¿Cómo estás?',cat:'Preguntas',tip:'KAIP SE-ka-si'},
-  {lt:'Ką tu veiki?',es:'¿Qué haces?',cat:'Preguntas',tip:'KĄ tu VEI-ki'},
-  {lt:'Kur tu dirbi?',es:'¿Dónde trabajas?',cat:'Preguntas',tip:'KUR tu DIR-bi'}
-];
 
-let pronunSt = { phrases:[], idx:0, score:0, listening:false, mr:null, chunks:[], dgKey:'' };
-
-function normalizeText(s) {
-  return (s||'').toLowerCase()
-    .replace(/[āą]/g,'a').replace(/č/g,'c').replace(/[ėęe]/g,'e')
-    .replace(/[įi]/g,'i').replace(/š/g,'s').replace(/[ūų]/g,'u').replace(/ž/g,'z')
-    .replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
-}
-function lev(a,b){
-  const m=a.length,n=b.length,dp=[];
-  for(let i=0;i<=m;i++){dp[i]=[i];for(let j=1;j<=n;j++)dp[i][j]=i===0?j:0;}
-  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)
-    dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
-  return dp[m][n];
-}
-function flexScore(heard, expected) {
-  const h = normalizeText(heard), e = normalizeText(expected);
-  if (!h) return 0;
-  if (h === e) return 1;
-  const hw = h.split(' ').filter(Boolean), ew = e.split(' ').filter(Boolean);
-  if (!ew.length) return 0;
-  let matched = 0;
-  ew.forEach(w => { if (hw.some(hw2 => lev(hw2,w) <= Math.max(1, Math.floor(w.length*0.3)))) matched++; });
-  return matched / ew.length;
-}
-
-function showPronun() {
-  showScreen('pronun');
-  const key = localStorage.getItem('lt_dgkey') || '';
-  const setup = document.getElementById('dg-setup');
-  const card = document.getElementById('pronun-card');
-  const mic = document.getElementById('mic-btn');
-  const micLbl = document.getElementById('mic-label');
-  const heard = document.getElementById('heard-box');
-  if (!key) {
-    setup.style.display = 'block';
-    card.style.display = 'none'; mic.style.display = 'none';
-    micLbl.style.display = 'none'; heard.style.display = 'none';
-    document.getElementById('pronun-actions').style.display = 'none';
-    return;
-  }
-  pronunSt.dgKey = key;
-  startPronunSession();
-}
-
-function saveDGKey() {
-  const k = document.getElementById('dg-key-input').value.trim();
-  if (!k) { alert('Ingresa tu clave API de Deepgram'); return; }
-  localStorage.setItem('lt_dgkey', k);
-  pronunSt.dgKey = k;
-  startPronunSession();
-}
-
-function startPronunSession() {
-  document.getElementById('dg-setup').style.display = 'none';
-  document.getElementById('pronun-card').style.display = 'block';
-  document.getElementById('mic-btn').style.display = 'flex';
-  document.getElementById('mic-label').style.display = 'block';
-  document.getElementById('heard-box').style.display = 'block';
-  pronunSt.phrases = shuffle([...PRONUN_PHRASES]).slice(0,10);
-  pronunSt.idx = 0; pronunSt.score = 0;
-  renderPronun();
-}
-
-function renderPronun() {
-  const p = pronunSt.phrases[pronunSt.idx];
-  const total = pronunSt.phrases.length;
-  document.getElementById('pronun-counter').textContent = (pronunSt.idx+1)+'/'+total;
-  document.getElementById('pronun-prog').style.width = ((pronunSt.idx/total)*100)+'%';
-  document.getElementById('pronun-cat').textContent = p.cat;
-  document.getElementById('pronun-lt').textContent = p.lt;
-  document.getElementById('pronun-es').textContent = p.es;
-  document.getElementById('pronun-tip').textContent = '🔊 '+p.tip;
-  document.getElementById('heard-box').textContent = '...';
-  document.getElementById('pronun-fb').className = 'pronun-fb';
-  document.getElementById('pronun-actions').style.display = 'none';
-  const mb = document.getElementById('mic-btn');
-  mb.classList.remove('listening');
-  mb.innerHTML = '🎙️';
-  document.getElementById('mic-label').textContent = 'Toca para hablar';
-}
-
-async function toggleMic() {
-  if (pronunSt.listening) { stopRec(); return; }
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-    pronunSt.chunks = [];
-    pronunSt.mr = new MediaRecorder(stream);
-    pronunSt.mr.ondataavailable = e => { if(e.data.size>0) pronunSt.chunks.push(e.data); };
-    pronunSt.mr.onstop = sendToDG;
-    pronunSt.mr.start();
-    pronunSt.listening = true;
-    const mb = document.getElementById('mic-btn');
-    mb.classList.add('listening'); mb.innerHTML = '⏹️';
-    document.getElementById('mic-label').textContent = 'Grabando... toca para parar';
-    document.getElementById('heard-box').textContent = '🎤 Escuchando...';
-    pronunSt.timer = setTimeout(()=>{ if(pronunSt.listening) stopRec(); }, 6000);
-  } catch(e) {
-    document.getElementById('heard-box').textContent = 'No se pudo acceder al micrófono: '+e.message;
-  }
-}
-
-function stopRec() {
-  clearTimeout(pronunSt.timer);
-  if(pronunSt.mr && pronunSt.mr.state!=='inactive'){
-    pronunSt.mr.stop();
-    pronunSt.mr.stream.getTracks().forEach(t=>t.stop());
-  }
-  pronunSt.listening = false;
-  const mb = document.getElementById('mic-btn');
-  mb.classList.remove('listening'); mb.innerHTML = '⏳';
-  document.getElementById('mic-label').textContent = 'Procesando...';
-}
-
-async function sendToDG() {
-  const blob = new Blob(pronunSt.chunks, {type:'audio/webm'});
-  try {
-    const res = await fetch('https://api.deepgram.com/v1/listen?language=lt&model=nova-2', {
-      method:'POST',
-      headers:{'Authorization':'Token '+pronunSt.dgKey,'Content-Type':'audio/webm'},
-      body: blob
-    });
-    const data = await res.json();
-    const t = data?.results?.channels?.[0]?.alternatives?.[0]?.transcript || '';
-    handleHeard(t);
-  } catch(e) {
-    document.getElementById('heard-box').textContent = 'Error de conexión';
-    document.getElementById('mic-btn').innerHTML = '🎙️';
-    document.getElementById('mic-label').textContent = 'Intentá de nuevo';
-  }
-}
-
-function handleHeard(heard) {
-  const p = pronunSt.phrases[pronunSt.idx];
-  document.getElementById('heard-box').textContent = heard || '(sin audio detectado)';
-  document.getElementById('mic-btn').innerHTML = '🎙️';
-  document.getElementById('mic-label').textContent = 'Intentá de nuevo';
-  const score = flexScore(heard, p.lt);
-  const fb = document.getElementById('pronun-fb');
-  if (score >= 0.65) {
-    fb.className = 'pronun-fb show ok';
-    fb.textContent = score >= 0.9 ? '¡Perfecto! 🎉 +20 pts' : '¡Bien dicho! 👍 ('+Math.round(score*100)+'% — +20 pts)';
-    pronunSt.score++; appState.pts += 20; appState.correct++; appState.racha++;
-  } else if (score > 0) {
-    fb.className = 'pronun-fb show bad';
-    fb.textContent = 'Casi! ('+Math.round(score*100)+'%) Escuchaste: "'+heard+'" — esperado: "'+p.lt+'"';
-    appState.racha = 0;
-  } else {
-    fb.className = 'pronun-fb show bad';
-    fb.textContent = 'No se detectó nada. Verificá tu micrófono e intentá de nuevo.';
-  }
-  appState.total++; saveState(); buildHome();
-  document.getElementById('pronun-actions').style.display = 'flex';
-}
-
-function skipPronun() {
-  const fb = document.getElementById('pronun-fb');
-  fb.className = 'pronun-fb show skip';
-  fb.textContent = 'Saltado — era: "'+pronunSt.phrases[pronunSt.idx].lt+'"';
-  document.getElementById('pronun-actions').style.display = 'flex';
-}
-
-function nextPronun() {
-  pronunSt.idx++;
-  if (pronunSt.idx >= pronunSt.phrases.length) {
-    const pct = Math.round((pronunSt.score/pronunSt.phrases.length)*100);
-    document.getElementById('complete-emoji').textContent = pct>=70?'🎙️🎉':'🎙️💪';
-    document.getElementById('complete-title').textContent = pct>=70?'¡Gran pronunciación!':'¡Seguí practicando!';
-    document.getElementById('complete-score').innerHTML = '<span>'+pronunSt.score+'</span> de '+pronunSt.phrases.length+' frases · <span>'+pct+'%</span>';
-    document.getElementById('retry-btn').onclick = showPronun;
-    showScreen('complete');
-  } else {
-    renderPronun();
-  }
-}
 
 let appState = JSON.parse(localStorage.getItem('lt_state2') || '{"pts":0,"total":0,"correct":0,"racha":0,"done":[]}');
 let quiz = { topic:null, qs:[], idx:0, score:0, hearts:3, answered:false };
@@ -1433,7 +1814,7 @@ function checkFill(btn, chosen, blank) {
     else if (b === btn && chosen !== blank) b.classList.add('wrong');
   });
   var fillEl = document.getElementById('fill-blank');
-  if (fillEl) { fillEl.textContent = blank; fillEl.style.color = chosen===blank?'var(--success)':'var(--danger)'; }
+  if (fillEl) { fillEl.textContent = blank; fillEl.style.color = chosen===blank?'var(--teal)':'var(--rose)'; }
   showFB(chosen === blank, blank);
 }
 function nextQ() {
@@ -1538,7 +1919,7 @@ Las 4 opciones incluyen la respuesta correcta. Varía el tipo: traducción, conj
     const q = JSON.parse(clean);
     renderAIQ(q);
   } catch(e) {
-    document.getElementById('ai-result').innerHTML = `<div style="color:var(--danger);font-size:14px;padding:1rem;">Error: ${e.message}<br><br>Verifica tu clave API.</div>`;
+    document.getElementById('ai-result').innerHTML = `<div style="color:var(--rose);font-size:14px;padding:1rem;">Error: ${e.message}<br><br>Verifica tu clave API.</div>`;
   }
   btn.disabled = false; btn.textContent = 'Generar ejercicio ✦';
 }
